@@ -1,0 +1,13 @@
+ext {
+
+    supportLibraryVersion = '25.+'
+    support = [
+        appcompatV7 : "com.android.support:appcompat-v7:$supportLibraryVersion"
+    ]
+
+    junitVersion = '4.12'
+    test = [
+        junit : "junit:junit:$junitVersion"
+    ]
+
+}
