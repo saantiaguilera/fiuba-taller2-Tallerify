@@ -1,6 +1,6 @@
 #!/bin/bash
 
-STDOUT_FILTERS=$TRAVIS_BUILD_DIR'/travis/stdout_filters.sed'
+STDOUT_FILTERS=$TRAVIS_BUILD_DIR'/ci/stdout_filters.sed'
 CYAN='\033[0;36m'
 NO_COLOR='\033[0m'
 
