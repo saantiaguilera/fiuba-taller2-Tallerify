@@ -55,6 +55,8 @@ public class BaseDialogPresenter extends Presenter<BaseDialogContract.View> impl
         switch (severity) {
             case ERROR:
             case WARNING:
+                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.drawable.ic_severity_warning));
+                break;
             case INFO:
                 //TODO
                 view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
