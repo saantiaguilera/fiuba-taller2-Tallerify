@@ -1,7 +1,7 @@
 ext {
     supportVersion = '25.+'
 
-    gifVersion = '1.2.3'
+    frescoVersion = '1.1.0'
 
     rxAndroidVersion = '1.2.1'
     rxJavaVersion = '1.1.6'
@@ -23,7 +23,8 @@ ext {
     ]
 
     misc = [
-        gif : "pl.droidsonroids.gif:android-gif-drawable:$gifVersion",
+        gif : "com.facebook.fresco:animated-gif:$frescoVersion",
+        fresco : "com.facebook.fresco:fresco:$frescoVersion",
         leakCanary : "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
         leakCanaryStub : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
     ]
@@ -43,7 +44,8 @@ ext {
     http = [
         core : "com.squareup.retrofit2:retrofit:$retrofitVersion",
         parser : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
-        rx : "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+        rx : "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion",
+        fresco : "com.facebook.fresco:imagepipeline-okhttp3:$frescoVersion"
     ]
 
     test = [
