@@ -4,12 +4,12 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.u.tallerify.contract.home.HomeCardContainerContract;
 import com.u.tallerify.model.entity.Song;
+import com.u.tallerify.presenter.Presenter;
+import com.u.tallerify.supplier.home.card.HeaderCardSupplier;
+import com.u.tallerify.supplier.home.card.NoAccountCardSupplier;
 import com.u.tallerify.supplier.home.card.SongCardSupplier;
 import com.u.tallerify.supplier.home.card.TrendingSongsCardSupplier;
 import com.u.tallerify.utils.adapter.GenericAdapter;
-import com.u.tallerify.supplier.home.card.HeaderCardSupplier;
-import com.u.tallerify.supplier.home.card.NoAccountCardSupplier;
-import com.u.tallerify.presenter.Presenter;
 import java.util.ArrayList;
 import java.util.List;
 

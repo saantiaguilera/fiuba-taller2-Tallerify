@@ -2,8 +2,8 @@ package com.u.tallerify.presenter.home.cards;
 
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.home.cards.SongCardContract;
-import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.model.entity.Song;
+import com.u.tallerify.utils.adapter.GenericAdapter;
 
 /**
  * Created by saguilera on 3/12/17.

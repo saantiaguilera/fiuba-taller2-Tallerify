@@ -2,9 +2,9 @@ package com.u.tallerify.supplier.home.card;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.presenter.home.cards.SongCardPresenter;
+import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.view.home.cards.SongCardView;
 
 /**

@@ -1,6 +1,5 @@
 package com.u.tallerify.controller.splash;
 
-import android.graphics.drawable.Animatable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,8 +8,6 @@ import android.view.ViewGroup;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.rxlifecycle.ControllerEvent;
 import com.facebook.drawee.view.DraweeView;
-import com.facebook.imagepipeline.image.ImageInfo;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.home.HomeController;
