@@ -8,18 +8,12 @@ import android.support.annotation.NonNull;
 @SuppressWarnings("unused")
 public class Song extends Entity {
 
-    private @NonNull Picture picture;
     private @NonNull String url;
     private @NonNull String name;
     private @NonNull Album album;
-    private @NonNull Artist artist;
 
     protected Song() {
         super();
-    }
-
-    public @NonNull Picture picture() {
-        return picture;
     }
 
     public @NonNull String url() {
@@ -32,10 +26,6 @@ public class Song extends Entity {
 
     public @NonNull Album album() {
         return album;
-    }
-
-    public @NonNull Artist artist() {
-        return artist;
     }
 
     @Override
@@ -52,9 +42,6 @@ public class Song extends Entity {
 
         final Song song = (Song) o;
 
-        if (!picture.equals(song.picture)) {
-            return false;
-        }
         if (!url.equals(song.url)) {
             return false;
         }
@@ -64,17 +51,15 @@ public class Song extends Entity {
         if (!album.equals(song.album)) {
             return false;
         }
-        return artist.equals(song.artist);
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + picture.hashCode();
         result = 31 * result + url.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + album.hashCode();
-        result = 31 * result + artist.hashCode();
         return result;
     }
 

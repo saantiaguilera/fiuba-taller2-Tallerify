@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.home.HomeCardContainerContract;
-import com.u.tallerify.list.adapter.GenericAdapter;
+import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.view.home.recyclerview.BaseHomeItemDecorator;
 import java.util.List;
 

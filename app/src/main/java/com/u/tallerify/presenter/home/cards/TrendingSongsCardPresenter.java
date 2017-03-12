@@ -2,7 +2,7 @@ package com.u.tallerify.presenter.home.cards;
 
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.home.cards.TrendingSongsCardContract;
-import com.u.tallerify.list.adapter.GenericAdapter;
+import com.u.tallerify.utils.adapter.GenericAdapter;
 import java.util.List;
 
 /**

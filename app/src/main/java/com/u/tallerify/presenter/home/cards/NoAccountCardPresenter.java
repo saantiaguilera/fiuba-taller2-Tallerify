@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import com.u.tallerify.contract.home.cards.NoAccountCardContract;
 import com.u.tallerify.controller.login.LoginDialogController;
-import com.u.tallerify.list.adapter.GenericAdapter;
+import com.u.tallerify.utils.adapter.GenericAdapter;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 

@@ -3,7 +3,7 @@ package com.u.tallerify.contract.home.cards;
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
-import com.u.tallerify.list.adapter.GenericAdapter;
+import com.u.tallerify.utils.adapter.GenericAdapter;
 import java.util.List;
 
 /**

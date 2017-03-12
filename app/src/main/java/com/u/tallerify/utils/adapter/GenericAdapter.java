@@ -1,4 +1,4 @@
-package com.u.tallerify.list.adapter;
+package com.u.tallerify.utils.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

@@ -2,7 +2,8 @@ package com.u.tallerify.presenter.home.cards;
 
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.home.cards.SongCardContract;
-import com.u.tallerify.list.adapter.GenericAdapter;
+import com.u.tallerify.utils.adapter.GenericAdapter;
+import com.u.tallerify.model.entity.Song;
 
 /**
  * Created by saguilera on 3/12/17.
@@ -10,14 +11,16 @@ import com.u.tallerify.list.adapter.GenericAdapter;
 public class SongCardPresenter extends GenericAdapter.ItemPresenter<SongCardContract.View>
         implements SongCardContract.Presenter {
 
-    public SongCardPresenter() {
+    private @NonNull Song song;
 
+    public SongCardPresenter(@NonNull Song song) {
+        this.song = song;
     }
 
     @Override
     protected void onAttach(@NonNull final SongCardContract.View view) {
-        view.setImage("http://www.elrocknomuere.com/blog/img/albums/americana.jpg");
-        view.setName("The Offspring - Americana");
+        view.setImage(song.album().picture().medium());
+        view.setName(song.name());
     }
 
 }

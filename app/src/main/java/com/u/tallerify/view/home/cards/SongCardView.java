@@ -7,13 +7,13 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.Display;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.home.cards.SongCardContract;
-import com.u.tallerify.list.home.card.supplier.SongCardSupplier;
+import com.u.tallerify.supplier.home.card.SongCardSupplier;
+import com.u.tallerify.utils.FrescoImageController;
 
 /**
  * Created by saguilera on 3/12/17.
@@ -24,7 +24,7 @@ public class SongCardView extends CardView
     private static int bestDimen = 0;
 
     private @NonNull TextView nameView;
-    private @NonNull ImageView imageView;
+    private @NonNull SimpleDraweeView imageView;
 
     public SongCardView(final Context context) {
         this(context, null);
@@ -48,13 +48,14 @@ public class SongCardView extends CardView
         setCardElevation(getResources().getDimensionPixelSize(R.dimen.view_card_song_elevation));
 
         nameView = (TextView) findViewById(R.id.view_card_song_name);
-        imageView = (ImageView) findViewById(R.id.view_card_song_image);
+        imageView = (SimpleDraweeView) findViewById(R.id.view_card_song_image);
     }
 
     @Override
     public void setImage(@NonNull final String url) {
-        // TODO
-        imageView.setImageResource(R.mipmap.ic_launcher);
+        FrescoImageController.create()
+            .load(url)
+            .into(imageView);
     }
 
     @Override

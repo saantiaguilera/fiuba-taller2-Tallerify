@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.home.cards.TrendingSongsCardContract;
-import com.u.tallerify.list.adapter.GenericAdapter;
+import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.view.home.recyclerview.TrendingSongsItemDecorator;
 import java.util.List;
 

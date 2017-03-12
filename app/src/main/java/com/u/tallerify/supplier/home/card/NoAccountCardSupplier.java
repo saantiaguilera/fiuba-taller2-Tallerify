@@ -1,8 +1,8 @@
-package com.u.tallerify.list.home.card.supplier;
+package com.u.tallerify.supplier.home.card;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.u.tallerify.list.adapter.GenericAdapter;
+import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.presenter.home.cards.NoAccountCardPresenter;
 import com.u.tallerify.view.home.cards.NoAccountCardView;
 
