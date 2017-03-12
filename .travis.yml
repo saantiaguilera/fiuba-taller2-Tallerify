@@ -34,7 +34,7 @@ env:
     matrix:
     - TEST_SUITE="assemble"
     - TEST_SUITE="lint"
-    - TEST_SUITE="test"
+    - TEST_SUITE="test jacocoTestReport coveralls"
     global:
     - MODULE_DIR="app"
     - MALLOC_ARENA_MAX=2
