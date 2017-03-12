@@ -42,15 +42,6 @@ public class HomeController extends FlowController {
     private void inflateToolbar() {
         Toolbar toolbar = getActionBar();
         if (toolbar != null) {
-            toolbar.setNavigationIcon(R.mipmap.ic_launcher); // TODO settings icon
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    //TODO
-                    Toast.makeText(getActivity(), "Settings icon", Toast.LENGTH_SHORT).show();
-                }
-            });
-
             toolbar.inflateMenu(R.menu.menu_home);
             toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
                 @Override

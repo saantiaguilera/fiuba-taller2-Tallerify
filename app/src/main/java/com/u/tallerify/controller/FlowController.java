@@ -20,7 +20,6 @@ public abstract class FlowController extends BaseController {
 
             if (hasActionBar()) {
                 getActionBar().setTitle(" " + title());
-                getActionBar().setNavigationIcon(R.mipmap.ic_launcher);
                 getActionBar().setVisibility(View.VISIBLE);
             } else {
                 getActionBar().setVisibility(View.GONE);
