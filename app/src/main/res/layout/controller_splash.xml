@@ -17,8 +17,6 @@
 
         android:layout_gravity="center"
 
-        android:background="@color/colorPrimary"
-
         android:layout_margin="@dimen/splash_gif_padding" />
 
 </FrameLayout>

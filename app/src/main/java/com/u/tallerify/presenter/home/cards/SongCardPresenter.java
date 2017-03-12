@@ -20,7 +20,7 @@ public class SongCardPresenter extends GenericAdapter.ItemPresenter<SongCardCont
     @Override
     protected void onAttach(@NonNull final SongCardContract.View view) {
         view.setImage(song.album().picture().medium());
-        view.setName(song.name());
+        view.setName(song.name() + " - " + song.album().artist().name());
     }
 
 }

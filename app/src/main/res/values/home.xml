@@ -8,9 +8,11 @@
     <dimen name="view_card_header_text_size">16sp</dimen>
 
     <!-- view_card_song -->
-    <dimen name="view_card_song_radius">0dp</dimen>
+    <dimen name="view_card_song_radius">4dp</dimen>
     <dimen name="view_card_song_elevation">4dp</dimen>
     <dimen name="view_card_song_text_height">24dp</dimen>
+    <dimen name="view_card_song_text_size">14sp</dimen>
+    <dimen name="view_card_song_padding">8dp</dimen>
 
     <!-- view_card_no_account -->
     <dimen name="view_card_no_account_height">120dp</dimen>
