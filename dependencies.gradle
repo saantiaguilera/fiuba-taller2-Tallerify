@@ -1,13 +1,55 @@
 ext {
+    supportVersion = '25.+'
 
-    supportLibraryVersion = '25.+'
-    support = [
-        appcompatV7 : "com.android.support:appcompat-v7:$supportLibraryVersion"
-    ]
+    frescoVersion = '1.1.0'
 
+    rxAndroidVersion = '1.2.1'
+    rxJavaVersion = '1.1.6'
+    rxBindingsVersion = '1.0.0'
+
+    retrofitVersion = '2.1.0'
+
+    conductorVersion = '2.0.7'
+    coordinatorVersion = '0.2'
+
+    robolectricVersion = '3.2.2'
     junitVersion = '4.12'
-    test = [
-        junit : "junit:junit:$junitVersion"
+
+    leakCanaryVersion = '1.5'
+
+    support = [
+        design : "com.android.support:design:$supportVersion",
+        cardView : "com.android.support:cardview-v7:$supportVersion"
     ]
 
+    misc = [
+        gif : "com.facebook.fresco:animated-gif:$frescoVersion",
+        fresco : "com.facebook.fresco:fresco:$frescoVersion",
+        leakCanary : "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
+        leakCanaryStub : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    ]
+
+    rx = [
+        android : "io.reactivex:rxandroid:$rxAndroidVersion",
+        java : "io.reactivex:rxjava:$rxJavaVersion",
+        bindings : "com.jakewharton.rxbinding:rxbinding:$rxBindingsVersion",
+        lifecycle : "com.bluelinelabs:conductor-rxlifecycle:$conductorVersion"
+    ]
+
+    structure = [
+        conductor : "com.bluelinelabs:conductor:$conductorVersion",
+        coordinator : "com.squareup.coordinators:coordinators:$coordinatorVersion"
+    ]
+
+    http = [
+        core : "com.squareup.retrofit2:retrofit:$retrofitVersion",
+        parser : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
+        rx : "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion",
+        fresco : "com.facebook.fresco:imagepipeline-okhttp3:$frescoVersion"
+    ]
+
+    test = [
+        junit : "junit:junit:$junitVersion",
+        robolectric : "org.robolectric:robolectric:$robolectricVersion"
+    ]
 }

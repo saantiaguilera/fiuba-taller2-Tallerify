@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Home -->
+    <dimen name="home_item_paddings">8dp</dimen>
+
+    <!-- view_card_header -->
+    <dimen name="view_card_header_text_size">16sp</dimen>
+
+    <!-- view_card_song -->
+    <dimen name="view_card_song_radius">4dp</dimen>
+    <dimen name="view_card_song_elevation">4dp</dimen>
+    <dimen name="view_card_song_text_height">24dp</dimen>
+    <dimen name="view_card_song_text_size">14sp</dimen>
+    <dimen name="view_card_song_padding">8dp</dimen>
+
+    <!-- view_card_no_account -->
+    <dimen name="view_card_no_account_height">120dp</dimen>
+    <dimen name="view_card_no_account_radius">0dp</dimen>
+    <dimen name="view_card_no_account_elevation">4dp</dimen>
+    <dimen name="view_card_no_account_title_text_size">18sp</dimen>
+    <dimen name="view_card_no_account_description_text_size">14sp</dimen>
+    <dimen name="view_card_no_account_title_margin_bottom">12dp</dimen>
+    <string name="view_card_no_account_title_text">Queres #insertar algo copado#?</string>
+    <string name="view_card_no_account_description_text">Haz click aqui y no esperes mas!</string>
+
+</resources>

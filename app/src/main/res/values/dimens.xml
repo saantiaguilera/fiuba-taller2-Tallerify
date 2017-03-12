@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dialog -->
+    <dimen name="dialog_padding">12dp</dimen>
+    <dimen name="dialog_severity_image_layout_size">70dp</dimen>
+    <dimen name="dialog_title_size">20sp</dimen>
+    <dimen name="dialog_elevation">8dp</dimen>
+    <dimen name="dialog_radius">4dp</dimen>
+
+    <!-- Toolbar -->
+    <dimen name="action_bar_height">42dp</dimen>
+    <dimen name="action_bar_content_inset_start">12dp</dimen>
+
+</resources>

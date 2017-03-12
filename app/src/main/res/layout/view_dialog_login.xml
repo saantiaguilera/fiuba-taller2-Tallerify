@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/view_dialog_login_facebook"
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_logging_button_height"
+
+        android:layout_marginBottom="@dimen/dialog_padding"
+
+        android:src="@color/blue" />
+    
+    <ImageView
+        android:id="@+id/view_dialog_login_google"
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_logging_button_height"
+        
+        android:layout_marginBottom="@dimen/dialog_logging_margin"
+        
+        android:src="@color/red"/>
+    
+    <TextView
+        android:id="@+id/view_dialog_login_terms_and_conditions"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+
+        android:paddingLeft="@dimen/dialog_logging_text_padding"
+        android:paddingRight="@dimen/dialog_logging_text_padding"
+
+        android:textColor="@color/black"
+        android:textSize="@dimen/dialog_logging_text_size"/>
+    
+</merge>

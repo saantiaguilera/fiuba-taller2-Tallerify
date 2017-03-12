@@ -1,4 +1,6 @@
-apply plugin:'com.android.application'
+apply plugin: 'com.android.application'
+
+apply from: 'jacoco.gradle'
 
 android {
     compileSdkVersion 25
@@ -6,16 +8,23 @@ android {
 
     defaultConfig {
         applicationId "com.u.tallerify"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode project.versionCode.toInteger()
         versionName project.versionName
     }
 
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            testCoverageEnabled = true
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            testCoverageEnabled = true
         }
     }
 
@@ -25,6 +34,30 @@ android {
 }
 
 dependencies {
-    compile support.appcompatV7
+    compile support.design
+    compile support.cardView
+
+    compile misc.gif
+    compile misc.fresco
+
+    compile rx.java
+    compile rx.android
+    compile rx.bindings
+    compile rx.lifecycle
+
+    compile structure.conductor
+    compile structure.coordinator
+
+    compile http.core
+    compile http.parser
+    compile http.rx
+    compile http.fresco
+
+    debugCompile misc.leakCanary
+
+    releaseCompile misc.leakCanaryStub
+
+    testCompile test.robolectric
     testCompile test.junit
+    testCompile misc.leakCanaryStub
 }

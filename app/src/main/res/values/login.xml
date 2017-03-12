@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Login dialog -->
+    <string name="register_terms_and_conditions">Al registrarte aceptas todos los términos y condiciones de Tallerify. [Ver terminos y condiciones]</string>
+    <string name="login_dialog_title">Para continuar,\nnecesitas estar logeado</string>
+    <dimen name="dialog_logging_button_height">48dp</dimen>
+    <dimen name="dialog_logging_margin">16dp</dimen>
+    <dimen name="dialog_logging_text_size">13sp</dimen>
+    <dimen name="dialog_logging_text_padding">4dp</dimen>
+
+</resources>
