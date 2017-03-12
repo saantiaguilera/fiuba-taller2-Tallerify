@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ImageView
+        android:id="@+id/view_card_song_image"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/view_card_song_name"
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_card_song_text_height"
+
+        android:background="@color/dialog_shadow"
+        android:textColor="@color/white"
+
+        android:gravity="center_vertical"
+        android:layout_gravity="bottom" />
+
+</merge>
