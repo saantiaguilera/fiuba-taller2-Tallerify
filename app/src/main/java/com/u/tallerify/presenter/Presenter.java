@@ -1,6 +1,8 @@
 package com.u.tallerify.presenter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,11 +16,14 @@ import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.contract.ContractView;
 import com.u.tallerify.controller.abstracts.BaseDialogController;
 import com.u.tallerify.utils.RouterInteractor;
+import java.lang.ref.WeakReference;
 
 /**
  * Created by saguilera on 3/12/17.
  */
 public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
+
+    @Nullable WeakReference<VIEW> viewWeakReference;
 
     public Presenter() {}
 
@@ -53,6 +58,7 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
     @SuppressWarnings("unchecked")
     public void attach(@NonNull final View view) {
         super.attach(view);
+        viewWeakReference = new WeakReference<>((VIEW) view);
         onAttach((VIEW) view);
     }
 
@@ -60,10 +66,23 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
     @SuppressWarnings("unchecked")
     public void detach(@NonNull final View view) {
         super.detach(view);
+        viewWeakReference = null;
         onDetach((VIEW) view);
     }
 
+    protected final void requestView() {
+        if (viewWeakReference != null && viewWeakReference.get() != null) {
+            new Handler(Looper.getMainLooper()).postAtFrontOfQueue(new Runnable() {
+                @Override
+                public void run() {
+                    onViewRequested(viewWeakReference.get());
+                }
+            });
+        }
+    }
+
     protected abstract void onAttach(final @NonNull VIEW view);
+    protected void onViewRequested(final @NonNull VIEW view) {}
     protected void onDetach(final @NonNull VIEW view) {}
 
 }

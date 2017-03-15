@@ -87,6 +87,11 @@ public class SplashController extends FlowController {
         return false;
     }
 
+    @Override
+    protected boolean hasPlayer() {
+        return false;
+    }
+
     @Nullable
     @Override
     protected String title() {

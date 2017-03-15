@@ -14,6 +14,7 @@ import com.u.tallerify.R;
 import com.u.tallerify.contract.home.cards.SongCardContract;
 import com.u.tallerify.supplier.home.card.SongCardSupplier;
 import com.u.tallerify.utils.FrescoImageController;
+import com.u.tallerify.utils.MetricsUtils;
 
 /**
  * Created by saguilera on 3/12/17.
@@ -66,11 +67,7 @@ public class SongCardView extends CardView
     private int computeBestDimen() {
         if (bestDimen != 0) return bestDimen;
 
-        WindowManager wm = (WindowManager) getContext().getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int screenWidth = size.x;
+        int screenWidth = MetricsUtils.getScreenPixelBounds(getContext()).x;
         int columns = SongCardSupplier.SONGS_PER_ROW;
 
         screenWidth -= (2 * getResources().getDimensionPixelSize(R.dimen.home_item_paddings));
