@@ -29,9 +29,9 @@ public class CurrentPlay {
 
     public static @Nullable BehaviorSubject<CurrentPlay> currentPlayBehaviorSubject;
 
-    private static @NonNull CurrentPlay instance;
+    private static @Nullable CurrentPlay instance;
 
-    public static @NonNull CurrentPlay instance() {
+    public static @Nullable CurrentPlay instance() {
         return instance;
     }
 
@@ -84,6 +84,17 @@ public class CurrentPlay {
 
     public int volume() {
         return volume;
+    }
+
+    public @NonNull Builder newBuilder() {
+        return new Builder()
+            .currentSong(currentSong)
+            .currentTime(currentTime)
+            .playlist(playlist)
+            .playState(playState)
+            .repeat(repeat)
+            .shuffle(shuffle)
+            .volume(volume);
     }
 
     public static @NonNull Observable<CurrentPlay> observeCurrentPlay() {

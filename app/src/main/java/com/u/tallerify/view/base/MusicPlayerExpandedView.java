@@ -9,7 +9,6 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -23,7 +22,6 @@ import rx.subjects.PublishSubject;
 /**
  * Created by saguilera on 3/14/17.
  */
-
 public class MusicPlayerExpandedView extends OverscrollScrollView {
 
     private @NonNull SimpleDraweeView expandImage;
@@ -76,6 +74,14 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
                 PorterDuff.Mode.SRC_IN));
 
         expandVolumeBar.getProgressDrawable().setColorFilter(
+            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
+                PorterDuff.Mode.SRC_IN));
+
+        expandTrackBar.getThumb().setColorFilter(
+            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
+                PorterDuff.Mode.SRC_IN));
+
+        expandVolumeBar.getThumb().setColorFilter(
             new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
                 PorterDuff.Mode.SRC_IN));
     }
