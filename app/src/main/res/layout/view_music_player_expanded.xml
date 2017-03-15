@@ -90,7 +90,6 @@
                     android:layout_height="wrap_content"
 
                     android:textSize="@dimen/view_music_player_expanded_song_time_size"
-                    android:text="00:00"
 
                     android:layout_gravity="left|center" />
 
@@ -100,7 +99,6 @@
                     android:layout_height="wrap_content"
 
                     android:textSize="@dimen/view_music_player_expanded_song_time_size"
-                    android:text="99:99"
 
                     android:layout_gravity="right|center" />
 
@@ -113,7 +111,6 @@
                 android:layout_height="wrap_content"
 
                 android:textSize="@dimen/view_music_player_expanded_song_title_size"
-                android:text="Nombre de la cancion"
                 android:textStyle="bold"
 
                 android:layout_margin="@dimen/view_music_player_expanded_separator_margin"
@@ -136,7 +133,6 @@
                 android:layout_height="wrap_content"
 
                 android:textSize="@dimen/view_music_player_expanded_song_artist_size"
-                android:text="Autor de la cancion"
                 android:textStyle="bold"
 
                 android:maxLines="1"
