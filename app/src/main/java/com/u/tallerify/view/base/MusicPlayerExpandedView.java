@@ -1,8 +1,10 @@
 package com.u.tallerify.view.base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -75,21 +77,10 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
         expandShuffle = (ImageView) findViewById(R.id.view_music_player_expanded_shuffle);
         expandRepeat = (ImageView) findViewById(R.id.view_music_player_expanded_repeat);
 
-        expandTrackBar.getProgressDrawable().setColorFilter(
-            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
-                PorterDuff.Mode.SRC_IN));
-
-        expandVolumeBar.getProgressDrawable().setColorFilter(
-            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
-                PorterDuff.Mode.SRC_IN));
-
-        expandTrackBar.getThumb().setColorFilter(
-            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
-                PorterDuff.Mode.SRC_IN));
-
-        expandVolumeBar.getThumb().setColorFilter(
-            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
-                PorterDuff.Mode.SRC_IN));
+        tintDrawable(expandTrackBar.getProgressDrawable());
+        tintDrawable(expandVolumeBar.getProgressDrawable());
+        tintDrawable(expandTrackBar.getThumb());
+        tintDrawable(expandVolumeBar.getThumb());
 
         expandTrackName.setSelected(true);
     }
@@ -157,6 +148,7 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
         return repeatSubject;
     }
 
+    @SuppressLint("DefaultLocale")
     public void setCurrentPlay(final @NonNull CurrentPlay currentPlay) {
         FrescoImageController.create()
             .load(currentPlay.currentSong().album().picture().large())
@@ -171,12 +163,43 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
         expandTrackArtist.setText(currentPlay.currentSong().album().artist().name());
         expandTrackName.setText(currentPlay.currentSong().name());
 
-        expandTrackBar.setProgress((int) (currentPlay.currentTime() * 100.0 / currentPlay.currentSong().duration()));
-        expandTrackTime.setText(currentPlay.currentTime() / 60 + ":" + currentPlay.currentTime() % 60);
-        expandTrackTimeLeft.setText((currentPlay.currentSong().duration() - currentPlay.currentTime()) / 60 + ":" +
-            (currentPlay.currentSong().duration() - currentPlay.currentTime()) % 60);
+        expandTrackBar.setMax((int) currentPlay.currentSong().duration());
+        expandTrackBar.setProgress((int) currentPlay.currentTime());
+
+        expandTrackTime.setText(String.format("%02d", currentPlay.currentTime() / 60) +
+            ":" +
+            String.format("%02d", currentPlay.currentTime() % 60));
+        expandTrackTimeLeft.setText(
+            String.format("%02d", (currentPlay.currentSong().duration() - currentPlay.currentTime()) / 60) +
+            ":" +
+            String.format("%02d", (currentPlay.currentSong().duration() - currentPlay.currentTime()) % 60));
 
         expandVolumeBar.setProgress(currentPlay.volume());
+
+        expandShuffle.getDrawable().setColorFilter(currentPlay.shuffle() ?
+            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
+                PorterDuff.Mode.SRC_IN) :
+            null);
+
+        switch (currentPlay.repeat()) {
+            case NONE:
+                expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
+                expandRepeat.getDrawable().setColorFilter(null);
+                break;
+            case SINGLE:
+                expandRepeat.setImageResource(R.drawable.ic_repeat_one_black_36dp);
+                tintDrawable(expandRepeat.getDrawable());
+                break;
+            case ALL:
+                expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
+                tintDrawable(expandRepeat.getDrawable());
+        }
+    }
+
+    private void tintDrawable(@NonNull Drawable drawable) {
+        drawable.setColorFilter(new PorterDuffColorFilter(
+            ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
+            PorterDuff.Mode.SRC_IN));
     }
 
 }

@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Show music player when current play exists
         CurrentPlay.observeCurrentPlay()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     List<RouterTransaction> backstack =
                         RouterInteractor.instance().mainRouter().getBackstack();
                     if (!backstack.isEmpty()) {
-                        ((FlowController) backstack.get(backstack.size() - 1).controller()).renderMediaPlayer();
+                        ((FlowController) backstack.get(backstack.size() - 1).controller()).renderMediaPlayer(true);
                     }
                 }
             });

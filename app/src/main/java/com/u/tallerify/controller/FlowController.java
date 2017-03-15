@@ -29,14 +29,20 @@ public abstract class FlowController extends BaseController {
             }
         }
 
-        renderMediaPlayer();
+        renderMediaPlayer(false);
     }
 
-    public void renderMediaPlayer() {
+    public void renderMediaPlayer(boolean animated) {
         if (getActivity() != null) {
             View playerView = getActivity().findViewById(R.id.activity_main_player_view);
             if (playerView.getVisibility() != (hasPlayer() ? View.VISIBLE : View.GONE)) {
                 playerView.setVisibility(hasPlayer() ? View.VISIBLE : View.GONE);
+                if (animated) {
+                    playerView.setAlpha(hasPlayer() ? 0f : 1f);
+                    playerView.animate()
+                        .alpha(hasPlayer() ? 1f : 0f)
+                        .start();
+                }
 
                 View coordinatorView = getActivity().findViewById(R.id.activity_main_coordinator_layout);
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) coordinatorView.getLayoutParams();

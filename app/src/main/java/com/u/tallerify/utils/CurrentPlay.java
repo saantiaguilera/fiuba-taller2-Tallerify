@@ -214,7 +214,6 @@ public class CurrentPlay {
 
         public boolean buildable() {
             boolean buildable = true;
-            buildable &= shuffle;
             buildable &= repeat != null;
             buildable &= playlist != null;
             buildable &= currentTime != -1;

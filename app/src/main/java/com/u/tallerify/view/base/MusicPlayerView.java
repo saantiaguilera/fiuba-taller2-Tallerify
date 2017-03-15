@@ -16,9 +16,11 @@ import com.u.tallerify.R;
 import com.u.tallerify.contract.base.MusicPlayerContract;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.MetricsUtils;
+import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -105,6 +107,7 @@ public class MusicPlayerView extends FrameLayout
             });
 
         expandView.observeOnOverscrollChanges()
+            .debounce(150, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .compose(RxLifecycleAndroid.<OverscrollScrollView.OverScrolledBundle>bindView(expandView))
