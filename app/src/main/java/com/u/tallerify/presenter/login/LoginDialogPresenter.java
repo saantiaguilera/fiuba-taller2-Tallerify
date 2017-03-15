@@ -33,18 +33,6 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
                 }
             });
 
-        view.observeGoogleLoginClicks()
-            .observeOn(Schedulers.newThread())
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void aVoid) {
-                    //TODO get access token from google.. and that stuff.
-                    notifyLogin(null);
-                }
-            });
-
         view.observeTermsAndConditionsClicks()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.newThread())

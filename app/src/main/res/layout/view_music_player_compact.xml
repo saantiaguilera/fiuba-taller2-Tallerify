@@ -29,7 +29,6 @@
         android:layout_weight="1"
 
         android:textSize="@dimen/view_music_player_compact_song_title_size"
-        android:text="Nombre de la cancion hardcodeado y re largo para tener que scrollear"
         android:textColor="@color/black"
 
         android:gravity="center"

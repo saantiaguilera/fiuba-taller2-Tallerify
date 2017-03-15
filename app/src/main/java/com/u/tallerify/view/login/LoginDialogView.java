@@ -25,7 +25,6 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
 
     private @NonNull TextView readTCView;
     private @NonNull ImageView facebookButton;
-    private @NonNull ImageView googleButton;
 
     @Nullable PublishSubject<Void> termsAndConditionsListener;
 
@@ -39,7 +38,6 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
 
         readTCView = (TextView) findViewById(R.id.view_dialog_login_terms_and_conditions);
         facebookButton = (ImageView) findViewById(R.id.view_dialog_login_facebook);
-        googleButton = (ImageView) findViewById(R.id.view_dialog_login_google);
 
         readTCView.setMovementMethod(LinkMovementMethod.getInstance());
         readTCView.setHighlightColor(Color.TRANSPARENT);
@@ -78,12 +76,6 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
     @Override
     public Observable<Void> observeFacebookLoginClicks() {
         return RxView.clicks(facebookButton);
-    }
-
-    @NonNull
-    @Override
-    public Observable<Void> observeGoogleLoginClicks() {
-        return RxView.clicks(googleButton);
     }
 
 }

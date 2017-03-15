@@ -15,7 +15,6 @@ public interface LoginContract {
 
         @NonNull Observable<Void> observeTermsAndConditionsClicks();
         @NonNull Observable<Void> observeFacebookLoginClicks();
-        @NonNull Observable<Void> observeGoogleLoginClicks();
 
     }
 
