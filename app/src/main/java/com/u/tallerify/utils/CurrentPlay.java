@@ -3,6 +3,7 @@ package com.u.tallerify.utils;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.u.tallerify.annotations.KeepName;
 import com.u.tallerify.model.entity.Song;
 import java.util.List;
 import rx.Observable;
@@ -147,6 +148,7 @@ public class CurrentPlay {
         return result;
     }
 
+    @KeepName
     public static class Builder {
 
         boolean shuffle;
