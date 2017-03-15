@@ -1,6 +1,7 @@
 package com.u.tallerify.presenter.base;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -19,11 +20,17 @@ import rx.schedulers.Schedulers;
 public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         implements MusicPlayerContract.Presenter {
 
+    static final String SHARED_PREFERENCES_RATING_DIR = MusicPlayerPresenter.class.getName() + "_sp_rating_dir";
+    static final String SHARED_PREFERENCES_FAVS_DIR = MusicPlayerPresenter.class.getName() + "_sp_favs_dir";
+
+    private static final String SHARED_PREFERENCES_RATING_KEY = "song_id";
+    private static final String SHARED_PREFERENCES_FAVORITE_KEY = "song_id";
+
+    public MusicPlayerPresenter() {}
+
     @Override
     protected void onAttach(@NonNull final MusicPlayerContract.View view) {
-        if (CurrentPlay.instance() != null) {
-            view.setCurrentPlay(CurrentPlay.instance());
-        }
+        render(view);
 
         CurrentPlay.observeCurrentPlay()
             .observeOn(Schedulers.io())
@@ -36,6 +43,49 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 }
             });
 
+        // TODO observeUser and requestView();
+
+        observeView(view);
+    }
+
+    @Override
+    protected void onViewRequested(@NonNull final MusicPlayerContract.View view) {
+        super.onViewRequested(view);
+        render(view);
+    }
+
+    private void render(@NonNull MusicPlayerContract.View view) {
+        if (CurrentPlay.instance() != null) {
+            if (CurrentPlay.instance() != null) {
+                CurrentPlay currentPlay = CurrentPlay.instance();
+                view.setShuffleEnabled(currentPlay.shuffle());
+                view.setImage(currentPlay.currentSong().album().picture());
+                view.setName(currentPlay.currentSong().name(), currentPlay.currentSong().album().artist().name());
+                view.setRepeatMode(currentPlay.repeat());
+                view.setTime((int) currentPlay.currentTime(), (int) currentPlay.currentSong().duration());
+                view.setTrackBarMax((int) currentPlay.currentSong().duration());
+                view.setTrackBarProgress((int) currentPlay.currentTime());
+                view.setVolume(currentPlay.volume());
+                switch (currentPlay.playState()) {
+                    case PLAYING:
+                        view.setPlaying();
+                        break;
+                    case PAUSED:
+                        view.setPaused();
+                        break;
+                }
+
+                // TODO fill these ones when logged in ONLY. If not put enabled = false
+                SharedPreferences ratingPreferences = getContext().getSharedPreferences(SHARED_PREFERENCES_RATING_DIR, Context.MODE_PRIVATE);
+                view.setRating(ratingPreferences.getInt(SHARED_PREFERENCES_RATING_KEY, 0), true);
+
+                SharedPreferences favsPreferences = getContext().getSharedPreferences(SHARED_PREFERENCES_FAVS_DIR, Context.MODE_PRIVATE);
+                view.setFavorite(favsPreferences.getBoolean(SHARED_PREFERENCES_FAVORITE_KEY, false), true);
+            }
+        }
+    }
+
+    private void observeView(@NonNull MusicPlayerContract.View view) {
         view.observeSongSeeks()
             .observeOn(Schedulers.io())
             .compose(this.<Integer>bindToLifecycle((View) view))
@@ -182,15 +232,32 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 }
             });
 
-    }
+        view.observeFavoriteClicks()
+            .observeOn(Schedulers.io())
+            .compose(this.<Void>bindToLifecycle((View) view))
+            .subscribe(new Action1<Void>() {
+                @Override
+                public void call(final Void aVoid) {
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(
+                        SHARED_PREFERENCES_FAVS_DIR, Context.MODE_PRIVATE);
+                    sharedPreferences.edit().putBoolean(SHARED_PREFERENCES_FAVORITE_KEY,
+                        !sharedPreferences.getBoolean(SHARED_PREFERENCES_FAVORITE_KEY, false)).commit();
+                    requestView();
+                }
+            });
 
-    @Override
-    protected void onViewRequested(@NonNull final MusicPlayerContract.View view) {
-        super.onViewRequested(view);
-
-        if (CurrentPlay.instance() != null) {
-            view.setCurrentPlay(CurrentPlay.instance());
-        }
+        view.observeRatingSeeks()
+            .observeOn(Schedulers.io())
+            .compose(this.<Integer>bindToLifecycle((View) view))
+            .subscribe(new Action1<Integer>() {
+                @Override
+                public void call(final Integer integer) {
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(
+                        SHARED_PREFERENCES_RATING_DIR, Context.MODE_PRIVATE);
+                    sharedPreferences.edit().putInt(SHARED_PREFERENCES_RATING_KEY, integer).commit();
+                    requestView();
+                }
+            });
     }
 
 }

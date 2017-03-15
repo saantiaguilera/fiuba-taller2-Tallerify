@@ -36,6 +36,33 @@
                 fresco:failureImageScaleType="fitXY"
                 fresco:roundedCornerRadius="@dimen/view_card_song_radius"/>
 
+            <ImageView
+                android:id="@+id/view_music_player_expanded_favorite"
+
+                android:layout_width="@dimen/view_music_player_expanded_fav_size"
+                android:layout_height="@dimen/view_music_player_expanded_fav_size"
+
+                android:layout_gravity="top|right"
+                android:layout_margin="@dimen/view_music_player_expanded_separator_margin"
+
+                android:src="@drawable/ic_star_rate_black_18dp" />
+
+            <RatingBar
+                android:id="@+id/view_music_player_expanded_rating_bar"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:rating="0"
+                android:stepSize="1"
+                android:numStars="5"
+
+                android:progressBackgroundTint="@color/view_music_player_expanded_rating_non_selected"
+                android:progressTint="@color/colorPrimaryDark"
+                android:secondaryProgressTint="@color/transparent"
+
+                android:layout_gravity="center_horizontal|bottom" />
+
         </FrameLayout>
 
         <LinearLayout

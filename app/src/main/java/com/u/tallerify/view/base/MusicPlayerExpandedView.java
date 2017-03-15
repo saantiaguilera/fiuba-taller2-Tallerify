@@ -9,12 +9,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.u.tallerify.R;
+import com.u.tallerify.model.entity.User;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.FrescoImageController;
 import com.u.tallerify.view.RxView;
@@ -24,7 +28,7 @@ import rx.subjects.PublishSubject;
 /**
  * Created by saguilera on 3/14/17.
  */
-public class MusicPlayerExpandedView extends OverscrollScrollView {
+public class MusicPlayerExpandedView extends ScrollView {
 
     private @NonNull SimpleDraweeView expandImage;
     private @NonNull SeekBar expandTrackBar;
@@ -38,6 +42,8 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
     private @NonNull SeekBar expandVolumeBar;
     private @NonNull ImageView expandRepeat;
     private @NonNull ImageView expandShuffle;
+    private @NonNull ImageView expandFavorite;
+    private @NonNull RatingBar expandRatingBar;
 
     private @Nullable PublishSubject<Void> nextTrackSubject;
     private @Nullable PublishSubject<Void> previousTrackSubject;
@@ -46,6 +52,8 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
     private @Nullable PublishSubject<Void> shuffleSubject;
     private @Nullable PublishSubject<Integer> volumeSubject;
     private @Nullable PublishSubject<Integer> trackBarSubject;
+    private @Nullable PublishSubject<Integer> rateBarSubject;
+    private @Nullable PublishSubject<Void> favoriteSubject;
 
     public MusicPlayerExpandedView(final Context context) {
         this(context, null);
@@ -76,6 +84,8 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
         expandVolumeBar = (SeekBar) findViewById(R.id.view_music_player_expanded_volume);
         expandShuffle = (ImageView) findViewById(R.id.view_music_player_expanded_shuffle);
         expandRepeat = (ImageView) findViewById(R.id.view_music_player_expanded_repeat);
+        expandFavorite = (ImageView) findViewById(R.id.view_music_player_expanded_favorite);
+        expandRatingBar = (RatingBar) findViewById(R.id.view_music_player_expanded_rating_bar);
 
         tintDrawable(expandTrackBar.getProgressDrawable());
         tintDrawable(expandVolumeBar.getProgressDrawable());
@@ -101,6 +111,24 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
         }
 
         return nextTrackSubject;
+    }
+
+    public @NonNull Observable<Void> observeFavoriteClicks() {
+        if (favoriteSubject == null) {
+            favoriteSubject = PublishSubject.create();
+            RxView.dispatchClicks(expandFavorite, favoriteSubject);
+        }
+
+        return favoriteSubject;
+    }
+
+    public @NonNull Observable<Integer> observeRatingSeeks() {
+        if (rateBarSubject == null) {
+            rateBarSubject = PublishSubject.create();
+            RxView.dispatchSeeks(expandRatingBar, rateBarSubject);
+        }
+
+        return rateBarSubject;
     }
 
     public @NonNull Observable<Void> observePreviousSongClicks() {
@@ -148,8 +176,98 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
         return repeatSubject;
     }
 
+    public void setImageUrl(@NonNull String url) {
+        FrescoImageController.create()
+            .load(url)
+            .into(expandImage);
+    }
+
+    public void setPlaying() {
+        expandPlayPause.setImageResource(R.drawable.ic_play_arrow_black_36dp);
+    }
+
+    public void setPaused() {
+        expandPlayPause.setImageResource(R.drawable.ic_pause_black_36dp);
+    }
+
+    public void setArtistName(@NonNull String name) {
+        expandTrackName.setText(name);
+    }
+
+    public void setSongName(@NonNull String name) {
+        expandTrackName.setText(name);
+    }
+
+    public void setTrackBarMax(int max) {
+        expandTrackBar.setMax(max);
+    }
+
+    public void setTrackBarProgress(int progress) {
+        expandTrackBar.setProgress(progress);
+    }
+
     @SuppressLint("DefaultLocale")
-    public void setCurrentPlay(final @NonNull CurrentPlay currentPlay) {
+    public void setTime(int time, int duration) {
+        expandTrackTime.setText(String.format("%02d", time / 60) +
+            ":" +
+            String.format("%02d", time % 60));
+        expandTrackTimeLeft.setText(
+            String.format("%02d", (duration - time) / 60) +
+                ":" +
+                String.format("%02d", (duration - time) % 60));
+    }
+
+    public void setVolume(int volume) {
+        expandVolumeBar.setProgress(volume);
+    }
+
+    public void setShuffleEnabled(boolean enabled) {
+        expandShuffle.getDrawable().setColorFilter(enabled ?
+            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
+                PorterDuff.Mode.SRC_IN) :
+            null);
+    }
+
+    public void setRepeatMode(CurrentPlay.RepeatMode repeatMode) {
+        switch (repeatMode) {
+            case NONE:
+                expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
+                expandRepeat.getDrawable().setColorFilter(null);
+                break;
+            case SINGLE:
+                expandRepeat.setImageResource(R.drawable.ic_repeat_one_black_36dp);
+                tintDrawable(expandRepeat.getDrawable());
+                break;
+            case ALL:
+                expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
+                tintDrawable(expandRepeat.getDrawable());
+        }
+    }
+
+    public void setRating(int rating, boolean enabled) {
+        if (enabled) {
+            expandRatingBar.setVisibility(View.VISIBLE);
+            expandRatingBar.setRating(rating);
+        } else {
+            expandRatingBar.setVisibility(View.GONE);
+        }
+    }
+
+    public void setFavorite(boolean favved, boolean enabled) {
+        if (enabled) {
+            expandFavorite.setVisibility(View.VISIBLE);
+            expandFavorite.getDrawable().setColorFilter(favved ?
+                new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
+                    PorterDuff.Mode.SRC_IN) :
+                new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.white, null),
+                    PorterDuff.Mode.SRC_IN) );
+        } else {
+            expandFavorite.setVisibility(View.GONE);
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    public void setData(final @NonNull CurrentPlay currentPlay, final @Nullable User user) {
         FrescoImageController.create()
             .load(currentPlay.currentSong().album().picture().large())
             .into(expandImage);
@@ -193,6 +311,12 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
             case ALL:
                 expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
                 tintDrawable(expandRepeat.getDrawable());
+        }
+
+        if (user != null) {
+        } else {
+            expandFavorite.setVisibility(View.GONE);
+            expandRatingBar.setVisibility(View.GONE);
         }
     }
 

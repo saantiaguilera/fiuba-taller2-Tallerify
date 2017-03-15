@@ -2,6 +2,8 @@ package com.u.tallerify.view;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.AbsSeekBar;
+import android.widget.RatingBar;
 import android.widget.SeekBar;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -66,6 +68,17 @@ public final class RxView {
 
             @Override
             public void onStopTrackingTouch(final SeekBar seekBar) {}
+        });
+    }
+
+    public static void dispatchSeeks(final @NonNull RatingBar view, final @NonNull PublishSubject<Integer> subject) {
+        view.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(final RatingBar ratingBar, final float rating, final boolean fromUser) {
+                if (fromUser) {
+                    subject.onNext((int) rating);
+                }
+            }
         });
     }
 

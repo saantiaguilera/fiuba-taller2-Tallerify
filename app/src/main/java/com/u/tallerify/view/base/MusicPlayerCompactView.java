@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.u.tallerify.R;
+import com.u.tallerify.model.entity.User;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.FrescoImageController;
 import com.u.tallerify.view.RxView;
@@ -55,19 +56,23 @@ public class MusicPlayerCompactView extends LinearLayout {
         compactTitle.setSelected(true);
     }
 
-    public void setCurrentPlay(@NonNull final CurrentPlay currentPlay) {
+    public void setPlaying() {
+        compactPlay.setImageResource(R.drawable.ic_play_arrow_black_36dp);
+    }
+
+    public void setPaused() {
+        compactPlay.setImageResource(R.drawable.ic_pause_black_36dp);
+    }
+
+    public void setTitle(@NonNull String title) {
+        compactTitle.setText(title);
+    }
+
+    public void setImageUrl(@NonNull String url) {
         FrescoImageController.create()
-            .load(currentPlay.currentSong().album().picture().thumb())
+            .load(url)
             .cacheChoice(ImageRequest.CacheChoice.SMALL)
             .into(compactImage);
-
-        compactTitle.setText(currentPlay.currentSong().name() + " - " + currentPlay.currentSong().album().artist().name());
-
-        if (currentPlay.playState() == CurrentPlay.PlayState.PLAYING) {
-            compactPlay.setImageResource(R.drawable.ic_play_arrow_black_36dp);
-        } else {
-            compactPlay.setImageResource(R.drawable.ic_pause_black_36dp);
-        }
     }
 
     public @NonNull Observable<Void> observeNextSongClicks() {

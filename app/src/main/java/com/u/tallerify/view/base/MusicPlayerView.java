@@ -14,14 +14,13 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.base.MusicPlayerContract;
+import com.u.tallerify.model.entity.Picture;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.MetricsUtils;
-import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/13/17.
@@ -78,11 +77,52 @@ public class MusicPlayerView extends FrameLayout
             .compose(RxLifecycleAndroid.<MotionEvent>bindView(compactView))
             .subscribe(new Action1<MotionEvent>() {
 
+                private long lastTouchDown;
                 private boolean viewPressed;
                 private double startY;
 
                 @Override
                 public void call(final MotionEvent ev) {
+                    switch (ev.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            viewPressed = true;
+                            startY = ev.getRawY();
+                            lastTouchDown = System.currentTimeMillis();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            viewPressed = false;
+                            startY = 0;
+                            if (mode == MODE.COMPACT && System.currentTimeMillis() - lastTouchDown < 250) {
+                                mode = MODE.EXPANDED;
+                                transition(MusicPlayerView.this, expandView);
+                            }
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            if (viewPressed) {
+                                if (ev.getRawY() - startY < -SCROLL_SWITCH_DELTA &&
+                                    mode == MODE.COMPACT) {
+                                    mode = MODE.EXPANDED;
+                                    transition(MusicPlayerView.this, expandView);
+                                    viewPressed = false;
+                                }
+                            }
+                            break;
+                    }
+                }
+            });
+
+        RxView.touches(expandView)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .compose(RxLifecycleAndroid.<MotionEvent>bindView(expandView))
+            .subscribe(new Action1<MotionEvent>() {
+
+                private boolean viewPressed;
+                private double startY;
+
+                @Override
+                public void call(final MotionEvent ev) {
+                    expandView.onTouchEvent(ev);
                     switch (ev.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             viewPressed = true;
@@ -93,39 +133,86 @@ public class MusicPlayerView extends FrameLayout
                             startY = 0;
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            if (viewPressed) {
-                                if (ev.getRawY() - startY < -SCROLL_SWITCH_DELTA &&
-                                    mode == MODE.COMPACT) {
-                                    transition(MusicPlayerView.this, expandView);
-                                    viewPressed = false;
-                                    mode = MODE.EXPANDED;
-                                }
+                            if (expandView.getScrollY() != 0) {
+                                startY = ev.getRawY();
+                                break;
+                            }
+                            if (viewPressed && ev.getRawY() - startY > SCROLL_SWITCH_DELTA &&
+                                    mode == MODE.EXPANDED) {
+                                transition(MusicPlayerView.this, compactView);
+                                mode = MODE.COMPACT;
+                                viewPressed = false;
                             }
                             break;
                     }
-                }
-            });
 
-        expandView.observeOnOverscrollChanges()
-            .debounce(150, TimeUnit.MILLISECONDS)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .compose(RxLifecycleAndroid.<OverscrollScrollView.OverScrolledBundle>bindView(expandView))
-            .subscribe(new Action1<OverscrollScrollView.OverScrolledBundle>() {
-                @Override
-                public void call(final OverscrollScrollView.OverScrolledBundle bundle) {
-                    if (bundle.clampedY && bundle.scrollY == 0 && mode == MODE.EXPANDED) {
-                        transition(MusicPlayerView.this, compactView);
-                        mode = MODE.COMPACT;
-                    }
                 }
             });
     }
 
     @Override
-    public void setCurrentPlay(@NonNull final CurrentPlay currentPlay) {
-        compactView.setCurrentPlay(currentPlay);
-        expandView.setCurrentPlay(currentPlay);
+    public void setImage(@NonNull final Picture picture) {
+        compactView.setImageUrl(picture.thumb());
+        expandView.setImageUrl(picture.large());
+    }
+
+    @Override
+    public void setPlaying() {
+        compactView.setPlaying();
+        expandView.setPlaying();
+    }
+
+    @Override
+    public void setPaused() {
+        compactView.setPaused();
+        expandView.setPaused();
+    }
+
+    @Override
+    public void setName(@NonNull final String songName, @NonNull final String artistName) {
+        compactView.setTitle(songName + " - " + artistName);
+        expandView.setSongName(songName);
+        expandView.setArtistName(artistName);
+    }
+
+    @Override
+    public void setTrackBarMax(final int max) {
+        expandView.setTrackBarMax(max);
+    }
+
+    @Override
+    public void setTrackBarProgress(final int progress) {
+        expandView.setTrackBarProgress(progress);
+    }
+
+    @Override
+    public void setTime(final int time, final int duration) {
+        expandView.setTime(time, duration);
+    }
+
+    @Override
+    public void setVolume(final int volume) {
+        expandView.setVolume(volume);
+    }
+
+    @Override
+    public void setShuffleEnabled(final boolean enabled) {
+        expandView.setShuffleEnabled(enabled);
+    }
+
+    @Override
+    public void setRepeatMode(final CurrentPlay.RepeatMode repeatMode) {
+        expandView.setRepeatMode(repeatMode);
+    }
+
+    @Override
+    public void setRating(final int rating, final boolean enabled) {
+        expandView.setRating(rating, enabled);
+    }
+
+    @Override
+    public void setFavorite(final boolean favved, final boolean enabled) {
+        expandView.setFavorite(favved, enabled);
     }
 
     @NonNull
@@ -170,6 +257,18 @@ public class MusicPlayerView extends FrameLayout
     @Override
     public Observable<Void> observeRepeatClicks() {
         return expandView.observeRepeatClicks();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Integer> observeRatingSeeks() {
+        return expandView.observeRatingSeeks();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Void> observeFavoriteClicks() {
+        return expandView.observeFavoriteClicks();
     }
 
     private enum MODE {
