@@ -34,10 +34,14 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
     private @NonNull ImageView expandNextTrack;
     private @NonNull ImageView expandPlayPause;
     private @NonNull SeekBar expandVolumeBar;
+    private @NonNull ImageView expandRepeat;
+    private @NonNull ImageView expandShuffle;
 
     private @Nullable PublishSubject<Void> nextTrackSubject;
     private @Nullable PublishSubject<Void> previousTrackSubject;
     private @Nullable PublishSubject<Void> playStatusTrackSubject;
+    private @Nullable PublishSubject<Void> repeatSubject;
+    private @Nullable PublishSubject<Void> shuffleSubject;
     private @Nullable PublishSubject<Integer> volumeSubject;
     private @Nullable PublishSubject<Integer> trackBarSubject;
 
@@ -68,6 +72,8 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
         expandTrackTime = (TextView) findViewById(R.id.view_music_player_expanded_track_time);
         expandTrackTimeLeft = (TextView) findViewById(R.id.view_music_player_expanded_track_time_left);
         expandVolumeBar = (SeekBar) findViewById(R.id.view_music_player_expanded_volume);
+        expandShuffle = (ImageView) findViewById(R.id.view_music_player_expanded_shuffle);
+        expandRepeat = (ImageView) findViewById(R.id.view_music_player_expanded_repeat);
 
         expandTrackBar.getProgressDrawable().setColorFilter(
             new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
@@ -84,6 +90,8 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
         expandVolumeBar.getThumb().setColorFilter(
             new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
                 PorterDuff.Mode.SRC_IN));
+
+        expandTrackName.setSelected(true);
     }
 
     public @NonNull Observable<Void> observePlayStateClicks() {
@@ -129,6 +137,24 @@ public class MusicPlayerExpandedView extends OverscrollScrollView {
         }
 
         return trackBarSubject;
+    }
+
+    public @NonNull Observable<Void> observeShuffleClicks() {
+        if (shuffleSubject == null) {
+            shuffleSubject = PublishSubject.create();
+            RxView.dispatchClicks(expandShuffle, shuffleSubject);
+        }
+
+        return shuffleSubject;
+    }
+
+    public @NonNull Observable<Void> observeRepeatClicks() {
+        if (repeatSubject == null) {
+            repeatSubject = PublishSubject.create();
+            RxView.dispatchClicks(expandRepeat, repeatSubject);
+        }
+
+        return repeatSubject;
     }
 
     public void setCurrentPlay(final @NonNull CurrentPlay currentPlay) {

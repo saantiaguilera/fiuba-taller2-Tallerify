@@ -10,7 +10,7 @@
 
         android:layout_margin="@dimen/view_music_player_compact_image_margin"
 
-        android:transitionName="test_name"
+        android:transitionName="@string/view_music_player_transition_name"
 
         android:adjustViewBounds="true"
 
@@ -29,13 +29,19 @@
         android:layout_weight="1"
 
         android:textSize="@dimen/view_music_player_compact_song_title_size"
-        android:text="Nombre de la cancion hardcodeado"
+        android:text="Nombre de la cancion hardcodeado y re largo para tener que scrollear"
         android:textColor="@color/black"
 
         android:gravity="center"
 
-        android:maxLines="1"
-        android:ellipsize="end"/>
+        android:singleLine="true"
+
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"/>
 
     <ImageView
         android:id="@+id/view_music_player_compact_play_pause"
@@ -55,7 +61,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
 
-        android:layout_margin="@dimen/view_music_player_compact_image_margin"
+        android:layout_marginBottom="@dimen/view_music_player_compact_image_margin"
+        android:layout_marginTop="@dimen/view_music_player_compact_image_margin"
+        android:layout_marginRight="@dimen/view_music_player_compact_image_margin"
 
         android:adjustViewBounds="true"
 

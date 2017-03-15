@@ -20,7 +20,6 @@ import rx.subjects.PublishSubject;
 /**
  * Created by saguilera on 3/14/17.
  */
-
 public class MusicPlayerCompactView extends LinearLayout {
 
     private @NonNull SimpleDraweeView compactImage;
@@ -52,6 +51,8 @@ public class MusicPlayerCompactView extends LinearLayout {
         compactTitle = (TextView) findViewById(R.id.view_music_player_compact_name);
         compactNext = (ImageView) findViewById(R.id.view_music_player_compact_next_track);
         compactPlay = (ImageView) findViewById(R.id.view_music_player_compact_play_pause);
+
+        compactTitle.setSelected(true);
     }
 
     public void setCurrentPlay(@NonNull final CurrentPlay currentPlay) {

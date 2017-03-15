@@ -157,6 +157,18 @@ public class MusicPlayerView extends FrameLayout
         return expandView.observeSongSeeks();
     }
 
+    @NonNull
+    @Override
+    public Observable<Void> observeShuffleClicks() {
+        return expandView.observeShuffleClicks();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Void> observeRepeatClicks() {
+        return expandView.observeRepeatClicks();
+    }
+
     private enum MODE {
         COMPACT,
         EXPANDED

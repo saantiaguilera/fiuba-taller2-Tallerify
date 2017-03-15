@@ -9,6 +9,7 @@
 
     <!-- Music player view -->
     <string name="view_music_player_up_next">UP NEXT</string>
+    <string name="view_music_player_transition_name">view_music_player_transition_1</string>
 
 </resources>
 

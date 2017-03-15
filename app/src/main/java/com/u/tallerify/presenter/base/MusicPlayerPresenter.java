@@ -50,6 +50,47 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 }
             });
 
+        view.observeShuffleClicks()
+            .observeOn(Schedulers.io())
+            .compose(this.<Void>bindToLifecycle((View) view))
+            .subscribe(new Action1<Void>() {
+                @Override
+                public void call(final Void integer) {
+                    if (CurrentPlay.instance() != null) {
+                        CurrentPlay.instance().newBuilder()
+                            .shuffle(!CurrentPlay.instance().shuffle())
+                            .build();
+                    }
+                }
+            });
+
+        view.observeRepeatClicks()
+            .observeOn(Schedulers.io())
+            .compose(this.<Void>bindToLifecycle((View) view))
+            .subscribe(new Action1<Void>() {
+                @Override
+                public void call(final Void integer) {
+                    if (CurrentPlay.instance() != null) {
+                        CurrentPlay.RepeatMode repeatMode;
+                        switch (CurrentPlay.instance().repeat()) {
+                            case NONE:
+                                repeatMode = CurrentPlay.RepeatMode.SINGLE;
+                                break;
+                            case SINGLE:
+                                repeatMode = CurrentPlay.RepeatMode.ALL;
+                                break;
+                            case ALL:
+                            default:
+                                repeatMode = CurrentPlay.RepeatMode.NONE;
+                        }
+
+                        CurrentPlay.instance().newBuilder()
+                            .repeat(repeatMode)
+                            .build();
+                    }
+                }
+            });
+
         view.observeVolumeSeeks()
             .observeOn(Schedulers.io())
             .compose(this.<Integer>bindToLifecycle((View) view))

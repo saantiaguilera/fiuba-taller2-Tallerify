@@ -25,7 +25,7 @@
 
                 android:adjustViewBounds="true"
 
-                android:transitionName="test_name"
+                android:transitionName="@string/view_music_player_transition_name"
 
                 android:layout_gravity="center"
 
@@ -93,7 +93,16 @@
 
                 android:layout_margin="@dimen/view_music_player_expanded_separator_margin"
 
-                android:gravity="center"/>
+                android:gravity="center"
+
+                android:singleLine="true"
+
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"/>
 
             <TextView
                 android:id="@+id/view_music_player_expanded_track_artist"
@@ -104,6 +113,8 @@
                 android:textSize="@dimen/view_music_player_expanded_song_artist_size"
                 android:text="Autor de la cancion"
                 android:textStyle="bold"
+
+                android:maxLines="1"
 
                 android:gravity="center" />
 
@@ -203,7 +214,7 @@
                     android:gravity="center_vertical|left"/>
 
                 <ImageView
-                    android:id="@+id/view_music_player_expanded_random"
+                    android:id="@+id/view_music_player_expanded_shuffle"
 
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/view_music_player_expanded_up_next_buttons_height"
