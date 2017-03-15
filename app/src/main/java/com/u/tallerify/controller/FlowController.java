@@ -1,11 +1,13 @@
 package com.u.tallerify.controller;
 
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import com.u.tallerify.R;
+import com.u.tallerify.utils.CurrentPlay;
 
 /**
  * Created by saguilera on 3/12/17.
@@ -27,6 +29,10 @@ public abstract class FlowController extends BaseController {
             }
         }
 
+        renderMediaPlayer();
+    }
+
+    public void renderMediaPlayer() {
         if (getActivity() != null) {
             View playerView = getActivity().findViewById(R.id.activity_main_player_view);
             if (playerView.getVisibility() != (hasPlayer() ? View.VISIBLE : View.GONE)) {
@@ -46,7 +52,7 @@ public abstract class FlowController extends BaseController {
     }
 
     protected boolean hasPlayer() {
-        return true;
+        return CurrentPlay.instance() != null;
     }
 
     protected @Nullable Toolbar getActionBar() {
