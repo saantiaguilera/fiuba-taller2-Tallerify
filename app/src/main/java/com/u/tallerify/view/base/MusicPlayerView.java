@@ -13,7 +13,10 @@ import android.widget.FrameLayout;
 import com.jakewharton.rxbinding.view.RxView;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.R;
+import com.u.tallerify.contract.base.MusicPlayerContract;
+import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.MetricsUtils;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -21,7 +24,8 @@ import rx.schedulers.Schedulers;
 /**
  * Created by saguilera on 3/13/17.
  */
-public class MusicPlayerView extends FrameLayout {
+public class MusicPlayerView extends FrameLayout
+        implements MusicPlayerContract.View {
 
     static int SCROLL_SWITCH_DELTA;
 
@@ -113,6 +117,44 @@ public class MusicPlayerView extends FrameLayout {
                     }
                 }
             });
+    }
+
+    @Override
+    public void setCurrentPlay(@NonNull final CurrentPlay currentPlay) {
+        compactView.setCurrentPlay(currentPlay);
+        expandView.setCurrentPlay(currentPlay);
+    }
+
+    @NonNull
+    @Override
+    public Observable<Void> observeNextSongClicks() {
+        return Observable.merge(compactView.observeNextSongClicks(),
+                expandView.observeNextSongClicks());
+    }
+
+    @NonNull
+    @Override
+    public Observable<Void> observePlayStateClicks() {
+        return Observable.merge(compactView.observePlayStateClicks(),
+                expandView.observePlayStateClicks());
+    }
+
+    @NonNull
+    @Override
+    public Observable<Void> observePreviousSongClicks() {
+        return expandView.observePreviousSongClicks();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Integer> observeVolumeSeeks() {
+        return expandView.observeVolumeSeeks();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Integer> observeSongSeeks() {
+        return expandView.observeSongSeeks();
     }
 
     private enum MODE {

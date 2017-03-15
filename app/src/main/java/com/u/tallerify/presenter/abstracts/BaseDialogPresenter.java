@@ -37,7 +37,7 @@ public class BaseDialogPresenter extends Presenter<BaseDialogContract.View> impl
         view.setCancellable(cancellable);
         view.setSeverityTitle(title);
 
-        view.observeOnCancelEvent()
+        view.observeCancelEvents()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.newThread())
             .compose(this.<Void>bindToLifecycle((View) view))

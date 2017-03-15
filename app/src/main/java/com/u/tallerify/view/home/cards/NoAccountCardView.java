@@ -39,7 +39,7 @@ public class NoAccountCardView extends CardView
     }
 
     @Override
-    public Observable<Void> observeOnCreateAccountClick() {
+    public Observable<Void> observeCreateAccountsClicks() {
         return RxView.clicks(this);
     }
 

@@ -44,13 +44,14 @@
 
             android:orientation="vertical">
 
-            <ProgressBar
+            <SeekBar
                 android:id="@+id/view_music_player_expanded_track_progress"
-                style="?android:attr/progressBarStyleHorizontal"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:layout_marginLeft="@dimen/view_music_player_expanded_separator_margin"
-                android:layout_marginRight="@dimen/view_music_player_expanded_separator_margin"/>
+                android:layout_marginRight="@dimen/view_music_player_expanded_separator_margin" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -116,9 +117,11 @@
 
                 <ImageView
                     android:id="@+id/view_music_player_expanded_previous_track"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="@dimen/view_music_player_expanded_button_height"
-                    android:adjustViewBounds="true"
+
+                    android:scaleType="fitCenter"
 
                     android:layout_marginRight="@dimen/view_music_player_expanded_separator_margin"
 
@@ -136,9 +139,11 @@
 
                 <ImageView
                     android:id="@+id/view_music_player_expanded_next_track"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="@dimen/view_music_player_expanded_button_height"
-                    android:adjustViewBounds="true"
+
+                    android:scaleType="fitCenter"
 
                     android:src="@drawable/ic_fast_forward_black_36dp"/>
 
@@ -161,9 +166,9 @@
 
                     android:src="@drawable/ic_volume_down_black_36dp"/>
 
-                <ProgressBar
+                <SeekBar
                     android:id="@+id/view_music_player_expanded_volume"
-                    style="?android:attr/progressBarStyleHorizontal"
+
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content" />
@@ -180,6 +185,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:layout_margin="@dimen/view_music_player_expanded_separator_margin"
 
                 android:orientation="horizontal" >
 

@@ -66,7 +66,7 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
 
     @NonNull
     @Override
-    public Observable<Void> observeOnTermsAndConditionsClick() {
+    public Observable<Void> observeTermsAndConditionsClicks() {
         if (termsAndConditionsListener == null) {
             termsAndConditionsListener = PublishSubject.create();
         }
@@ -76,13 +76,13 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
 
     @NonNull
     @Override
-    public Observable<Void> observeOnFacebookLoginClick() {
+    public Observable<Void> observeFacebookLoginClicks() {
         return RxView.clicks(facebookButton);
     }
 
     @NonNull
     @Override
-    public Observable<Void> observeOnGoogleLoginClick() {
+    public Observable<Void> observeGoogleLoginClicks() {
         return RxView.clicks(googleButton);
     }
 

@@ -75,7 +75,7 @@ public class BaseDialogView extends FrameLayout implements BaseDialogContract.Vi
 
     @NonNull
     @Override
-    public Observable<Void> observeOnCancelEvent() {
+    public Observable<Void> observeCancelEvents() {
         if (listener == null) {
             listener = PublishSubject.create();
         }
