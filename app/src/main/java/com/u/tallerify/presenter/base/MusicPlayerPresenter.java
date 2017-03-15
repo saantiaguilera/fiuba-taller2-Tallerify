@@ -2,8 +2,10 @@ package com.u.tallerify.presenter.base;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.ContentObserver;
 import android.media.AudioManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import com.u.tallerify.contract.base.MusicPlayerContract;
 import com.u.tallerify.model.entity.Song;
@@ -12,6 +14,8 @@ import com.u.tallerify.utils.CurrentPlay;
 import java.util.List;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+
+import static android.provider.Settings.System.CONTENT_URI;
 
 /**
  * Created by saguilera on 3/15/17.
@@ -26,12 +30,16 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     private static final String SHARED_PREFERENCES_RATING_KEY = "song_id";
     private static final String SHARED_PREFERENCES_FAVORITE_KEY = "song_id";
 
+    private @Nullable ContentObserver contentObserver;
+
     public MusicPlayerPresenter() {}
 
     @Override
     protected void onAttach(@NonNull final MusicPlayerContract.View view) {
+        // Render the view..
         render(view);
 
+        // Observe for changes in the current play, we want to always request a render pass whenever our model changes
         CurrentPlay.observeCurrentPlay()
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
@@ -43,9 +51,42 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 }
             });
 
-        // TODO observeUser and requestView();
+        // Register a content resolver for the music volume changes, whenever it changes, change the current play
+        getContext().getApplicationContext().getContentResolver()
+            .registerContentObserver(CONTENT_URI, true, contentObserver = new ContentObserver(null) {
 
+                @Override
+                public void onChange(final boolean selfChange) {
+                    super.onChange(selfChange);
+                    AudioManager audioManager = (AudioManager) getContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+
+                    if (CurrentPlay.instance() != null) {
+                        CurrentPlay.instance().newBuilder()
+                            .volume(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) * 100
+                                / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
+                            .build();
+                    }
+                }
+
+                @Override
+                public boolean deliverSelfNotifications() {
+                    return false;
+                }
+
+            });
+
+
+        // TODO observeUser and requestView();
+        // Start observing the view for user inputs :)
         observeView(view);
+    }
+
+    @Override
+    protected void onDetach(@NonNull final MusicPlayerContract.View view) {
+        super.onDetach(view);
+        if (contentObserver != null) {
+            getContext().getApplicationContext().getContentResolver().unregisterContentObserver(contentObserver);
+        }
     }
 
     @Override

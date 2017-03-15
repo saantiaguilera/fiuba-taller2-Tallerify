@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -18,7 +19,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.u.tallerify.R;
-import com.u.tallerify.model.entity.User;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.FrescoImageController;
 import com.u.tallerify.view.RxView;
@@ -191,7 +191,7 @@ public class MusicPlayerExpandedView extends ScrollView {
     }
 
     public void setArtistName(@NonNull String name) {
-        expandTrackName.setText(name);
+        expandTrackArtist.setText(name);
     }
 
     public void setSongName(@NonNull String name) {
@@ -218,7 +218,11 @@ public class MusicPlayerExpandedView extends ScrollView {
     }
 
     public void setVolume(int volume) {
-        expandVolumeBar.setProgress(volume);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            expandVolumeBar.setProgress(volume, true);
+        } else {
+            expandVolumeBar.setProgress(volume);
+        }
     }
 
     public void setShuffleEnabled(boolean enabled) {
@@ -263,60 +267,6 @@ public class MusicPlayerExpandedView extends ScrollView {
                     PorterDuff.Mode.SRC_IN) );
         } else {
             expandFavorite.setVisibility(View.GONE);
-        }
-    }
-
-    @SuppressLint("DefaultLocale")
-    public void setData(final @NonNull CurrentPlay currentPlay, final @Nullable User user) {
-        FrescoImageController.create()
-            .load(currentPlay.currentSong().album().picture().large())
-            .into(expandImage);
-
-        if (currentPlay.playState() == CurrentPlay.PlayState.PLAYING) {
-            expandPlayPause.setImageResource(R.drawable.ic_play_arrow_black_36dp);
-        } else {
-            expandPlayPause.setImageResource(R.drawable.ic_pause_black_36dp);
-        }
-
-        expandTrackArtist.setText(currentPlay.currentSong().album().artist().name());
-        expandTrackName.setText(currentPlay.currentSong().name());
-
-        expandTrackBar.setMax((int) currentPlay.currentSong().duration());
-        expandTrackBar.setProgress((int) currentPlay.currentTime());
-
-        expandTrackTime.setText(String.format("%02d", currentPlay.currentTime() / 60) +
-            ":" +
-            String.format("%02d", currentPlay.currentTime() % 60));
-        expandTrackTimeLeft.setText(
-            String.format("%02d", (currentPlay.currentSong().duration() - currentPlay.currentTime()) / 60) +
-            ":" +
-            String.format("%02d", (currentPlay.currentSong().duration() - currentPlay.currentTime()) % 60));
-
-        expandVolumeBar.setProgress(currentPlay.volume());
-
-        expandShuffle.getDrawable().setColorFilter(currentPlay.shuffle() ?
-            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
-                PorterDuff.Mode.SRC_IN) :
-            null);
-
-        switch (currentPlay.repeat()) {
-            case NONE:
-                expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
-                expandRepeat.getDrawable().setColorFilter(null);
-                break;
-            case SINGLE:
-                expandRepeat.setImageResource(R.drawable.ic_repeat_one_black_36dp);
-                tintDrawable(expandRepeat.getDrawable());
-                break;
-            case ALL:
-                expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
-                tintDrawable(expandRepeat.getDrawable());
-        }
-
-        if (user != null) {
-        } else {
-            expandFavorite.setVisibility(View.GONE);
-            expandRatingBar.setVisibility(View.GONE);
         }
     }
 
