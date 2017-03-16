@@ -1,13 +1,10 @@
 package com.u.tallerify.view.home.cards;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.Display;
-import android.view.WindowManager;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.u.tallerify.R;

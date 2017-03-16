@@ -12,7 +12,6 @@ import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.bluelinelabs.conductor.changehandler.TransitionChangeHandler;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)

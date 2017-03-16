@@ -2,12 +2,10 @@ package com.u.tallerify.view;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.AbsSeekBar;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
