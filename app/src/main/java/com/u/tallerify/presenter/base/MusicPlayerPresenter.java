@@ -218,7 +218,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
                             (int) (integer * audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 100.0),
-                            AudioManager.FLAG_SHOW_UI); // TODO Remove this flag later please
+                            AudioManager.FLAG_SHOW_UI);
 
                         CurrentPlay.instance().newBuilder()
                             .volume(integer)
@@ -234,7 +234,6 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 @Override
                 public void call(final Void integer) {
                     if (CurrentPlay.instance() != null) {
-                        // TODO Should it skip the repeat mode ?? Or should it handle it ? We will skip it
                         if (CurrentPlay.instance().playlist().isEmpty()) {
                             CurrentPlay.instance().newBuilder()
                                 .playState(CurrentPlay.PlayState.PAUSED)
@@ -269,7 +268,6 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 @Override
                 public void call(final Void integer) {
                     if (CurrentPlay.instance() != null) {
-                        // TODO Should it skip the repeat mode ?? Or should it handle it ? We will skip it
                         List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
                         Song nextSong = playlist.size() > 1 ?
                             playlist.get(playlist.size() - 1) :
