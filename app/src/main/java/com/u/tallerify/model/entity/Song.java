@@ -11,6 +11,7 @@ public class Song extends Entity {
     private @NonNull String url;
     private @NonNull String name;
     private @NonNull Album album;
+    private long duration;
 
     protected Song() {
         super();
@@ -26,6 +27,10 @@ public class Song extends Entity {
 
     public @NonNull Album album() {
         return album;
+    }
+
+    public long duration() {
+        return duration;
     }
 
     @Override
@@ -51,6 +56,9 @@ public class Song extends Entity {
         if (!album.equals(song.album)) {
             return false;
         }
+        if (duration != song.duration) {
+            return false;
+        }
         return true;
     }
 
@@ -60,6 +68,7 @@ public class Song extends Entity {
         result = 31 * result + url.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + album.hashCode();
+        result = 31 * result + Long.valueOf(duration).hashCode();
         return result;
     }
 

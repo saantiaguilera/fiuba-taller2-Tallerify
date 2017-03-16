@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/view_music_player_next_song_image"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:layout_margin="@dimen/view_music_player_compact_image_margin"
+
+        android:adjustViewBounds="true"
+
+        fresco:actualImageScaleType="fitXY"
+        fresco:placeholderImage="@drawable/placeholder_song"
+        fresco:placeholderImageScaleType="fitXY"
+        fresco:failureImage="@drawable/error_song"
+        fresco:failureImageScaleType="fitXY"
+        fresco:roundedCornerRadius="@dimen/view_card_song_radius"/>
+
+    <TextView
+        android:id="@+id/view_music_player_next_song_name"
+
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+
+        android:textSize="@dimen/view_music_player_expanded_up_next_text_size"
+        android:textColor="@color/black"
+
+        android:layout_marginLeft="@dimen/view_music_player_compact_image_margin"
+
+        android:gravity="center_vertical|left"
+
+        android:maxLines="1"
+
+        android:ellipsize="end"/>
+
+</merge>

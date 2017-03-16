@@ -12,7 +12,7 @@ public interface NoAccountCardContract {
 
     interface View extends ContractView {
 
-        Observable<Void> observeOnCreateAccountClick();
+        Observable<Void> observeCreateAccountsClicks();
 
     }
 

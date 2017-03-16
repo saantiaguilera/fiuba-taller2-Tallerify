@@ -19,4 +19,7 @@
     <!-- Dialogs -->
     <color name="dialog_shadow">#72000000</color>
 
+    <!-- Music player -->
+    <color name="view_music_player_expanded_rating_non_selected">#74ffffff</color>
+
 </resources>

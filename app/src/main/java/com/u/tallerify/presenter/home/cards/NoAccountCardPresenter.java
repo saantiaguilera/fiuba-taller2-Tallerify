@@ -16,7 +16,7 @@ public class NoAccountCardPresenter extends GenericAdapter.ItemPresenter<NoAccou
 
     @Override
     protected void onAttach(@NonNull final NoAccountCardContract.View view) {
-        view.observeOnCreateAccountClick()
+        view.observeCreateAccountsClicks()
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
             .compose(this.<Void>bindToLifecycle((View) view))

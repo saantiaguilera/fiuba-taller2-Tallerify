@@ -11,16 +11,6 @@
 
         android:src="@color/blue" />
     
-    <ImageView
-        android:id="@+id/view_dialog_login_google"
-
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dialog_logging_button_height"
-        
-        android:layout_marginBottom="@dimen/dialog_logging_margin"
-        
-        android:src="@color/red"/>
-    
     <TextView
         android:id="@+id/view_dialog_login_terms_and_conditions"
 

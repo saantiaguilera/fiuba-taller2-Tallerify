@@ -32,23 +32,23 @@ public class User extends Entity implements Serializable {
         picture = builder.picture;
     }
 
-    public Date birthday() {
+    public @NonNull Date birthday() {
         return birthday;
     }
 
-    public Picture picture() {
+    public @NonNull Picture picture() {
         return picture;
     }
 
-    public String email() {
+    public @NonNull String email() {
         return email;
     }
 
-    public Gender gender() {
+    public @NonNull Gender gender() {
         return gender;
     }
 
-    public String name() {
+    public @NonNull String name() {
         return name;
     }
 

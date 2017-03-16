@@ -21,7 +21,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
 
     @Override
     protected void onAttach(@NonNull final LoginContract.View view) {
-        view.observeOnFacebookLoginClick()
+        view.observeFacebookLoginClicks()
             .observeOn(Schedulers.newThread())
             .subscribeOn(AndroidSchedulers.mainThread())
             .compose(this.<Void>bindToLifecycle((View) view))
@@ -33,19 +33,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
                 }
             });
 
-        view.observeOnGoogleLoginClick()
-            .observeOn(Schedulers.newThread())
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void aVoid) {
-                    //TODO get access token from google.. and that stuff.
-                    notifyLogin(null);
-                }
-            });
-
-        view.observeOnTermsAndConditionsClick()
+        view.observeTermsAndConditionsClicks()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.newThread())
             .compose(this.<Void>bindToLifecycle((View) view))
