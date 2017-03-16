@@ -227,12 +227,14 @@ public class CurrentPlay {
 
     }
 
+    @Keep
     public enum RepeatMode {
         NONE,
         SINGLE,
         ALL
     }
 
+    @Keep
     public enum PlayState {
         PLAYING,
         PAUSED
