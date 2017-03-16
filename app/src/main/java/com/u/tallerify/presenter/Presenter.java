@@ -14,6 +14,7 @@ import com.squareup.coordinators.Coordinator;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.contract.ContractView;
+import com.u.tallerify.contract.base.MusicPlayerContract;
 import com.u.tallerify.controller.abstracts.BaseDialogController;
 import com.u.tallerify.utils.RouterInteractor;
 import java.lang.ref.WeakReference;

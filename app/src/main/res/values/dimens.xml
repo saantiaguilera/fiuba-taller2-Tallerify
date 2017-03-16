@@ -25,5 +25,6 @@
     <dimen name="view_music_player_expanded_up_next_text_size">18sp</dimen>
     <dimen name="view_music_player_expanded_up_next_buttons_height">24dp</dimen>
     <dimen name="view_music_player_expanded_fav_size">48dp</dimen>
+    <dimen name="view_music_player_next_song_height">56dp</dimen>
 
 </resources>

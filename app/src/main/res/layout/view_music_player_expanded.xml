@@ -124,7 +124,7 @@
 
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"/>
+                android:scrollHorizontally="true" />
 
             <TextView
                 android:id="@+id/view_music_player_expanded_track_artist"
@@ -134,6 +134,7 @@
 
                 android:textSize="@dimen/view_music_player_expanded_song_artist_size"
                 android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
 
                 android:maxLines="1"
 
@@ -258,7 +259,15 @@
 
             </LinearLayout>
 
-            <!-- Aca falta el queue de la playlist con max 20 temas o algun max -->
+            <LinearLayout
+                android:id="@+id/view_music_player_expanded_playlist"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:animateLayoutChanges="true"
+
+                android:orientation="vertical"/>
 
         </LinearLayout>
 

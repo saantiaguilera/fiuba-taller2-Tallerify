@@ -1,4 +1,4 @@
-package com.u.tallerify.view.base;
+package com.u.tallerify.view.base.music_player.internal;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,19 +13,31 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.R;
+import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.FrescoImageController;
 import com.u.tallerify.view.RxView;
+import java.util.List;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 
 /**
+ * Ideally instead of having this mega class, we should have components like:
+ * - VolumeView
+ * - PlayControlsView
+ * - etc.
+ *
+ * No time.
+ *
  * Created by saguilera on 3/14/17.
  */
 public class MusicPlayerExpandedView extends ScrollView {
@@ -44,6 +56,7 @@ public class MusicPlayerExpandedView extends ScrollView {
     private @NonNull ImageView expandShuffle;
     private @NonNull ImageView expandFavorite;
     private @NonNull RatingBar expandRatingBar;
+    private @NonNull LinearLayout expandPlaylistContainer;
 
     private @Nullable PublishSubject<Void> nextTrackSubject;
     private @Nullable PublishSubject<Void> previousTrackSubject;
@@ -54,6 +67,7 @@ public class MusicPlayerExpandedView extends ScrollView {
     private @Nullable PublishSubject<Integer> trackBarSubject;
     private @Nullable PublishSubject<Integer> rateBarSubject;
     private @Nullable PublishSubject<Void> favoriteSubject;
+    @Nullable PublishSubject<Integer> skipSongsSubject;
 
     public MusicPlayerExpandedView(final Context context) {
         this(context, null);
@@ -86,6 +100,7 @@ public class MusicPlayerExpandedView extends ScrollView {
         expandRepeat = (ImageView) findViewById(R.id.view_music_player_expanded_repeat);
         expandFavorite = (ImageView) findViewById(R.id.view_music_player_expanded_favorite);
         expandRatingBar = (RatingBar) findViewById(R.id.view_music_player_expanded_rating_bar);
+        expandPlaylistContainer = (LinearLayout) findViewById(R.id.view_music_player_expanded_playlist);
 
         tintDrawable(expandTrackBar.getProgressDrawable());
         tintDrawable(expandVolumeBar.getProgressDrawable());
@@ -111,6 +126,14 @@ public class MusicPlayerExpandedView extends ScrollView {
         }
 
         return nextTrackSubject;
+    }
+
+    public @NonNull Observable<Integer> observePlaylistSkipClicks() {
+        if (skipSongsSubject == null) {
+            skipSongsSubject = PublishSubject.create();
+        }
+
+        return skipSongsSubject;
     }
 
     public @NonNull Observable<Void> observeFavoriteClicks() {
@@ -176,6 +199,48 @@ public class MusicPlayerExpandedView extends ScrollView {
         return repeatSubject;
     }
 
+    private void attachLast(@NonNull String name, @NonNull String url) {
+        final MusicPlayerNextSong view = new MusicPlayerNextSong(getContext());
+        view.setTitle(name);
+        view.setImageUrl(url);
+        view.setTag(expandPlaylistContainer.getChildCount() + 1);
+
+        expandPlaylistContainer.addView(view);
+
+        com.jakewharton.rxbinding.view.RxView.clicks(view)
+            .compose(RxLifecycleAndroid.<Void>bindView(view))
+            .subscribe(new Action1<Void>() {
+                @Override
+                public void call(final Void aVoid) {
+                    if (skipSongsSubject != null) {
+                        skipSongsSubject.onNext((Integer) view.getTag());
+                    }
+                }
+            });
+    }
+
+    public void setQueue(@NonNull List<String> names, @NonNull List<String> urls) {
+        if (names.size() != urls.size()) throw new IllegalStateException("Names size != urls size");
+
+        if (expandPlaylistContainer.getChildCount() > names.size()) {
+            for (int i = expandPlaylistContainer.getChildCount() ; i > names.size() ; --i) {
+                int absPosition = i - 1;
+                expandPlaylistContainer.removeViewAt(absPosition);
+            }
+        }
+
+        for (int i = 0 ; i < names.size() ; ++i) {
+            if (expandPlaylistContainer.getChildCount() < i + 1) {
+                attachLast(names.get(i), urls.get(i));
+            } else {
+                MusicPlayerNextSong currentSong = (MusicPlayerNextSong) expandPlaylistContainer.getChildAt(i);
+
+                currentSong.setImageUrl(urls.get(i));
+                currentSong.setTitle(names.get(i));
+            }
+        }
+    }
+
     public void setImageUrl(@NonNull String url) {
         FrescoImageController.create()
             .load(url)
@@ -218,11 +283,7 @@ public class MusicPlayerExpandedView extends ScrollView {
     }
 
     public void setVolume(int volume) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            expandVolumeBar.setProgress(volume, true);
-        } else {
-            expandVolumeBar.setProgress(volume);
-        }
+        expandVolumeBar.setProgress(volume);
     }
 
     public void setShuffleEnabled(boolean enabled) {

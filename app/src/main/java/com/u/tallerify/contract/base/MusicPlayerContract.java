@@ -5,6 +5,7 @@ import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
 import com.u.tallerify.model.entity.Picture;
 import com.u.tallerify.utils.CurrentPlay;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -18,6 +19,7 @@ public interface MusicPlayerContract {
      */
     interface View extends ContractView {
 
+        void setQueue(@NonNull List<String> names, @NonNull List<String> urls);
         void setImage(@NonNull Picture picture);
         void setPlaying();
         void setPaused();
@@ -39,6 +41,7 @@ public interface MusicPlayerContract {
         @NonNull Observable<Void> observeRepeatClicks();
         @NonNull Observable<Integer> observeRatingSeeks();
         @NonNull Observable<Void> observeFavoriteClicks();
+        @NonNull Observable<Integer> observePlaylistSkipClicks();
 
     }
 

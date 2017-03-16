@@ -1,4 +1,4 @@
-package com.u.tallerify.view.base;
+package com.u.tallerify.view.base.music_player;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -17,10 +17,12 @@ import com.u.tallerify.contract.base.MusicPlayerContract;
 import com.u.tallerify.model.entity.Picture;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.MetricsUtils;
+import com.u.tallerify.view.base.music_player.internal.MusicPlayerCompactView;
+import com.u.tallerify.view.base.music_player.internal.MusicPlayerExpandedView;
+import java.util.List;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * Created by saguilera on 3/13/17.
@@ -151,6 +153,11 @@ public class MusicPlayerView extends FrameLayout
     }
 
     @Override
+    public void setQueue(@NonNull List<String> names, @NonNull List<String> urls) {
+        expandView.setQueue(names, urls);
+    }
+
+    @Override
     public void setImage(@NonNull final Picture picture) {
         compactView.setImageUrl(picture.thumb());
         expandView.setImageUrl(picture.large());
@@ -269,6 +276,12 @@ public class MusicPlayerView extends FrameLayout
     @Override
     public Observable<Void> observeFavoriteClicks() {
         return expandView.observeFavoriteClicks();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Integer> observePlaylistSkipClicks() {
+        return expandView.observePlaylistSkipClicks();
     }
 
     private enum MODE {

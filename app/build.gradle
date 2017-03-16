@@ -18,13 +18,12 @@ android {
         debug {
             minifyEnabled false
             shrinkResources false
-            testCoverageEnabled = true
+            debuggable true
         }
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            testCoverageEnabled = true
         }
     }
 

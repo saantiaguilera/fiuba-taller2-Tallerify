@@ -49,7 +49,10 @@ public class Artist extends Entity {
         if (!name.equals(artist.name)) {
             return false;
         }
-        return albums.equals(artist.albums);
+        if (albums != null && !albums.equals(artist.albums)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

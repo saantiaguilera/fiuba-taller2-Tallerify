@@ -11,7 +11,10 @@ import com.u.tallerify.contract.base.MusicPlayerContract;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.utils.CurrentPlay;
+import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -95,7 +98,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         render(view);
     }
 
-    private void render(@NonNull MusicPlayerContract.View view) {
+    private void render(@NonNull final MusicPlayerContract.View view) {
         if (CurrentPlay.instance() != null) {
             if (CurrentPlay.instance() != null) {
                 CurrentPlay currentPlay = CurrentPlay.instance();
@@ -115,6 +118,27 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                         view.setPaused();
                         break;
                 }
+
+                final List<String> names = new ArrayList<>();
+                final List<String> urls = new ArrayList<>();
+                Observable.from(CurrentPlay.instance().playlist())
+                    .take(currentPlay.playlist().size() > 10 ? 10 :
+                        currentPlay.playlist().size())
+                    .doOnNext(new Action1<Song>() {
+                        @Override
+                        public void call(final Song song) {
+                            names.add(song.name() + " - " + song.album().artist().name());
+                            urls.add(song.album().picture().thumb());
+                        }
+                    })
+                    .doOnCompleted(new Action0() {
+                        @Override
+                        public void call() {
+                            view.setQueue(names, urls);
+                        }
+                    })
+                    .toBlocking()
+                    .subscribe();
 
                 // TODO fill these ones when logged in ONLY. If not put enabled = false
                 SharedPreferences ratingPreferences = getContext().getSharedPreferences(SHARED_PREFERENCES_RATING_DIR, Context.MODE_PRIVATE);
@@ -203,7 +227,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 }
             });
 
-        view.observePreviousSongClicks()
+        view.observeNextSongClicks()
             .observeOn(Schedulers.io())
             .compose(this.<Void>bindToLifecycle((View) view))
             .subscribe(new Action1<Void>() {
@@ -211,13 +235,20 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 public void call(final Void integer) {
                     if (CurrentPlay.instance() != null) {
                         // TODO Should it skip the repeat mode ?? Or should it handle it ? We will skip it
-                        Song nextSong = CurrentPlay.instance().playlist().size() > 1 ?
-                            CurrentPlay.instance().playlist().get(1) :
-                            CurrentPlay.instance().playlist().get(0);
-                        List<Song> playlist = CurrentPlay.instance().playlist();
+                        if (CurrentPlay.instance().playlist().isEmpty()) {
+                            CurrentPlay.instance().newBuilder()
+                                .playState(CurrentPlay.PlayState.PAUSED)
+                                .build();
+                            return;
+                        }
+
+                        List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
+                        Song nextSong = playlist.size() > 1 ?
+                            playlist.get(1) :
+                            playlist.get(0);
 
                         if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
-                            CurrentPlay.instance().playlist().size() == 1) {
+                                playlist.size() == 1) {
                             playlist.add(playlist.get(0));
                         }
 
@@ -231,7 +262,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 }
             });
 
-        view.observeNextSongClicks()
+        view.observePreviousSongClicks()
             .observeOn(Schedulers.io())
             .compose(this.<Void>bindToLifecycle((View) view))
             .subscribe(new Action1<Void>() {
@@ -239,10 +270,10 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 public void call(final Void integer) {
                     if (CurrentPlay.instance() != null) {
                         // TODO Should it skip the repeat mode ?? Or should it handle it ? We will skip it
-                        Song nextSong = CurrentPlay.instance().playlist().size() > 1 ?
-                            CurrentPlay.instance().playlist().get(CurrentPlay.instance().playlist().size() - 1) :
-                            CurrentPlay.instance().playlist().get(0);
-                        List<Song> playlist = CurrentPlay.instance().playlist();
+                        List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
+                        Song nextSong = playlist.size() > 1 ?
+                            playlist.get(playlist.size() - 1) :
+                            playlist.get(0);
 
                         playlist.add(0, nextSong);
 
@@ -255,7 +286,6 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                     }
                 }
             });
-
 
         view.observePlayStateClicks()
             .observeOn(Schedulers.io())
@@ -297,6 +327,52 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                         SHARED_PREFERENCES_RATING_DIR, Context.MODE_PRIVATE);
                     sharedPreferences.edit().putInt(SHARED_PREFERENCES_RATING_KEY, integer).commit();
                     requestView();
+                }
+            });
+
+        view.observePlaylistSkipClicks()
+            .observeOn(Schedulers.io())
+            .compose(this.<Integer>bindToLifecycle((View) view))
+            .subscribe(new Action1<Integer>() {
+                @Override
+                public void call(final Integer integer) {
+                    if (CurrentPlay.instance() != null) {
+                        final List<Song> newList = new ArrayList<>();
+                        final List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
+
+                        Observable.range(0, playlist.size())
+                            .doOnNext(new Action1<Integer>() {
+                                @Override
+                                public void call(final Integer position) {
+                                    if (position >= integer - 1) {
+                                        newList.add(playlist.get(position));
+                                    }
+                                }
+                            }).doOnCompleted(new Action0() {
+                                @Override
+                                public void call() {
+                                    if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
+                                            newList.isEmpty()) {
+                                        for (int i = 0 ; i < integer - 1 ; ++i) {
+                                            newList.add(playlist.get(i));
+                                        }
+                                    }
+                                }
+                            }).toBlocking()
+                            .subscribe();
+
+                        Song nextSong = newList.get(0);
+                        newList.remove(0);
+
+                        if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL) {
+                            newList.add(nextSong);
+                        }
+
+                        CurrentPlay.instance().newBuilder()
+                            .currentSong(nextSong)
+                            .playlist(newList)
+                            .build();
+                    }
                 }
             });
     }

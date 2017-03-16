@@ -1,4 +1,4 @@
-package com.u.tallerify.view.base;
+package com.u.tallerify.view.base.music_player.internal;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.u.tallerify.R;
-import com.u.tallerify.model.entity.User;
-import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.FrescoImageController;
 import com.u.tallerify.view.RxView;
 import rx.Observable;

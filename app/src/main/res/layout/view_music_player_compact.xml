@@ -31,7 +31,7 @@
         android:textSize="@dimen/view_music_player_compact_song_title_size"
         android:textColor="@color/black"
 
-        android:gravity="center"
+        android:gravity="center_vertical|left"
 
         android:singleLine="true"
 
