@@ -17,7 +17,6 @@
     <dimen name="view_music_player_expanded_margin">24dp</dimen>
     <dimen name="view_music_player_compact_song_title_size">16sp</dimen>
     <dimen name="view_music_player_expanded_separator_margin">8dp</dimen>
-    <dimen name="view_music_player_expanded_image_padding">36dp</dimen>
     <dimen name="view_music_player_expanded_song_time_size">12sp</dimen>
     <dimen name="view_music_player_expanded_song_title_size">24sp</dimen>
     <dimen name="view_music_player_expanded_song_artist_size">16sp</dimen>
