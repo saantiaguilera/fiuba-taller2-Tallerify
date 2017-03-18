@@ -14,7 +14,7 @@ import com.u.tallerify.R;
 import com.u.tallerify.controller.abstracts.BaseDialogController;
 import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.ReactiveModel;
-import com.u.tallerify.networking.interactor.BaseInteractor;
+import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
@@ -85,7 +85,7 @@ public class LoginDialogController extends BaseDialogController {
                         getRouter().popCurrentController();
                     }
                 }
-            }, BaseInteractor.ACTION_ERROR);
+            }, Interactors.ACTION_ERROR);
     }
 
 }

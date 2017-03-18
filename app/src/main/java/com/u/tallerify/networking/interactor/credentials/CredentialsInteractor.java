@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
-import com.u.tallerify.networking.interactor.BaseInteractor;
+import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,7 +21,7 @@ import rx.subjects.BehaviorSubject;
  * Created by saguilera on 3/12/17.
  */
 @SuppressWarnings("unchecked")
-public final class CredentialsInteractor extends BaseInteractor {
+public final class CredentialsInteractor {
 
     public static final int ACTION_LOADING = 0;
 
@@ -42,8 +42,8 @@ public final class CredentialsInteractor extends BaseInteractor {
     }
 
     /**
-     * Create POST api. For error handling please subscribe using ACTION_NEXT and ACTION_ERROR.
-     * Else subscribe as default.
+     * Create POST api. For error handling please subscribe using {@link Interactors#ACTION_NEXT} and
+     * {@link Interactors#ACTION_ERROR}. Else subscribe as default.
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
@@ -74,8 +74,8 @@ public final class CredentialsInteractor extends BaseInteractor {
     }
 
     /**
-     * Refresh POST api. For error handling please subscribe using ACTION_NEXT and ACTION_ERROR.
-     * Else subscribe as default.
+     * Refresh POST api. For error handling please subscribe using {@link Interactors#ACTION_NEXT} and
+     * {@link Interactors#ACTION_ERROR}. Else subscribe as default.
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
