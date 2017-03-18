@@ -22,7 +22,6 @@ import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
 import com.u.tallerify.presenter.login.LoginDialogPresenter;
 import com.u.tallerify.utils.RouterInteractor;
 import com.u.tallerify.view.login.LoginDialogView;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
