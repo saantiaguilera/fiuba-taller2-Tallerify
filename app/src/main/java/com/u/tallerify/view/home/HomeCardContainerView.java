@@ -45,6 +45,15 @@ public class HomeCardContainerView extends RecyclerView implements HomeCardConta
     }
 
     @Override
+    protected boolean overScrollBy(final int deltaX, final int deltaY, final int scrollX, final int scrollY,
+        final int scrollRangeX, final int scrollRangeY,
+        final int maxOverScrollX, final int maxOverScrollY, final boolean isTouchEvent) {
+        return super
+            .overScrollBy(deltaX, deltaY, scrollX, scrollY, scrollRangeX, scrollRangeY, maxOverScrollX, maxOverScrollY,
+                isTouchEvent);
+    }
+
+    @Override
     public void setData(final @NonNull List<GenericAdapter.ItemSupplier> cards) {
         adapter.data(cards);
     }

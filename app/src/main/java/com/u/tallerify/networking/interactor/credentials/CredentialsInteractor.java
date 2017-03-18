@@ -20,7 +20,9 @@ import rx.subjects.BehaviorSubject;
  * Created by saguilera on 3/12/17.
  */
 @SuppressWarnings("unchecked")
-public class CredentialsInteractor {
+public final class CredentialsInteractor {
+
+    public static final int ACTION_LOADING = 0;
 
     private static final @NonNull CredentialsInteractor instance = new CredentialsInteractor();
 
@@ -41,13 +43,11 @@ public class CredentialsInteractor {
     public Observable<?> create(@NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
         return RestClient.with(context).create(CredentialsService.class)
             .create(body)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
                     tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
-                        .action(1) // TODO create loading action
+                        .action(ACTION_LOADING) // TODO create loading action
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {

@@ -15,11 +15,11 @@ public interface LoginContract {
 
         @NonNull Observable<Void> observeTermsAndConditionsClicks();
         @NonNull Observable<Void> observeFacebookLoginClicks();
+        void showError();
 
     }
 
     interface Presenter extends ContractPresenter {
-
     }
 
 }
