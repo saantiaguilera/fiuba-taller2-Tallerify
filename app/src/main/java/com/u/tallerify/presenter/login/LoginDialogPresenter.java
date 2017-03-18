@@ -6,7 +6,9 @@ import android.widget.Toast;
 import com.facebook.login.LoginResult;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.login.LoginContract;
+import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.ReactiveModel;
+import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
 import com.u.tallerify.presenter.Presenter;
 import java.util.Arrays;
@@ -21,6 +23,11 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
 
     @Override
     protected void onAttach(@NonNull final LoginContract.View view) {
+        observeView(view);
+        observeInteractors(view);
+    }
+
+    private void observeView(final LoginContract.View view) {
         view.observeFacebookLoginClicks()
             .observeOn(Schedulers.newThread())
             .subscribeOn(AndroidSchedulers.mainThread())
@@ -45,7 +52,9 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
                     Toast.makeText(getContext(), "terms and conditions", Toast.LENGTH_SHORT).show();
                 }
             });
+    }
 
+    private void observeInteractors(final LoginContract.View view) {
         FacebookInteractor.instance().observeFacebookLogins()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -54,10 +63,23 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
                 @Override
                 public void call(final ReactiveModel<LoginResult> reactiveModel) {
                     if (reactiveModel.error() != null ||
-                            reactiveModel.action() == FacebookInteractor.ACTION_DECLINED_PERMISSIONS) {
+                        reactiveModel.action() == FacebookInteractor.ACTION_DECLINED_PERMISSIONS) {
                         view.showError();
                     }
                     // If it was cancelled dont do anything
+                }
+            });
+
+        CredentialsInteractor.instance().observeToken()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle((View) view))
+            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+                @Override
+                public void call(final ReactiveModel<AccessToken> reactiveModel) {
+                    if (reactiveModel.error() != null) {
+                        view.showError();
+                    }
                 }
             });
     }

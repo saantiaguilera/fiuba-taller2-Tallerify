@@ -14,6 +14,7 @@ import com.u.tallerify.R;
 import com.u.tallerify.controller.abstracts.BaseDialogController;
 import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.ReactiveModel;
+import com.u.tallerify.networking.interactor.BaseInteractor;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
@@ -60,20 +61,6 @@ public class LoginDialogController extends BaseDialogController {
                     } // We only care about the ok result, bad results will probably be managed by some presenter for showing in the ui
                 }
             });
-
-        CredentialsInteractor.instance().observeToken()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
-                @Override
-                public void call(final ReactiveModel<AccessToken> accessTokenReactiveModel) {
-                    if (accessTokenReactiveModel.model() != null &&
-                            accessTokenReactiveModel.action() == ReactiveModel.NO_ACTION) {
-                        getRouter().popCurrentController();
-                    }
-                }
-            });
     }
 
     void nativeLogin(@NonNull LoginResult result) {
@@ -91,8 +78,15 @@ public class LoginDialogController extends BaseDialogController {
                     AccessToken.Provider.FACEBOOK))
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .compose(bindToLifecycle())
-            .subscribe();
+            .compose(this.<AccessToken>bindToLifecycle())
+            .subscribe(new Action1<AccessToken>() {
+                @Override
+                public void call(final AccessToken accessToken) {
+                    if (accessToken != null) {
+                        getRouter().popCurrentController();
+                    }
+                }
+            }, BaseInteractor.ACTION_ERROR);
     }
 
 }
