@@ -14,6 +14,7 @@ ext {
 
     robolectricVersion = '3.2.2'
     junitVersion = '4.12'
+    stethoVersion = '1.4.2'
 
     leakCanaryVersion = '1.5'
 
@@ -48,11 +49,13 @@ ext {
         core : "com.squareup.retrofit2:retrofit:$retrofitVersion",
         parser : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
         rx : "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion",
-        fresco : "com.facebook.fresco:imagepipeline-okhttp3:$frescoVersion"
+        fresco : "com.facebook.fresco:imagepipeline-okhttp3:$frescoVersion",
+        stetho : "com.facebook.stetho:stetho-okhttp3:$stethoVersion"
     ]
 
     test = [
         junit : "junit:junit:$junitVersion",
-        robolectric : "org.robolectric:robolectric:$robolectricVersion"
+        robolectric : "org.robolectric:robolectric:$robolectricVersion",
+        stetho : "com.facebook.stetho:stetho:$stethoVersion"
     ]
 }

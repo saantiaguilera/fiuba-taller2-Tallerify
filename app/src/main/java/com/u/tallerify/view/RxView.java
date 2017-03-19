@@ -6,6 +6,8 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle.android.RxLifecycleAndroid;
+import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
@@ -39,20 +41,8 @@ public final class RxView {
         return RxLifecycle.bindUntilEvent(subject, Event.DETACH);
     }
 
-    public static void dispatchClicks(final @NonNull View view, final @NonNull PublishSubject<Void> subject) {
-        com.jakewharton.rxbinding.view.RxView.clicks(view)
-            .observeOn(Schedulers.io())
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void aVoid) {
-                    if (subject != null) {
-                        subject.onNext(null);
-                    }
-                }
-            });
-    }
-
-    public static void dispatchSeeks(final @NonNull SeekBar view, final @NonNull PublishSubject<Integer> subject) {
+    public static @NonNull Observable<Integer> dispatchSeeks(final @NonNull SeekBar view) {
+        final PublishSubject<Integer> subject = PublishSubject.create();
         view.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(final SeekBar seekBar, final int progress, final boolean fromUser) {
@@ -67,9 +57,11 @@ public final class RxView {
             @Override
             public void onStopTrackingTouch(final SeekBar seekBar) {}
         });
+        return subject;
     }
 
-    public static void dispatchSeeks(final @NonNull RatingBar view, final @NonNull PublishSubject<Integer> subject) {
+    public static @NonNull Observable<Integer> dispatchSeeks(final @NonNull RatingBar view) {
+        final PublishSubject<Integer> subject = PublishSubject.create();
         view.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(final RatingBar ratingBar, final float rating, final boolean fromUser) {
@@ -78,6 +70,7 @@ public final class RxView {
                 }
             }
         });
+        return subject;
     }
 
     private enum Event {

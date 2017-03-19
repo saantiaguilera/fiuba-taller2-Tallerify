@@ -6,6 +6,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
+import com.u.tallerify.utils.StethoUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -158,6 +159,23 @@ public class RestClient {
             return this;
         }
 
+        private OkHttpClient buildHttpClient() {
+            OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .cache(new Cache(new File(context.get().getCacheDir(), CACHE_DIR), CACHE_MAX_SIZE))
+                .addInterceptor(RestClient.createCacheMaxAgeInterceptor())
+                .authenticator(RestClient.createAuthenticator(context.get(), auth))
+                .cookieJar(CookieJar.NO_COOKIES)
+                .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
+                .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
+                .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS);
+
+            if (StethoUtils.httpInterceptor() != null) {
+                builder.addNetworkInterceptor(StethoUtils.httpInterceptor());
+            }
+
+            return builder.build();
+        }
+
         /**
          * Create a default retrofit instance with all the features and improvements every request
          * should have.
@@ -176,15 +194,7 @@ public class RestClient {
                     .setDateFormat(DATE_FORMAT)
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                     .create()))
-                .client(new OkHttpClient.Builder()
-                    .cache(new Cache(new File(context.get().getCacheDir(), CACHE_DIR), CACHE_MAX_SIZE))
-                    .addInterceptor(RestClient.createCacheMaxAgeInterceptor())
-                    .authenticator(RestClient.createAuthenticator(context.get(), auth))
-                    .cookieJar(CookieJar.NO_COOKIES)
-                    .connectTimeout(TIMEOUT_CONNECT, TimeUnit.SECONDS)
-                    .writeTimeout(TIMEOUT_WRITE, TimeUnit.SECONDS)
-                    .readTimeout(TIMEOUT_READ, TimeUnit.SECONDS)
-                    .build())
+                .client(buildHttpClient())
                 .build()
                 .create(service);
         }

@@ -31,7 +31,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
         view.observeFacebookLoginClicks()
             .observeOn(Schedulers.newThread())
             .subscribeOn(AndroidSchedulers.mainThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {
@@ -43,7 +43,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
         view.observeTermsAndConditionsClicks()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.newThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {
@@ -58,7 +58,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
         FacebookInteractor.instance().observeFacebookLogins()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .compose(this.<ReactiveModel<LoginResult>>bindToLifecycle((View) view))
+            .compose(this.<ReactiveModel<LoginResult>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<LoginResult>>() {
                 @Override
                 public void call(final ReactiveModel<LoginResult> reactiveModel) {
@@ -73,7 +73,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
         CredentialsInteractor.instance().observeToken()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle((View) view))
+            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override
                 public void call(final ReactiveModel<AccessToken> reactiveModel) {
