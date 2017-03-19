@@ -55,6 +55,8 @@ dependencies {
     compile http.fresco
 
     debugCompile misc.leakCanary
+    debugCompile test.stetho
+    debugCompile http.stetho
 
     releaseCompile misc.leakCanaryStub
 
