@@ -24,7 +24,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
         view.observeFacebookLoginClicks()
             .observeOn(Schedulers.newThread())
             .subscribeOn(AndroidSchedulers.mainThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {
@@ -36,7 +36,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
         view.observeTermsAndConditionsClicks()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.newThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {

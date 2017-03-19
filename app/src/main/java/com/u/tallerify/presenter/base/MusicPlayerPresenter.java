@@ -46,7 +46,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         CurrentPlay.observeCurrentPlay()
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .compose(this.<CurrentPlay>bindToLifecycle((View) view))
+            .compose(this.<CurrentPlay>bindToView((View) view))
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {
@@ -153,7 +153,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     private void observeView(@NonNull MusicPlayerContract.View view) {
         view.observeSongSeeks()
             .observeOn(Schedulers.io())
-            .compose(this.<Integer>bindToLifecycle((View) view))
+            .compose(this.<Integer>bindToView((View) view))
             .subscribe(new Action1<Integer>() {
                 @Override
                 public void call(final Integer integer) {
@@ -167,7 +167,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         view.observeShuffleClicks()
             .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
@@ -181,7 +181,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         view.observeRepeatClicks()
             .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
@@ -208,7 +208,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         view.observeVolumeSeeks()
             .observeOn(Schedulers.io())
-            .compose(this.<Integer>bindToLifecycle((View) view))
+            .compose(this.<Integer>bindToView((View) view))
             .subscribe(new Action1<Integer>() {
                 @Override
                 public void call(final Integer integer) {
@@ -229,7 +229,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         view.observeNextSongClicks()
             .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
@@ -263,7 +263,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         view.observePreviousSongClicks()
             .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
@@ -287,7 +287,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         view.observePlayStateClicks()
             .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
@@ -303,7 +303,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         view.observeFavoriteClicks()
             .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {
@@ -317,7 +317,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         view.observeRatingSeeks()
             .observeOn(Schedulers.io())
-            .compose(this.<Integer>bindToLifecycle((View) view))
+            .compose(this.<Integer>bindToView((View) view))
             .subscribe(new Action1<Integer>() {
                 @Override
                 public void call(final Integer integer) {
@@ -330,7 +330,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         view.observePlaylistSkipClicks()
             .observeOn(Schedulers.io())
-            .compose(this.<Integer>bindToLifecycle((View) view))
+            .compose(this.<Integer>bindToView((View) view))
             .subscribe(new Action1<Integer>() {
                 @Override
                 public void call(final Integer integer) {

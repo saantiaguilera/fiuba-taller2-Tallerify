@@ -58,7 +58,13 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.ItemView
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
-        array.get(position).presenter().attach(holder.itemView);
+        if (holder.presenter != null) {
+            holder.presenter.detach(holder.itemView);
+        }
+
+        ItemPresenter presenter = array.get(position).presenter();
+        presenter.attach(holder.itemView);
+        holder.presenter = presenter;
     }
 
     @Override
@@ -77,6 +83,8 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.ItemView
      * View for a card
      */
     static class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        @Nullable ItemPresenter presenter;
 
         public ItemViewHolder(@NonNull final View itemView) {
             super(itemView);

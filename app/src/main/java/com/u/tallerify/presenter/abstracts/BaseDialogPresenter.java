@@ -40,7 +40,7 @@ public class BaseDialogPresenter extends Presenter<BaseDialogContract.View> impl
         view.observeCancelEvents()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.newThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {
