@@ -18,11 +18,11 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.jakewharton.rxbinding.view.RxView;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.R;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.FrescoImageController;
-import com.u.tallerify.view.RxView;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Action1;
@@ -56,15 +56,6 @@ public class MusicPlayerExpandedView extends ScrollView {
     private @NonNull RatingBar expandRatingBar;
     private @NonNull LinearLayout expandPlaylistContainer;
 
-    private @Nullable PublishSubject<Void> nextTrackSubject;
-    private @Nullable PublishSubject<Void> previousTrackSubject;
-    private @Nullable PublishSubject<Void> playStatusTrackSubject;
-    private @Nullable PublishSubject<Void> repeatSubject;
-    private @Nullable PublishSubject<Void> shuffleSubject;
-    private @Nullable PublishSubject<Integer> volumeSubject;
-    private @Nullable PublishSubject<Integer> trackBarSubject;
-    private @Nullable PublishSubject<Integer> rateBarSubject;
-    private @Nullable PublishSubject<Void> favoriteSubject;
     @Nullable PublishSubject<Integer> skipSongsSubject;
 
     public MusicPlayerExpandedView(final Context context) {
@@ -109,21 +100,11 @@ public class MusicPlayerExpandedView extends ScrollView {
     }
 
     public @NonNull Observable<Void> observePlayStateClicks() {
-        if (playStatusTrackSubject == null) {
-            playStatusTrackSubject = PublishSubject.create();
-            RxView.dispatchClicks(expandPlayPause, playStatusTrackSubject);
-        }
-
-        return playStatusTrackSubject;
+        return RxView.clicks(expandPlayPause);
     }
 
     public @NonNull Observable<Void> observeNextSongClicks() {
-        if (nextTrackSubject == null) {
-            nextTrackSubject = PublishSubject.create();
-            RxView.dispatchClicks(expandNextTrack, nextTrackSubject);
-        }
-
-        return nextTrackSubject;
+        return RxView.clicks(expandNextTrack);
     }
 
     public @NonNull Observable<Integer> observePlaylistSkipClicks() {
@@ -135,66 +116,31 @@ public class MusicPlayerExpandedView extends ScrollView {
     }
 
     public @NonNull Observable<Void> observeFavoriteClicks() {
-        if (favoriteSubject == null) {
-            favoriteSubject = PublishSubject.create();
-            RxView.dispatchClicks(expandFavorite, favoriteSubject);
-        }
-
-        return favoriteSubject;
+        return RxView.clicks(expandFavorite);
     }
 
     public @NonNull Observable<Integer> observeRatingSeeks() {
-        if (rateBarSubject == null) {
-            rateBarSubject = PublishSubject.create();
-            RxView.dispatchSeeks(expandRatingBar, rateBarSubject);
-        }
-
-        return rateBarSubject;
+        return com.u.tallerify.view.RxView.dispatchSeeks(expandRatingBar);
     }
 
     public @NonNull Observable<Void> observePreviousSongClicks() {
-        if (previousTrackSubject == null) {
-            previousTrackSubject = PublishSubject.create();
-            RxView.dispatchClicks(expandPreviousTrack, previousTrackSubject);
-        }
-
-        return previousTrackSubject;
+        return RxView.clicks(expandPreviousTrack);
     }
 
     public @NonNull Observable<Integer> observeVolumeSeeks() {
-        if (volumeSubject == null) {
-            volumeSubject = PublishSubject.create();
-            RxView.dispatchSeeks(expandVolumeBar, volumeSubject);
-        }
-
-        return volumeSubject;
+        return com.u.tallerify.view.RxView.dispatchSeeks(expandVolumeBar);
     }
 
     public @NonNull Observable<Integer> observeSongSeeks() {
-        if (trackBarSubject == null) {
-            trackBarSubject = PublishSubject.create();
-            RxView.dispatchSeeks(expandTrackBar, trackBarSubject);
-        }
-
-        return trackBarSubject;
+        return com.u.tallerify.view.RxView.dispatchSeeks(expandTrackBar);
     }
 
     public @NonNull Observable<Void> observeShuffleClicks() {
-        if (shuffleSubject == null) {
-            shuffleSubject = PublishSubject.create();
-            RxView.dispatchClicks(expandShuffle, shuffleSubject);
-        }
-
-        return shuffleSubject;
+        return RxView.clicks(expandShuffle);
     }
 
     public @NonNull Observable<Void> observeRepeatClicks() {
-        if (repeatSubject == null) {
-            repeatSubject = PublishSubject.create();
-            RxView.dispatchClicks(expandRepeat, repeatSubject);
-        }
-
-        return repeatSubject;
+        return RxView.clicks(expandRepeat);
     }
 
     private void attachLast(@NonNull String name, @NonNull String url) {
@@ -202,19 +148,16 @@ public class MusicPlayerExpandedView extends ScrollView {
         view.setTitle(name);
         view.setImageUrl(url);
         view.setTag(expandPlaylistContainer.getChildCount() + 1);
+        view.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (skipSongsSubject != null) {
+                    skipSongsSubject.onNext((Integer) view.getTag());
+                }
+            }
+        });
 
         expandPlaylistContainer.addView(view);
-
-        com.jakewharton.rxbinding.view.RxView.clicks(view)
-            .compose(RxLifecycleAndroid.<Void>bindView(view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void aVoid) {
-                    if (skipSongsSubject != null) {
-                        skipSongsSubject.onNext((Integer) view.getTag());
-                    }
-                }
-            });
     }
 
     public void setQueue(@NonNull List<String> names, @NonNull List<String> urls) {
