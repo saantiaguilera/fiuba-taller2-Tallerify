@@ -46,7 +46,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         CurrentPlay.observeCurrentPlay()
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .compose(this.<CurrentPlay>bindToView((View) view))
+            .compose(this.<CurrentPlay>bindToLifecycle())
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {

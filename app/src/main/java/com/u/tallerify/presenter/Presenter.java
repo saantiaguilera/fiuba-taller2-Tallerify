@@ -69,7 +69,8 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
     }
 
     /**
-     * Useful when using views that are reusable and dont detach (eg in a recyclerview).
+     * Useful when using views that are reusable and dont detach (eg in a recyclerview)
+     * Or for binding stuff that are agnostic to the view (eg an interactor)
      */
     @NonNull
     @CheckResult
