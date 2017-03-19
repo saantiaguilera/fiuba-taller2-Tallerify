@@ -40,6 +40,7 @@ dependencies {
 
     compile misc.gif
     compile misc.fresco
+    compile misc.facebook
 
     compile rx.java
     compile rx.android

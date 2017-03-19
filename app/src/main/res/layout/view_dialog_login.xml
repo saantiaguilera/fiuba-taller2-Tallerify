@@ -5,11 +5,30 @@
         android:id="@+id/view_dialog_login_facebook"
 
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dialog_logging_button_height"
+        android:layout_height="@dimen/view_dialog_login_button_height"
+
+        android:layout_marginBottom="@dimen/dialog_padding"
+        android:padding="@dimen/view_dialog_login_padding"
+
+        android:scaleType="centerCrop"
+
+        android:src="@drawable/ic_facebook" />
+
+    <TextView
+        android:id="@+id/view_dialog_login_error"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+
+        android:visibility="gone"
 
         android:layout_marginBottom="@dimen/dialog_padding"
 
-        android:src="@color/blue" />
+        android:textColor="@color/red"
+        android:textSize="@dimen/view_dialog_login_error_text_size"
+        android:text="@string/view_dialog_login_error_text"/>
     
     <TextView
         android:id="@+id/view_dialog_login_terms_and_conditions"
@@ -19,10 +38,10 @@
 
         android:gravity="center"
 
-        android:paddingLeft="@dimen/dialog_logging_text_padding"
-        android:paddingRight="@dimen/dialog_logging_text_padding"
+        android:paddingLeft="@dimen/view_dialog_login_text_padding"
+        android:paddingRight="@dimen/view_dialog_login_text_padding"
 
         android:textColor="@color/black"
-        android:textSize="@dimen/dialog_logging_text_size"/>
+        android:textSize="@dimen/view_dialog_login_text_size"/>
     
 </merge>

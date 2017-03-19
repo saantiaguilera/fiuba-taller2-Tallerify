@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Login dialog -->
-    <string name="register_terms_and_conditions">Al registrarte aceptas todos los términos y condiciones de Tallerify. [Ver terminos y condiciones]</string>
-    <string name="login_dialog_title">Para continuar,\nnecesitas estar logeado</string>
-    <dimen name="dialog_logging_button_height">48dp</dimen>
-    <dimen name="dialog_logging_text_size">13sp</dimen>
-    <dimen name="dialog_logging_text_padding">4dp</dimen>
+    <string name="view_dialog_login_register_terms_and_conditions">Al registrarte aceptas todos los términos y condiciones de Tallerify. [Ver terminos y condiciones]</string>
+    <string name="view_dialog_login_title">Para continuar,\nnecesitas estar logeado</string>
+    <dimen name="view_dialog_login_button_height">48dp</dimen>
+    <dimen name="view_dialog_login_text_size">13sp</dimen>
+    <dimen name="view_dialog_login_text_padding">4dp</dimen>
+    <dimen name="view_dialog_login_error_text_size">11dp</dimen>
+    <string name="view_dialog_login_error_text">Ups! Parece que hubo un error, \nintenta nuevamente por favor.</string>
+    <integer name="view_dialog_login_error_animation_duration">1000</integer>
+    <integer name="view_dialog_login_error_visibility_duration">3000</integer>
+    <dimen name="view_dialog_login_padding">12dp</dimen>
 
 </resources>

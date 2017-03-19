@@ -18,6 +18,8 @@ ext {
 
     leakCanaryVersion = '1.5'
 
+    facebookVersion = '[4,5)'
+
     support = [
         design : "com.android.support:design:$supportVersion",
         cardView : "com.android.support:cardview-v7:$supportVersion"
@@ -27,7 +29,8 @@ ext {
         gif : "com.facebook.fresco:animated-gif:$frescoVersion",
         fresco : "com.facebook.fresco:fresco:$frescoVersion",
         leakCanary : "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
-        leakCanaryStub : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+        leakCanaryStub : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion",
+        facebook : "com.facebook.android:facebook-android-sdk:$facebookVersion"
     ]
 
     rx = [
