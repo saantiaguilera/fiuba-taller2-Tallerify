@@ -1,5 +1,6 @@
 package com.u.tallerify.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +14,10 @@ import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.splash.SplashController;
+import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
 import com.u.tallerify.presenter.base.MusicPlayerPresenter;
 import com.u.tallerify.utils.CurrentPlay;
+import com.u.tallerify.utils.RequestCodes;
 import com.u.tallerify.utils.RouterInteractor;
 import java.util.List;
 import rx.android.schedulers.AndroidSchedulers;
@@ -74,6 +77,20 @@ public class MainActivity extends AppCompatActivity {
         // Starting flow
         if (!RouterInteractor.instance().mainRouter().hasRootController()) {
             RouterInteractor.instance().mainRouter().setRoot(RouterTransaction.with(new SplashController()));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        RequestCodes code = RequestCodes.valueOf(requestCode);
+
+        if (code != null) {
+            switch (code) {
+                case FACEBOOK_LOGIN:
+                    FacebookInteractor.instance().postFacebookResults(requestCode, resultCode, data);
+            }
         }
     }
 

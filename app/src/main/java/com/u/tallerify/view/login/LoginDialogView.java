@@ -1,5 +1,6 @@
 package com.u.tallerify.view.login;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -23,8 +24,12 @@ import rx.subjects.PublishSubject;
  */
 public class LoginDialogView extends LinearLayout implements LoginContract.View {
 
+    public static final float ALPHA_START = 1f;
+    public static final float ALPHA_END = 0f;
+
     private @NonNull TextView readTCView;
     private @NonNull ImageView facebookButton;
+    @NonNull TextView errorView;
 
     @Nullable PublishSubject<Void> termsAndConditionsListener;
 
@@ -38,10 +43,11 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
 
         readTCView = (TextView) findViewById(R.id.view_dialog_login_terms_and_conditions);
         facebookButton = (ImageView) findViewById(R.id.view_dialog_login_facebook);
+        errorView = (TextView) findViewById(R.id.view_dialog_login_error);
 
         readTCView.setMovementMethod(LinkMovementMethod.getInstance());
         readTCView.setHighlightColor(Color.TRANSPARENT);
-        readTCView.setText(TextUtils.createClickableSpan(getResources().getString(R.string.register_terms_and_conditions),
+        readTCView.setText(TextUtils.createClickableSpan(getResources().getString(R.string.view_dialog_login_register_terms_and_conditions),
             new TextUtils.BaseClickableSpan(getContext()) {
                 @Override
                 public void onClick(final View widget) {
@@ -76,6 +82,31 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
     @Override
     public Observable<Void> observeFacebookLoginClicks() {
         return RxView.clicks(facebookButton);
+    }
+
+    @Override
+    public void showError() {
+        errorView.setVisibility(View.VISIBLE);
+        errorView.animate()
+            .alpha(ALPHA_END)
+            .setDuration(getResources().getInteger(R.integer.view_dialog_login_error_animation_duration))
+            .setStartDelay(getResources().getInteger(R.integer.view_dialog_login_error_visibility_duration))
+            .setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(final Animator animation) {}
+
+                @Override
+                public void onAnimationEnd(final Animator animation) {
+                    errorView.setVisibility(View.GONE);
+                    errorView.setAlpha(ALPHA_START);
+                }
+
+                @Override
+                public void onAnimationCancel(final Animator animation) {}
+
+                @Override
+                public void onAnimationRepeat(final Animator animation) {}
+            }).start();
     }
 
 }
