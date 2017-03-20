@@ -4,8 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
+import com.u.tallerify.BuildConfig;
 import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
+import com.u.tallerify.utils.MockInterceptor;
 import com.u.tallerify.utils.StethoUtils;
 import java.io.File;
 import java.io.IOException;
@@ -171,6 +173,10 @@ public class RestClient {
 
             if (StethoUtils.httpInterceptor() != null) {
                 builder.addNetworkInterceptor(StethoUtils.httpInterceptor());
+            }
+
+            if (BuildConfig.DEBUG) {
+                builder.addInterceptor(new MockInterceptor());
             }
 
             return builder.build();

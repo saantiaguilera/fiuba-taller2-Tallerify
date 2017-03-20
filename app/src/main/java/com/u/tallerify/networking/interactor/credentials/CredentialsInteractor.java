@@ -54,7 +54,7 @@ public final class CredentialsInteractor {
                 @Override
                 public void call() {
                     tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
-                        .action(ACTION_LOADING) // TODO create loading action
+                        .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
