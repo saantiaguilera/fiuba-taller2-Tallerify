@@ -39,7 +39,7 @@ public class AccessTokenManager {
      * @return singleton instance of the class
      */
     @NonNull
-    public static AccessTokenManager getInstance() {
+    public static AccessTokenManager instance() {
         return instance;
     }
 

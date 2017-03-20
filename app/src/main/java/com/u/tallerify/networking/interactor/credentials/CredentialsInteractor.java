@@ -3,6 +3,7 @@ package com.u.tallerify.networking.interactor.credentials;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import com.u.tallerify.model.AccessToken;
+import com.u.tallerify.networking.AccessTokenManager;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.networking.interactor.Interactors;
@@ -47,7 +48,7 @@ public final class CredentialsInteractor {
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
-    public Observable<AccessToken> create(@NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
+    public Observable<AccessToken> create(final @NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
         return RestClient.with(context).create(CredentialsService.class)
             .create(body)
             .doOnSubscribe(new Action0() {
@@ -67,6 +68,7 @@ public final class CredentialsInteractor {
             }).doOnNext(new Action1<AccessToken>() {
                 @Override
                 public void call(final AccessToken accessToken) {
+                    AccessTokenManager.instance().write(context, accessToken);
                     tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .model(accessToken)
                         .build());
@@ -79,7 +81,7 @@ public final class CredentialsInteractor {
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
-    public Observable<AccessToken> refresh(@NonNull Context context, @NonNull CredentialsService.RefreshCredentialForm body) {
+    public Observable<AccessToken> refresh(final @NonNull Context context, @NonNull CredentialsService.RefreshCredentialForm body) {
         return RestClient.with(context).create(CredentialsService.class)
             .refresh(body)
             .observeOn(AndroidSchedulers.mainThread())
@@ -101,6 +103,7 @@ public final class CredentialsInteractor {
             }).doOnNext(new Action1<AccessToken>() {
                 @Override
                 public void call(final AccessToken accessToken) {
+                    AccessTokenManager.instance().write(context, accessToken);
                     tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .model(accessToken)
                         .build());

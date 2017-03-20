@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.home.cards.TrendingSongsCardContract;
+import com.u.tallerify.contract.home.cards.HorizontalCardContract;
 import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.view.home.recyclerview.TrendingSongsItemDecorator;
 import java.util.List;
@@ -17,20 +17,20 @@ import java.util.List;
  * Created by saguilera on 3/12/17.
  */
 
-public class TrendingSongsCardView extends RecyclerView
-        implements TrendingSongsCardContract.View {
+public class HorizontalCardView extends RecyclerView
+        implements HorizontalCardContract.View {
 
     private GenericAdapter adapter;
 
-    public TrendingSongsCardView(final Context context) {
+    public HorizontalCardView(final Context context) {
         this(context, null);
     }
 
-    public TrendingSongsCardView(final Context context, final AttributeSet attrs) {
+    public HorizontalCardView(final Context context, final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TrendingSongsCardView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public HorizontalCardView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,

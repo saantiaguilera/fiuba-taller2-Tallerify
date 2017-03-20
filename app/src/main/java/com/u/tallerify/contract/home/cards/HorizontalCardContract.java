@@ -1,4 +1,4 @@
-package com.u.tallerify.contract.home;
+package com.u.tallerify.contract.home.cards;
 
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.ContractPresenter;
@@ -9,8 +9,7 @@ import java.util.List;
 /**
  * Created by saguilera on 3/12/17.
  */
-
-public interface HomeCardContainerContract {
+public interface HorizontalCardContract {
 
     interface View extends ContractView {
 

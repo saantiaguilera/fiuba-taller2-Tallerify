@@ -13,7 +13,7 @@ import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
-import com.u.tallerify.presenter.home.HomeCardContainerPresenter;
+import com.u.tallerify.presenter.home.HomePresenter;
 
 /**
  * Created by saguilera on 3/12/17.
@@ -34,7 +34,7 @@ public class HomeController extends FlowController {
             @Nullable
             @Override
             public Coordinator provideCoordinator(final View view) {
-                return new HomeCardContainerPresenter();
+                return new HomePresenter();
             }
         });
     }

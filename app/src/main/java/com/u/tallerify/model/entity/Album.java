@@ -1,13 +1,18 @@
 package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
+import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/12/17.
  */
 @SuppressWarnings("unused")
-public class Album extends Entity {
+public class Album extends Entity implements Playable {
 
     private @NonNull Picture picture;
     private @NonNull String name;
@@ -18,8 +23,31 @@ public class Album extends Entity {
         super();
     }
 
+    @NonNull
+    @Override
+    public List<String> urls() {
+        return Observable.from(songs)
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .map(new Func1<Song, String>() {
+                @Override
+                public String call(final Song song) {
+                    return song.url();
+                }
+            }).toList()
+            .observeOn(AndroidSchedulers.mainThread())
+            .toBlocking()
+            .first();
+    }
+
     public @NonNull Picture picture() {
         return picture;
+    }
+
+    @NonNull
+    @Override
+    public String fullName() {
+        return name();
     }
 
     public @NonNull String name() {

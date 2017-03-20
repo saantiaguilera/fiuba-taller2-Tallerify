@@ -4,12 +4,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import java.io.Serializable;
 import java.util.List;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/14/17.
  */
 
-public class Playlist extends Entity implements Serializable {
+public class Playlist extends Entity implements Serializable, Playable {
 
     private @NonNull String name;
     private @NonNull List<Song> songs;
@@ -68,6 +72,34 @@ public class Playlist extends Entity implements Serializable {
         result = 31 * result + songs.hashCode();
         result = 31 * result + creator.hashCode();
         return result;
+    }
+
+    @Nullable
+    @Override
+    public List<String> urls() {
+        return Observable.from(songs)
+            .observeOn(Schedulers.io())
+            .map(new Func1<Song, String>() {
+                @Override
+                public String call(final Song song) {
+                    return song.url();
+                }
+            }).toList()
+            .observeOn(AndroidSchedulers.mainThread())
+            .toBlocking()
+            .first();
+    }
+
+    @Nullable
+    @Override
+    public Picture picture() {
+        return songs().isEmpty() ? null : songs().get(0).picture(); // TODO aca hacemos un collage con 4 distintos tipo spotify (?)
+    }
+
+    @NonNull
+    @Override
+    public String fullName() {
+        return name();
     }
 
     public static class Builder extends Entity.Builder<Playlist> {

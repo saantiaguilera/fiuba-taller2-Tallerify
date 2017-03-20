@@ -21,7 +21,7 @@
     <dimen name="view_card_no_account_title_text_size">18sp</dimen>
     <dimen name="view_card_no_account_description_text_size">14sp</dimen>
     <dimen name="view_card_no_account_title_margin_bottom">12dp</dimen>
-    <string name="view_card_no_account_title_text">Queres #insertar algo copado#?</string>
+    <string name="view_card_no_account_title_text">Queres manejar un Rolls Royce?</string>
     <string name="view_card_no_account_description_text">Haz click aqui y no esperes mas!</string>
 
 </resources>

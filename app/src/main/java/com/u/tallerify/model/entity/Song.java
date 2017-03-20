@@ -1,12 +1,14 @@
 package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by saguilera on 3/12/17.
  */
 @SuppressWarnings("unused")
-public class Song extends Entity {
+public class Song extends Entity implements Playable {
 
     private @NonNull String url;
     private @NonNull String name;
@@ -70,6 +72,24 @@ public class Song extends Entity {
         result = 31 * result + album.hashCode();
         result = 31 * result + Long.valueOf(duration).hashCode();
         return result;
+    }
+
+    @NonNull
+    @Override
+    public List<String> urls() {
+        return Collections.singletonList(url);
+    }
+
+    @NonNull
+    @Override
+    public Picture picture() {
+        return album.picture();
+    }
+
+    @NonNull
+    @Override
+    public String fullName() {
+        return name() + " - " + album().artist().name();
     }
 
 }
