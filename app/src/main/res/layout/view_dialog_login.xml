@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_dialog_login_button_height"
 
-        android:layout_marginBottom="@dimen/dialog_padding"
+        android:layout_marginBottom="@dimen/dialog_default_separator"
         android:padding="@dimen/view_dialog_login_padding"
 
         android:scaleType="centerCrop"
@@ -24,7 +24,7 @@
 
         android:visibility="gone"
 
-        android:layout_marginBottom="@dimen/dialog_padding"
+        android:layout_marginBottom="@dimen/dialog_default_separator"
 
         android:textColor="@color/red"
         android:textSize="@dimen/view_dialog_login_error_text_size"
@@ -40,6 +40,8 @@
 
         android:paddingLeft="@dimen/view_dialog_login_text_padding"
         android:paddingRight="@dimen/view_dialog_login_text_padding"
+
+        android:layout_marginTop="@dimen/dialog_default_separator"
 
         android:textColor="@color/black"
         android:textSize="@dimen/view_dialog_login_text_size"/>

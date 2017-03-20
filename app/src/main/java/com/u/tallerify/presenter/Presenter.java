@@ -7,19 +7,16 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
-import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
-import com.bluelinelabs.conductor.rxlifecycle.ControllerEvent;
-import com.bluelinelabs.conductor.rxlifecycle.RxControllerLifecycle;
 import com.squareup.coordinators.Coordinator;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.OutsideLifecycleException;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.contract.ContractView;
-import com.u.tallerify.controller.abstracts.BaseDialogController;
+import com.u.tallerify.controller.abstracts.AlertDialogController;
 import com.u.tallerify.utils.RouterInteractor;
 import java.lang.ref.WeakReference;
 import rx.functions.Func1;
@@ -50,13 +47,15 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
         return RouterInteractor.instance().auxRouter();
     }
 
-    @SuppressWarnings("ConstantConditions")
-    protected void showDialog(@NonNull BaseDialogController controller) {
-        RouterInteractor.instance().auxRouter()
-            .setPopsLastView(true)
-            .setRoot(RouterTransaction.with(controller)
-                .popChangeHandler(new FadeChangeHandler())
-                .pushChangeHandler(new FadeChangeHandler()));
+    /**
+     * Display the dialog, create a transaction and pushing the controller.
+     * @param tag The tag for this controller
+     */
+    public void showDialog(@NonNull AlertDialogController controller, @Nullable String tag) {
+        getAuxiliaryRouter().pushController(RouterTransaction.with(controller)
+            .pushChangeHandler(new FadeChangeHandler(false))
+            .popChangeHandler(new FadeChangeHandler())
+            .tag(tag));
     }
 
     /**

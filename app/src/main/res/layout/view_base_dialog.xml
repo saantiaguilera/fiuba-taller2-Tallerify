@@ -1,61 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/view_dialog_inner_container"
+    <ImageView
+        android:id="@+id/view_dialog_severity_image"
 
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/dialog_severity_image_layout_size"
+        android:layout_height="@dimen/dialog_severity_image_layout_size"
+
+        android:layout_marginTop="@dimen/dialog_default_separator"
+        android:layout_marginBottom="@dimen/dialog_default_separator"/>
+
+    <TextView
+        android:id="@+id/view_dialog_severity_title"
+
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_gravity="center"
+        android:gravity="center_horizontal"
 
-        app:cardElevation="@dimen/dialog_elevation"
-        app:cardCornerRadius="@dimen/dialog_radius"
-        app:cardBackgroundColor="@color/colorAccent"
-        app:contentPadding="@dimen/dialog_padding">
+        android:textSize="@dimen/dialog_title_size"
+        android:textColor="@color/black"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dialog_default_separator" />
 
-            android:orientation="vertical"
+    <FrameLayout
+        android:id="@+id/view_dialog_content"
 
-            android:gravity="center_horizontal">
+        android:layout_marginTop="@dimen/dialog_default_separator"
+        android:layout_marginBottom="@dimen/dialog_default_separator"
 
-            <ImageView
-                android:id="@+id/view_dialog_severity_image"
-
-                android:layout_width="@dimen/dialog_severity_image_layout_size"
-                android:layout_height="@dimen/dialog_severity_image_layout_size"
-
-                android:layout_marginTop="@dimen/dialog_padding"
-                android:layout_marginBottom="@dimen/dialog_padding"/>
-
-            <TextView
-                android:id="@+id/view_dialog_severity_title"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:gravity="center_horizontal"
-
-                android:textSize="@dimen/dialog_title_size"
-                android:textColor="@color/black"
-
-                android:layout_marginBottom="@dimen/dialog_padding"/>
-
-            <FrameLayout
-                android:id="@+id/view_dialog_content"
-
-                android:layout_marginTop="@dimen/dialog_padding"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </merge>

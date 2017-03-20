@@ -6,10 +6,7 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import rx.Observable;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 
