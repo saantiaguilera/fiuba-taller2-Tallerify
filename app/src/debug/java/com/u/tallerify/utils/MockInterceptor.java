@@ -1,13 +1,11 @@
 package com.u.tallerify.utils;
 
-import com.u.tallerify.BuildConfig;
 import com.u.tallerify.mocks.Artist;
 import com.u.tallerify.mocks.Login;
 import com.u.tallerify.mocks.Playlist;
 import com.u.tallerify.mocks.Song;
 import com.u.tallerify.mocks.User;
 import java.io.IOException;
-import java.net.URI;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
