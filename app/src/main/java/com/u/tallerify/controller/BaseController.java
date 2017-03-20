@@ -1,10 +1,11 @@
 package com.u.tallerify.controller;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.bluelinelabs.conductor.rxlifecycle.RxController;
-import com.u.tallerify.controller.abstracts.BaseDialogController;
+import com.u.tallerify.controller.abstracts.AlertDialogController;
 import com.u.tallerify.utils.RouterInteractor;
 
 /**
@@ -12,13 +13,15 @@ import com.u.tallerify.utils.RouterInteractor;
  */
 public abstract class BaseController extends RxController {
 
-    @SuppressWarnings("ConstantConditions")
-    protected void showDialog(@NonNull BaseDialogController controller) {
-        RouterInteractor.instance().auxRouter()
-            .setPopsLastView(true)
-            .setRoot(RouterTransaction.with(controller)
-                .popChangeHandler(new FadeChangeHandler())
-                .pushChangeHandler(new FadeChangeHandler()));
+    /**
+     * Display the dialog, create a transaction and pushing the controller.
+     * @param tag The tag for this controller
+     */
+    public void showDialog(@NonNull AlertDialogController controller, @Nullable String tag) {
+        RouterInteractor.instance().auxRouter().pushController(RouterTransaction.with(controller)
+            .pushChangeHandler(new FadeChangeHandler(false))
+            .popChangeHandler(new FadeChangeHandler())
+            .tag(tag));
     }
 
 }

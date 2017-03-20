@@ -1,7 +1,6 @@
 package com.u.tallerify.presenter.home.cards;
 
 import android.support.annotation.NonNull;
-import android.view.View;
 import com.u.tallerify.contract.home.cards.NoAccountCardContract;
 import com.u.tallerify.controller.login.LoginDialogController;
 import com.u.tallerify.utils.adapter.GenericAdapter;
@@ -23,7 +22,7 @@ public class NoAccountCardPresenter extends GenericAdapter.ItemPresenter<NoAccou
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {
-                    showDialog(new LoginDialogController());
+                    showDialog(new LoginDialogController(), LoginDialogController.class.getName());
                 }
             });
     }
