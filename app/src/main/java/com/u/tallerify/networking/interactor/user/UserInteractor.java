@@ -87,106 +87,106 @@ public final class UserInteractor {
                 }});
     }
 
-    public Observable<User> addSongFavorite(@NonNull Context context, long songId) {
+    public Observable<List<Song>> addSongFavorite(@NonNull Context context, long songId) {
         return RestClient.with(context).create(UserService.class)
             .addSongFavorite(songId)
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
+                    songSubject.onNext(new ReactiveModel.Builder<List<Song>>()
                         .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
+                    songSubject.onNext(new ReactiveModel.Builder<List<Song>>()
                         .error(throwable)
                         .build());
                 }
-            }).doOnNext(new Action1<User>() {
+            }).doOnNext(new Action1<List<Song>>() {
                 @Override
-                public void call(final User user) {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
-                        .model(user)
+                public void call(final List<Song> songs) {
+                    songSubject.onNext(new ReactiveModel.Builder<List<Song>>()
+                        .model(songs)
                         .build());
                 }});
     }
 
-    public Observable<User> addArtistFavorite(@NonNull Context context, long artistId) {
+    public Observable<List<Artist>> addArtistFavorite(@NonNull Context context, long artistId) {
         return RestClient.with(context).create(UserService.class)
             .addArtistFavorite(artistId)
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
+                    artistSubject.onNext(new ReactiveModel.Builder<List<Artist>>()
                         .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
+                    artistSubject.onNext(new ReactiveModel.Builder<List<Artist>>()
                         .error(throwable)
                         .build());
                 }
-            }).doOnNext(new Action1<User>() {
+            }).doOnNext(new Action1<List<Artist>>() {
                 @Override
-                public void call(final User user) {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
-                        .model(user)
+                public void call(final List<Artist> artists) {
+                    artistSubject.onNext(new ReactiveModel.Builder<List<Artist>>()
+                        .model(artists)
                         .build());
                 }});
     }
 
-    public Observable<User> removeSongFavorite(@NonNull Context context, long songId) {
+    public Observable<List<Song>> removeSongFavorite(@NonNull Context context, long songId) {
         return RestClient.with(context).create(UserService.class)
             .removeSongFavorite(songId)
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
+                    songSubject.onNext(new ReactiveModel.Builder<List<Song>>()
                         .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
+                    songSubject.onNext(new ReactiveModel.Builder<List<Song>>()
                         .error(throwable)
                         .build());
                 }
-            }).doOnNext(new Action1<User>() {
+            }).doOnNext(new Action1<List<Song>>() {
                 @Override
-                public void call(final User user) {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
-                        .model(user)
+                public void call(final List<Song> songs) {
+                    songSubject.onNext(new ReactiveModel.Builder<List<Song>>()
+                        .model(songs)
                         .build());
                 }});
     }
 
-    public Observable<User> removeArtistFavorite(@NonNull Context context, long artistId) {
+    public Observable<List<Artist>> removeArtistFavorite(@NonNull Context context, long artistId) {
         return RestClient.with(context).create(UserService.class)
             .removeArtistFavorite(artistId)
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
+                    artistSubject.onNext(new ReactiveModel.Builder<List<Artist>>()
                         .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
+                    artistSubject.onNext(new ReactiveModel.Builder<List<Artist>>()
                         .error(throwable)
                         .build());
                 }
-            }).doOnNext(new Action1<User>() {
+            }).doOnNext(new Action1<List<Artist>>() {
                 @Override
-                public void call(final User user) {
-                    userSubject.onNext(new ReactiveModel.Builder<User>()
-                        .model(user)
+                public void call(final List<Artist> artists) {
+                    artistSubject.onNext(new ReactiveModel.Builder<List<Artist>>()
+                        .model(artists)
                         .build());
                 }});
     }

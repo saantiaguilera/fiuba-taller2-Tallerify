@@ -20,16 +20,16 @@ public interface UserService {
     Observable<User> currentUser();
 
     @POST("user/song/favorite")
-    Observable<User> addSongFavorite(@Field("song_id") long songId);
+    Observable<List<Song>> addSongFavorite(@Field("song_id") long songId);
 
     @DELETE("user/song/favorite")
-    Observable<User> removeSongFavorite(@Field("song_id") long songId);
+    Observable<List<Song>> removeSongFavorite(@Field("song_id") long songId);
 
     @POST("user/artist/favorite")
-    Observable<User> addArtistFavorite(@Field("artist_id") long artistId);
+    Observable<List<Artist>> addArtistFavorite(@Field("artist_id") long artistId);
 
     @DELETE("user/artist/favorite")
-    Observable<User> removeArtistFavorite(@Field("artist_id") long artistId);
+    Observable<List<Artist>> removeArtistFavorite(@Field("artist_id") long artistId);
 
     @GET("user/artists")
     Observable<List<Artist>> artists();

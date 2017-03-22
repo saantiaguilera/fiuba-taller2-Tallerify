@@ -26,20 +26,26 @@ public final class CredentialsInteractor {
 
     public static final int ACTION_LOADING = 0;
 
-    private static final @NonNull CredentialsInteractor instance = new CredentialsInteractor();
+    private static @NonNull CredentialsInteractor instance = new CredentialsInteractor();
 
-    @NonNull BehaviorSubject<ReactiveModel<AccessToken>> tokenBehaviorSubject;
+    @NonNull BehaviorSubject<ReactiveModel<AccessToken>> subject;
 
     private CredentialsInteractor() {
-        tokenBehaviorSubject = BehaviorSubject.create();
+        subject = BehaviorSubject.create();
     }
 
     public static @NonNull CredentialsInteractor instance() {
         return instance;
     }
 
+    public void dispatchToken(@NonNull AccessToken token) {
+        subject.onNext(new ReactiveModel.Builder<>()
+            .model(token)
+            .build());
+    }
+
     public Observable<ReactiveModel<AccessToken>> observeToken() {
-        return tokenBehaviorSubject;
+        return subject;
     }
 
     /**
@@ -54,14 +60,14 @@ public final class CredentialsInteractor {
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .error(throwable)
                         .build());
                 }
@@ -69,7 +75,7 @@ public final class CredentialsInteractor {
                 @Override
                 public void call(final AccessToken accessToken) {
                     AccessTokenManager.instance().write(context, accessToken);
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .model(accessToken)
                         .build());
             }});
@@ -89,14 +95,14 @@ public final class CredentialsInteractor {
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .action(1) // TODO create loading action
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .error(throwable)
                         .build());
                 }
@@ -104,7 +110,7 @@ public final class CredentialsInteractor {
                 @Override
                 public void call(final AccessToken accessToken) {
                     AccessTokenManager.instance().write(context, accessToken);
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .model(accessToken)
                         .build());
                 }});

@@ -62,7 +62,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
             .subscribe(new Action1<ReactiveModel<LoginResult>>() {
                 @Override
                 public void call(final ReactiveModel<LoginResult> reactiveModel) {
-                    if (reactiveModel.error() != null ||
+                    if (reactiveModel.hasError() ||
                         reactiveModel.action() == FacebookInteractor.ACTION_DECLINED_PERMISSIONS) {
                         view.showError();
                     }
@@ -77,7 +77,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override
                 public void call(final ReactiveModel<AccessToken> reactiveModel) {
-                    if (reactiveModel.error() != null) {
+                    if (reactiveModel.hasError()) {
                         view.showError();
                     }
                 }

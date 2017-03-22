@@ -24,6 +24,7 @@ import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.FrescoImageController;
 import java.util.List;
 import rx.Observable;
+import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 
 /**
@@ -53,6 +54,8 @@ public class MusicPlayerExpandedView extends ScrollView {
     private @NonNull ImageView expandFavorite;
     private @NonNull RatingBar expandRatingBar;
     private @NonNull LinearLayout expandPlaylistContainer;
+
+    boolean favorited;
 
     @Nullable PublishSubject<Integer> skipSongsSubject;
 
@@ -113,8 +116,15 @@ public class MusicPlayerExpandedView extends ScrollView {
         return skipSongsSubject;
     }
 
-    public @NonNull Observable<Void> observeFavoriteClicks() {
-        return RxView.clicks(expandFavorite);
+    public @NonNull Observable<Boolean> observeFavoriteClicks() {
+        return RxView.clicks(expandFavorite)
+            .map(new Func1<Void, Boolean>() {
+                @Override
+                public Boolean call(final Void aVoid) {
+                    favorited = !favorited;
+                    return favorited;
+                }
+            });
     }
 
     public @NonNull Observable<Integer> observeRatingSeeks() {
@@ -258,6 +268,7 @@ public class MusicPlayerExpandedView extends ScrollView {
     }
 
     public void setFavorite(boolean favved, boolean enabled) {
+        favorited = favved;
         if (enabled) {
             expandFavorite.setVisibility(View.VISIBLE);
             expandFavorite.getDrawable().setColorFilter(favved ?

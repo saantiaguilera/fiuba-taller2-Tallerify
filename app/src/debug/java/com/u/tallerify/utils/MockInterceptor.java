@@ -26,17 +26,17 @@ public class MockInterceptor implements Interceptor {
 
             if (url.contains("oauth/token")) {
                 responseString = Login.RESPONSE_LOGIN;
-            } else if (url.contains("songs/trending") || url.contains("user/songs")) {
+            } else if (url.contains("songs/trending") || url.contains("user/songs") || url.contains("user/song/favorite")) {
                 responseString = Song.RESPONSE_TRENDING_SONGS;
             } else if (url.contains("song/")) {
                 responseString = Song.RESPONSE_SONG;
-            } else if (url.contains("artists/trending") || url.contains("user/artists")) {
+            } else if (url.contains("artists/trending") || url.contains("user/artists") || url.contains("user/artist/favorite")) {
                 responseString = Artist.RESPONSE_ARTISTS_TRENDING;
             } else if (url.contains("artist/")) {
                 responseString = Artist.RESPONSE_ARTIST;
             } else if (url.contains("user/playlists")) {
                 responseString = Playlist.RESPONSE_USER_PLAYLISTS;
-            } else if (url.contains("user/") || url.contains("user/song/favorite") || url.contains("user/artist/favorite")) {
+            } else if (url.contains("user/")) {
                 responseString = User.RESPONSE_USER;
             } else {
                 responseString = "";

@@ -140,12 +140,8 @@ public class HomePresenter extends Presenter<HomeContract.View>
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override
                 public void call(final ReactiveModel<AccessToken> accessTokenReactiveModel) {
-                    if (accessTokenReactiveModel.model() != null &&
-                        accessTokenReactiveModel.action() == ReactiveModel.NO_ACTION) {
-                        loggedIn = true;
-                    } else {
-                        loggedIn = false;
-                    }
+                    loggedIn = accessTokenReactiveModel.model() != null &&
+                        accessTokenReactiveModel.action() == ReactiveModel.NO_ACTION;
 
                     notifier.onNext(null);
                 }

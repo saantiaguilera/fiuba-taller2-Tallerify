@@ -12,9 +12,11 @@ import com.facebook.drawee.view.DraweeView;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.home.HomeController;
+import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.AccessTokenManager;
 import com.u.tallerify.networking.RestClient;
+import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.services.user.UserService;
 import com.u.tallerify.utils.BussinessUtils;
 import com.u.tallerify.utils.FrescoImageController;
@@ -54,6 +56,7 @@ public class SplashController extends FlowController {
 
         if (AccessTokenManager.instance().read(getActivity()) != null) {
             BussinessUtils.requestBasicInfo(getActivity());
+            CredentialsInteractor.instance().dispatchToken(AccessTokenManager.instance().snapshot());
         }
 
         BussinessUtils.requestTrendings(getActivity());

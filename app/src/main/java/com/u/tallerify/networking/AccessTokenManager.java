@@ -43,6 +43,10 @@ public class AccessTokenManager {
         return instance;
     }
 
+    public @Nullable AccessToken snapshot() {
+        return token;
+    }
+
     /**
      * Reads the current access token saved (if existent) and returns it
      *
@@ -51,7 +55,7 @@ public class AccessTokenManager {
      */
     public @Nullable AccessToken read(@NonNull Context context) {
         if (token != null)
-            return token;
+            return snapshot();
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_DIR, Context.MODE_PRIVATE);
         String json = sharedPreferences.getString(SHARED_PREFERENCIES_KEY, null);
