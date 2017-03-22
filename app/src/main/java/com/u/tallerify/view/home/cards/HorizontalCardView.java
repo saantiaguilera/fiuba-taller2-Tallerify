@@ -37,6 +37,7 @@ public class HorizontalCardView extends RecyclerView
             ViewGroup.LayoutParams.WRAP_CONTENT));
 
         setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
+        setNestedScrollingEnabled(false);
 
         addItemDecoration(new TrendingSongsItemDecorator(getResources().getDimensionPixelSize(R.dimen.home_item_paddings)));
 
