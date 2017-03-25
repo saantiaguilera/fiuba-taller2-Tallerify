@@ -8,11 +8,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
+import com.u.tallerify.controller.search.SearchController;
 import com.u.tallerify.presenter.home.HomePresenter;
 
 /**
@@ -48,8 +51,9 @@ public class HomeController extends FlowController {
                 public boolean onMenuItemClick(final MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.menu_home_search:
-                            //TODO
-                            Toast.makeText(getActivity(), "Search icon", Toast.LENGTH_SHORT).show();
+                            getRouter().pushController(RouterTransaction.with(new SearchController())
+                                .pushChangeHandler(new FadeChangeHandler())
+                                .popChangeHandler(new FadeChangeHandler(false)));
                             return true;
                         default:
                             return false;

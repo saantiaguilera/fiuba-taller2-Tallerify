@@ -21,7 +21,11 @@ public abstract class FlowController extends BaseController {
             getActionBar().getMenu().clear();
 
             if (hasActionBar()) {
-                getActionBar().setTitle(" " + title());
+                if (title() != null) {
+                    getActionBar().setTitle(" " + title());
+                } else {
+                    getActionBar().setTitle("");
+                }
                 getActionBar().setVisibility(View.VISIBLE);
             } else {
                 getActionBar().setVisibility(View.GONE);
