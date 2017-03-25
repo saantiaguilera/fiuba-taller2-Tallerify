@@ -16,20 +16,22 @@ public abstract class FlowController extends BaseController {
     @Override
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
+        setHasOptionsMenu(hasOptionsMenu());
 
-        if (getActionBar() != null) {
-            getActionBar().getMenu().clear();
-
-            if (hasActionBar()) {
-                if (title() != null) {
-                    getActionBar().setTitle(" " + title());
-                } else {
-                    getActionBar().setTitle("");
-                }
-                getActionBar().setVisibility(View.VISIBLE);
+        if (hasActionBar()) {
+            if (title() != null) {
+                getActionBar().setTitle(" " + title());
             } else {
-                getActionBar().setVisibility(View.GONE);
+                getActionBar().setTitle("");
             }
+
+            if (!hasOptionsMenu()) {
+                getActionBar().getMenu().clear();
+            }
+
+            getActionBar().setVisibility(View.VISIBLE);
+        } else {
+            getActionBar().setVisibility(View.GONE);
         }
 
         renderMediaPlayer(false);
@@ -58,6 +60,10 @@ public abstract class FlowController extends BaseController {
 
     protected boolean hasActionBar() {
         return true;
+    }
+
+    protected boolean hasOptionsMenu() {
+        return false;
     }
 
     protected boolean hasPlayer() {

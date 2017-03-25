@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +34,6 @@ public class HomeController extends FlowController {
     @Override
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
-        inflateToolbar();
         Coordinators.bind(view, new CoordinatorProvider() {
             @Nullable
             @Override
@@ -42,24 +43,21 @@ public class HomeController extends FlowController {
         });
     }
 
-    private void inflateToolbar() {
-        Toolbar toolbar = getActionBar();
-        if (toolbar != null) {
-            toolbar.inflateMenu(R.menu.menu_home);
-            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(final MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.menu_home_search:
-                            getRouter().pushController(RouterTransaction.with(new SearchController())
-                                .pushChangeHandler(new FadeChangeHandler())
-                                .popChangeHandler(new FadeChangeHandler(false)));
-                            return true;
-                        default:
-                            return false;
-                    }
-                }
-            });
+    @Override
+    public void onCreateOptionsMenu(@NonNull final Menu menu, @NonNull final MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_home, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_home_search:
+                getRouter().pushController(RouterTransaction.with(new SearchController())
+                    .pushChangeHandler(new FadeChangeHandler())
+                    .popChangeHandler(new FadeChangeHandler(false)));
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -67,6 +65,11 @@ public class HomeController extends FlowController {
     @Override
     protected String title() {
         return getResources().getString(R.string.toolbar_home);
+    }
+
+    @Override
+    protected boolean hasOptionsMenu() {
+        return true;
     }
 
 }

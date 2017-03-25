@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.squareup.coordinators.Coordinator;
@@ -20,7 +23,7 @@ import com.u.tallerify.view.search.SearchView;
 
 public class SearchController extends FlowController {
 
-    private static final String TAG_SEARCH_TOOLBAR = "toolbar_search_view_tag";
+    private static final String SEARCH_VIEW_TAG = "search_view_tag";
 
     @NonNull
     @Override
@@ -30,30 +33,25 @@ public class SearchController extends FlowController {
 
     @Override
     protected void onAttach(@NonNull final View view) {
+        View searchView = new SearchView(getActivity());
+        searchView.setTag(SEARCH_VIEW_TAG);
+        getActionBar().addView(searchView);
+
         super.onAttach(view);
-        inflateToolbar();
-    }
 
-    private void inflateToolbar() {
-        View view = new SearchView(getActivity());
-        view.setTag(TAG_SEARCH_TOOLBAR);
-
-        Toolbar toolbar = getActionBar();
-        toolbar.addView(view);
-
-        Coordinators.bind(view, new CoordinatorProvider() {
+        Coordinators.bind(searchView, new CoordinatorProvider() {
             @Nullable
             @Override
             public Coordinator provideCoordinator(final View view) {
                 return new SearchPresenter();
             }
         });
-
-        view.requestFocus();
     }
 
     @Override
     protected void onDetach(@NonNull final View view) {
+        getActionBar().removeView(getActionBar().findViewWithTag(SEARCH_VIEW_TAG));
+
         super.onDetach(view);
     }
 
