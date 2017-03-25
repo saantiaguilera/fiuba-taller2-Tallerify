@@ -1,21 +1,31 @@
 package com.u.tallerify.presenter.base;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.view.View;
 import com.u.tallerify.contract.base.MusicPlayerContract;
+import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.model.entity.Song;
+import com.u.tallerify.model.entity.User;
+import com.u.tallerify.networking.ReactiveModel;
+import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
+import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.utils.CurrentPlay;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static android.provider.Settings.System.CONTENT_URI;
@@ -27,69 +37,29 @@ import static android.provider.Settings.System.CONTENT_URI;
 public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         implements MusicPlayerContract.Presenter {
 
-    static final String SHARED_PREFERENCES_RATING_DIR = MusicPlayerPresenter.class.getName() + "_sp_rating_dir";
-    static final String SHARED_PREFERENCES_FAVS_DIR = MusicPlayerPresenter.class.getName() + "_sp_favs_dir";
-
-    private static final String SHARED_PREFERENCES_RATING_KEY = "song_id";
-    private static final String SHARED_PREFERENCES_FAVORITE_KEY = "song_id";
-
     private @Nullable ContentObserver contentObserver;
 
-    public MusicPlayerPresenter() {}
+    @NonNull List<Long> favorites;
+    @NonNull Map<Long, Integer> rateds;
+    boolean logged;
+
+    public MusicPlayerPresenter() {
+        favorites = new ArrayList<>();
+        rateds = new HashMap<>();
+    }
 
     @Override
     protected void onAttach(@NonNull final MusicPlayerContract.View view) {
-        // Render the view..
         render(view);
 
-        // Observe for changes in the current play, we want to always request a render pass whenever our model changes
-        CurrentPlay.observeCurrentPlay()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
-            .compose(this.<CurrentPlay>bindToLifecycle())
-            .subscribe(new Action1<CurrentPlay>() {
-                @Override
-                public void call(final CurrentPlay currentPlay) {
-                    requestView();
-                }
-            });
-
-        // Register a content resolver for the music volume changes, whenever it changes, change the current play
-        getContext().getApplicationContext().getContentResolver()
-            .registerContentObserver(CONTENT_URI, true, contentObserver = new ContentObserver(null) {
-
-                @Override
-                public void onChange(final boolean selfChange) {
-                    super.onChange(selfChange);
-                    AudioManager audioManager = (AudioManager) getContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-
-                    if (CurrentPlay.instance() != null) {
-                        CurrentPlay.instance().newBuilder()
-                            .volume(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) * 100
-                                / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
-                            .build();
-                    }
-                }
-
-                @Override
-                public boolean deliverSelfNotifications() {
-                    return false;
-                }
-
-            });
-
-
-        // TODO observeUser and requestView();
-        // Start observing the view for user inputs :)
+        observeProducers();
         observeView(view);
     }
 
     @Override
     protected void onDetach(@NonNull final MusicPlayerContract.View view) {
         super.onDetach(view);
-        if (contentObserver != null) {
-            getContext().getApplicationContext().getContentResolver().unregisterContentObserver(contentObserver);
-        }
+        MusicPlayerHelpers.unbindAudioSystem((Application) getContext().getApplicationContext(), contentObserver);
     }
 
     @Override
@@ -140,237 +110,113 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                     .toBlocking()
                     .subscribe();
 
-                // TODO fill these ones when logged in ONLY. If not put enabled = false
-                SharedPreferences ratingPreferences = getContext().getSharedPreferences(SHARED_PREFERENCES_RATING_DIR, Context.MODE_PRIVATE);
-                view.setRating(ratingPreferences.getInt(SHARED_PREFERENCES_RATING_KEY, 0), true);
+                if (favorites.contains(currentPlay.currentSong().id())) {
+                    view.setFavorite(true, true);
+                } else {
+                    view.setFavorite(false, true);
+                }
 
-                SharedPreferences favsPreferences = getContext().getSharedPreferences(SHARED_PREFERENCES_FAVS_DIR, Context.MODE_PRIVATE);
-                view.setFavorite(favsPreferences.getBoolean(SHARED_PREFERENCES_FAVORITE_KEY, false), true);
+                if (rateds.containsKey(currentPlay.currentSong().id())) {
+                    view.setRating(rateds.get(currentPlay.currentSong().id()), true);
+                } else {
+                    view.setRating(0, true);
+                }
             }
         }
     }
 
+    private void observeProducers() {
+        // Observe for changes in the current play, we want to always request a render pass whenever our model changes
+        CurrentPlay.observeCurrentPlay()
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .compose(this.<CurrentPlay>bindToLifecycle())
+            .subscribe(new Action1<CurrentPlay>() {
+                @Override
+                public void call(final CurrentPlay currentPlay) {
+                    requestView();
+                }
+            });
+
+        CredentialsInteractor.instance().observeToken()
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+                @Override
+                public void call(final ReactiveModel<AccessToken> reactiveModel) {
+                    logged = reactiveModel.model() != null && !reactiveModel.hasError();
+                    requestView();
+                }
+            });
+
+        UserInteractor.instance().observeSongs()
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<List<Song>>>() {
+                @Override
+                public void call(final ReactiveModel<List<Song>> reactiveModel) {
+                    if (reactiveModel.model() == null || reactiveModel.hasError())
+                        return;
+
+                    favorites = Observable.from(reactiveModel.model())
+                        .observeOn(Schedulers.immediate())
+                        .map(new Func1<Song, Long>() {
+                            @Override
+                            public Long call(final Song song) {
+                                return song.id();
+                            }
+                        }).toList()
+                        .toBlocking()
+                        .first();
+
+                    requestView();
+                }
+            });
+
+
+        // Register a content resolver for the music volume changes, whenever it changes, change the current play
+        contentObserver = MusicPlayerHelpers.bindAudioSystem((Application) getContext().getApplicationContext());
+    }
+
     private void observeView(@NonNull MusicPlayerContract.View view) {
-        view.observeSongSeeks()
+        MusicPlayerHelpers.observePlayStateClicks(view);
+        MusicPlayerHelpers.observeBackwardClicks(view);
+        MusicPlayerHelpers.observeForwardClicks(view);
+        MusicPlayerHelpers.observePlaylistSkips(view);
+        MusicPlayerHelpers.observeRepeatClicks(view);
+        MusicPlayerHelpers.observeShuffleClicks(view);
+        MusicPlayerHelpers.observeTimeSeeks(view);
+        MusicPlayerHelpers.observeVolumeSeeks((Application) getContext().getApplicationContext(), view);
+
+        MusicPlayerHelpers.observeFavoriteClicks((Application) getContext().getApplicationContext(), view)
             .observeOn(Schedulers.io())
-            .compose(this.<Integer>bindToView((View) view))
-            .subscribe(new Action1<Integer>() {
+            .subscribeOn(Schedulers.io())
+            .compose(this.<Long>bindToView((View) view))
+            .subscribe(new Action1<Long>() {
                 @Override
-                public void call(final Integer integer) {
-                    if (CurrentPlay.instance() != null) {
-                        CurrentPlay.instance().newBuilder()
-                            .currentTime(integer)
-                            .build();
+                public void call(final Long songId) {
+                    if (favorites.contains(songId)) {
+                        favorites.remove(songId);
+                    } else {
+                        favorites.add(songId);
                     }
-                }
-            });
 
-        view.observeShuffleClicks()
-            .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToView((View) view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        CurrentPlay.instance().newBuilder()
-                            .shuffle(!CurrentPlay.instance().shuffle())
-                            .build();
-                    }
-                }
-            });
-
-        view.observeRepeatClicks()
-            .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToView((View) view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        CurrentPlay.RepeatMode repeatMode;
-                        switch (CurrentPlay.instance().repeat()) {
-                            case NONE:
-                                repeatMode = CurrentPlay.RepeatMode.SINGLE;
-                                break;
-                            case SINGLE:
-                                repeatMode = CurrentPlay.RepeatMode.ALL;
-                                break;
-                            case ALL:
-                            default:
-                                repeatMode = CurrentPlay.RepeatMode.NONE;
-                        }
-
-                        CurrentPlay.instance().newBuilder()
-                            .repeat(repeatMode)
-                            .build();
-                    }
-                }
-            });
-
-        view.observeVolumeSeeks()
-            .observeOn(Schedulers.io())
-            .compose(this.<Integer>bindToView((View) view))
-            .subscribe(new Action1<Integer>() {
-                @Override
-                public void call(final Integer integer) {
-                    if (CurrentPlay.instance() != null) {
-                        AudioManager audioManager =
-                            (AudioManager) getContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-
-                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-                            (int) (integer * audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 100.0),
-                            AudioManager.FLAG_SHOW_UI);
-
-                        CurrentPlay.instance().newBuilder()
-                            .volume(integer)
-                            .build();
-                    }
-                }
-            });
-
-        view.observeNextSongClicks()
-            .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToView((View) view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        if (CurrentPlay.instance().playlist().isEmpty()) {
-                            CurrentPlay.instance().newBuilder()
-                                .playState(CurrentPlay.PlayState.PAUSED)
-                                .build();
-                            return;
-                        }
-
-                        List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
-                        Song nextSong = playlist.size() > 1 ?
-                            playlist.get(1) :
-                            playlist.get(0);
-
-                        if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
-                                playlist.size() == 1) {
-                            playlist.add(playlist.get(0));
-                        }
-
-                        playlist.remove(0);
-
-                        CurrentPlay.instance().newBuilder()
-                            .currentSong(nextSong)
-                            .playlist(playlist)
-                            .build();
-                    }
-                }
-            });
-
-        view.observePreviousSongClicks()
-            .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToView((View) view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
-                        Song nextSong = playlist.size() > 1 ?
-                            playlist.get(playlist.size() - 1) :
-                            playlist.get(0);
-
-                        playlist.add(0, nextSong);
-
-                        playlist.remove(playlist.size() - 1);
-
-                        CurrentPlay.instance().newBuilder()
-                            .currentSong(nextSong)
-                            .playlist(playlist)
-                            .build();
-                    }
-                }
-            });
-
-        view.observePlayStateClicks()
-            .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToView((View) view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        CurrentPlay.instance().newBuilder()
-                            .playState(CurrentPlay.instance().playState() == CurrentPlay.PlayState.PLAYING ?
-                                CurrentPlay.PlayState.PAUSED :
-                                CurrentPlay.PlayState.PLAYING)
-                            .build();
-                    }
-                }
-            });
-
-        view.observeFavoriteClicks()
-            .observeOn(Schedulers.io())
-            .compose(this.<Void>bindToView((View) view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void aVoid) {
-                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(
-                        SHARED_PREFERENCES_FAVS_DIR, Context.MODE_PRIVATE);
-                    sharedPreferences.edit().putBoolean(SHARED_PREFERENCES_FAVORITE_KEY,
-                        !sharedPreferences.getBoolean(SHARED_PREFERENCES_FAVORITE_KEY, false)).commit();
                     requestView();
                 }
             });
 
-        view.observeRatingSeeks()
+        // We need the result because this comunicates with a backend
+        MusicPlayerHelpers.observeRatingSeeks(view)
             .observeOn(Schedulers.io())
-            .compose(this.<Integer>bindToView((View) view))
-            .subscribe(new Action1<Integer>() {
+            .subscribeOn(Schedulers.io())
+            .compose(this.<Pair<Long, Integer>>bindToView((View) view))
+            .subscribe(new Action1<Pair<Long, Integer>>() {
                 @Override
-                public void call(final Integer integer) {
-                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(
-                        SHARED_PREFERENCES_RATING_DIR, Context.MODE_PRIVATE);
-                    sharedPreferences.edit().putInt(SHARED_PREFERENCES_RATING_KEY, integer).commit();
+                public void call(final Pair<Long, Integer> pair) {
+                    rateds.put(pair.first, pair.second);
                     requestView();
-                }
-            });
-
-        view.observePlaylistSkipClicks()
-            .observeOn(Schedulers.io())
-            .compose(this.<Integer>bindToView((View) view))
-            .subscribe(new Action1<Integer>() {
-                @Override
-                public void call(final Integer integer) {
-                    if (CurrentPlay.instance() != null) {
-                        final List<Song> newList = new ArrayList<>();
-                        final List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
-
-                        Observable.range(0, playlist.size())
-                            .doOnNext(new Action1<Integer>() {
-                                @Override
-                                public void call(final Integer position) {
-                                    if (position >= integer - 1) {
-                                        newList.add(playlist.get(position));
-                                    }
-                                }
-                            }).doOnCompleted(new Action0() {
-                                @Override
-                                public void call() {
-                                    if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
-                                            newList.isEmpty()) {
-                                        for (int i = 0 ; i < integer - 1 ; ++i) {
-                                            newList.add(playlist.get(i));
-                                        }
-                                    }
-                                }
-                            }).toBlocking()
-                            .subscribe();
-
-                        Song nextSong = newList.get(0);
-                        newList.remove(0);
-
-                        if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL) {
-                            newList.add(nextSong);
-                        }
-
-                        CurrentPlay.instance().newBuilder()
-                            .currentSong(nextSong)
-                            .playlist(newList)
-                            .build();
-                    }
                 }
             });
     }

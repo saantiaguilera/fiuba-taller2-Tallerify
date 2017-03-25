@@ -39,8 +39,12 @@ public class AccessTokenManager {
      * @return singleton instance of the class
      */
     @NonNull
-    public static AccessTokenManager getInstance() {
+    public static AccessTokenManager instance() {
         return instance;
+    }
+
+    public @Nullable AccessToken snapshot() {
+        return token;
     }
 
     /**
@@ -51,7 +55,7 @@ public class AccessTokenManager {
      */
     public @Nullable AccessToken read(@NonNull Context context) {
         if (token != null)
-            return token;
+            return snapshot();
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_DIR, Context.MODE_PRIVATE);
         String json = sharedPreferences.getString(SHARED_PREFERENCIES_KEY, null);

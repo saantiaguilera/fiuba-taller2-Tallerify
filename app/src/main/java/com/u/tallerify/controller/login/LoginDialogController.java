@@ -15,13 +15,18 @@ import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.abstracts.AlertDialogController;
 import com.u.tallerify.model.AccessToken;
+import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.Interactors;
+import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
+import com.u.tallerify.networking.interactor.song.SongInteractor;
+import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
 import com.u.tallerify.presenter.login.LoginDialogPresenter;
+import com.u.tallerify.utils.BussinessUtils;
 import com.u.tallerify.view.login.LoginDialogView;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -83,6 +88,8 @@ public class LoginDialogController extends AlertDialogController {
                 @Override
                 public void call(final AccessToken accessToken) {
                     if (accessToken != null) {
+                        BussinessUtils.requestBasicInfo(getApplicationContext());
+                        BussinessUtils.requestTrendings(getApplicationContext());
                         getRouter().popCurrentController();
                     }
                 }

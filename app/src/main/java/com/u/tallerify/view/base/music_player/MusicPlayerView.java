@@ -274,7 +274,7 @@ public class MusicPlayerView extends FrameLayout
 
     @NonNull
     @Override
-    public Observable<Void> observeFavoriteClicks() {
+    public Observable<Boolean> observeFavoriteClicks() {
         return expandView.observeFavoriteClicks();
     }
 

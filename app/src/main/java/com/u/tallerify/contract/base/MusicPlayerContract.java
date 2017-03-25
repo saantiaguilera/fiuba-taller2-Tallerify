@@ -40,7 +40,7 @@ public interface MusicPlayerContract {
         @NonNull Observable<Void> observeShuffleClicks();
         @NonNull Observable<Void> observeRepeatClicks();
         @NonNull Observable<Integer> observeRatingSeeks();
-        @NonNull Observable<Void> observeFavoriteClicks();
+        @NonNull Observable<Boolean> observeFavoriteClicks();
         @NonNull Observable<Integer> observePlaylistSkipClicks();
 
     }
