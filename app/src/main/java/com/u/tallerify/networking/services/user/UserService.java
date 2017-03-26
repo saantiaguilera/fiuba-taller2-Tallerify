@@ -4,7 +4,9 @@ import com.u.tallerify.model.entity.Artist;
 import com.u.tallerify.model.entity.Playlist;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.model.entity.User;
+import java.util.Date;
 import java.util.List;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
@@ -23,6 +25,9 @@ public interface UserService {
 
     @GET("users/{id}")
     Observable<User> user(@Path("id") long id);
+
+    @POST("users/")
+    Observable<User> create(@Body User user, @Field("password") String password);
 
     @POST("users/{id}/follow")
     Observable<User> follow(@Path("id") long myId, @Field("userId") long hisId);

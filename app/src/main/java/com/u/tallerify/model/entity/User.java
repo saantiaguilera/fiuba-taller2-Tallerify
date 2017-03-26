@@ -14,6 +14,9 @@ import java.util.List;
 public class User extends Entity implements Serializable {
 
     private @NonNull String userName;
+    private @NonNull String firstName;
+    private @NonNull String lastName;
+    private @NonNull String country;
     private @NonNull String email;
     private @NonNull Date birthday;
     private @NonNull List<String> images;
@@ -30,6 +33,9 @@ public class User extends Entity implements Serializable {
         birthday = builder.birthday;
         images = builder.images;
         contacts = builder.contacts;
+        firstName = builder.firstName;
+        lastName = builder.lastName;
+        country = builder.country;
     }
 
     public @NonNull Date birthday() {
@@ -42,6 +48,18 @@ public class User extends Entity implements Serializable {
 
     public @NonNull String email() {
         return email;
+    }
+
+    public @NonNull String firstName() {
+        return firstName;
+    }
+
+    public @NonNull String lastName() {
+        return lastName;
+    }
+
+    public @NonNull String country() {
+        return country;
     }
 
     public @NonNull String name() {
@@ -78,6 +96,15 @@ public class User extends Entity implements Serializable {
         if (!contacts.equals(user.contacts)) {
             return false;
         }
+        if (!country.equals(user.country)) {
+            return false;
+        }
+        if (!firstName.equals(user.firstName)) {
+            return false;
+        }
+        if (!lastName.equals(user.lastName)) {
+            return false;
+        }
         return images.equals(user.images);
     }
 
@@ -89,6 +116,9 @@ public class User extends Entity implements Serializable {
         result = 31 * result + birthday.hashCode();
         result = 31 * result + images.hashCode();
         result = 31 * result + contacts.hashCode();
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + country.hashCode();
         return result;
     }
 
@@ -99,6 +129,9 @@ public class User extends Entity implements Serializable {
         @Nullable Date birthday;
         @Nullable List<User> contacts;
         @Nullable List<String> images;
+        @Nullable String firstName;
+        @Nullable String lastName;
+        @Nullable String country;
 
         public Builder() {
             super();
@@ -111,6 +144,24 @@ public class User extends Entity implements Serializable {
             birthday(user.birthday());
             pictures(user.pictures());
             contacts(user.contacts());
+            firstName(user.firstName());
+            lastName(user.lastName());
+            country(user.country());
+        }
+
+        public final @NonNull Builder country(@NonNull final String country) {
+            this.country = country;
+            return this;
+        }
+
+        public final @NonNull Builder firstName(@NonNull final String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public final @NonNull Builder lastName(@NonNull final String lastName) {
+            this.lastName = lastName;
+            return this;
         }
 
         public final @NonNull Builder birthday(@NonNull final Date birthday) {
@@ -153,6 +204,9 @@ public class User extends Entity implements Serializable {
             buildable &= birthday != null;
             buildable &= images != null;
             buildable &= contacts != null;
+            buildable &= firstName != null;
+            buildable &= lastName != null;
+            buildable &= country != null;
             return buildable;
         }
 

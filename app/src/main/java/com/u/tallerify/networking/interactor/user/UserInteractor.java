@@ -35,6 +35,13 @@ public final class UserInteractor {
             .user(userId);
     }
 
+    public @NonNull Observable<User> create(@NonNull Context context, @NonNull User user, @NonNull String password) {
+        return RestClient.with(context)
+            .noAuth()
+            .create(UserService.class)
+            .create(user, password);
+    }
+
     public @NonNull Observable<User> follow(@NonNull Context context, @NonNull User me, @NonNull User him) {
         return RestClient.with(context).create(UserService.class)
             .follow(me.id(), him.id());

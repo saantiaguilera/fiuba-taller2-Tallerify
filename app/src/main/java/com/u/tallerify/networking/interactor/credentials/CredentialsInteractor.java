@@ -55,7 +55,9 @@ public final class CredentialsInteractor {
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
     public @NonNull Observable<AccessToken> createWithProvider(final @NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
-        return RestClient.with(context).create(CredentialsService.class)
+        return RestClient.with(context)
+            .noAuth()
+            .create(CredentialsService.class)
             .withProvider(body)
             .doOnSubscribe(new Action0() {
                 @Override
@@ -89,7 +91,9 @@ public final class CredentialsInteractor {
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
     public @NonNull Observable<AccessToken> createWithNative(final @NonNull Context context, @NonNull CredentialsService.CreateNativeForm body) {
-        return RestClient.with(context).create(CredentialsService.class)
+        return RestClient.with(context)
+            .noAuth()
+            .create(CredentialsService.class)
             .withNative(body)
             .doOnSubscribe(new Action0() {
                 @Override
