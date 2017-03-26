@@ -44,7 +44,7 @@ public final class CredentialsInteractor {
             .build());
     }
 
-    public Observable<ReactiveModel<AccessToken>> observeToken() {
+    public @NonNull Observable<ReactiveModel<AccessToken>> observeToken() {
         return subject;
     }
 
@@ -54,7 +54,7 @@ public final class CredentialsInteractor {
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
-    public Observable<AccessToken> createWithProvider(final @NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
+    public @NonNull Observable<AccessToken> createWithProvider(final @NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
         return RestClient.with(context).create(CredentialsService.class)
             .withProvider(body)
             .doOnSubscribe(new Action0() {
@@ -88,7 +88,7 @@ public final class CredentialsInteractor {
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
-    public Observable<AccessToken> createWithNative(final @NonNull Context context, @NonNull CredentialsService.CreateNativeForm body) {
+    public @NonNull Observable<AccessToken> createWithNative(final @NonNull Context context, @NonNull CredentialsService.CreateNativeForm body) {
         return RestClient.with(context).create(CredentialsService.class)
             .withNative(body)
             .doOnSubscribe(new Action0() {
@@ -121,7 +121,7 @@ public final class CredentialsInteractor {
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
-    public Observable<AccessToken> refresh(final @NonNull Context context, @NonNull CredentialsService.RefreshCredentialForm body) {
+    public @NonNull Observable<AccessToken> refresh(final @NonNull Context context, @NonNull CredentialsService.RefreshCredentialForm body) {
         return RestClient.with(context).create(CredentialsService.class)
             .refresh(body)
             .observeOn(AndroidSchedulers.mainThread())

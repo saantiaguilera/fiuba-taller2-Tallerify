@@ -6,10 +6,12 @@ import com.u.tallerify.model.entity.Artist;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.networking.services.artist.ArtistService;
+import com.u.tallerify.networking.services.me.MeService;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
 
 /**
@@ -44,7 +46,7 @@ public final class ArtistInteractor {
         return trendingArtistsSubject;
     }
 
-    public Observable<Artist> artist(@NonNull Context context, long artistId) {
+    public @NonNull Observable<Artist> artist(@NonNull Context context, long artistId) {
         return RestClient.with(context).create(ArtistService.class)
             .artist(artistId)
             .doOnSubscribe(new Action0() {
@@ -70,7 +72,7 @@ public final class ArtistInteractor {
                 }});
     }
 
-    public Observable<List<Artist>> trendingArtists(@NonNull Context context) {
+    public @NonNull Observable<List<Artist>> trendingArtists(@NonNull Context context) {
         return RestClient.with(context).create(ArtistService.class)
             .trendingArtists()
             .doOnSubscribe(new Action0() {
@@ -94,6 +96,22 @@ public final class ArtistInteractor {
                         .model(artists)
                         .build());
                 }});
+    }
+
+    public @NonNull Observable<Artist> followArtist(@NonNull Context context, final @NonNull Artist artist) {
+        return RestClient.with(context).create(ArtistService.class)
+            .followArtist(artist.id());
+    }
+
+    public @NonNull Observable<Artist> unfollowArtist(@NonNull Context context, final @NonNull Artist artist) {
+        return RestClient.with(context).create(ArtistService.class)
+            .unfollowArtist(artist.id())
+            .map(new Func1<Void, Artist>() {
+                @Override
+                public Artist call(final Void aVoid) {
+                    return artist;
+                }
+            });
     }
 
 }

@@ -12,7 +12,8 @@ import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.contract.base.MusicPlayerContract.View;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.interactor.Interactors;
-import com.u.tallerify.networking.interactor.user.UserInteractor;
+import com.u.tallerify.networking.interactor.song.SongInteractor;
+import com.u.tallerify.networking.interactor.user.MeInteractor;
 import com.u.tallerify.utils.CurrentPlay;
 import java.util.ArrayList;
 import java.util.List;
@@ -265,27 +266,25 @@ final class MusicPlayerHelpers {
     }
 
     @CheckResult
-    static Observable<Long> observeFavoriteClicks(@NonNull final Application application,
+    static Observable<Song> observeFavoriteClicks(@NonNull final Application application,
             @NonNull final View view) {
-        final BehaviorSubject<Long> subject = BehaviorSubject.create();
+        final BehaviorSubject<Song> subject = BehaviorSubject.create();
         view.observeFavoriteClicks()
             .observeOn(Schedulers.io())
             .compose(RxLifecycleAndroid.<Boolean>bindView((android.view.View) view))
             .subscribe(new Action1<Boolean>() {
                 @Override
                 public void call(final Boolean bool) {
-                    final long id = CurrentPlay.instance().currentSong().id();
-                    Observable<List<Song>> observable;
+                    final Song song = CurrentPlay.instance().currentSong();
+                    Observable<Song> observable;
 
                     // Make it favorite for ux
-                    subject.onNext(id);
+                    subject.onNext(song);
 
                     if (bool) {
-                        observable = UserInteractor.instance()
-                            .removeSongFavorite(application, id);
+                        observable = SongInteractor.instance().dislikeSong(application, song);
                     } else {
-                        observable = UserInteractor.instance()
-                            .addSongFavorite(application, id);
+                        observable = SongInteractor.instance().likeSong(application, song);
                     }
 
                     observable.observeOn(Schedulers.io())
@@ -293,7 +292,7 @@ final class MusicPlayerHelpers {
                             @Override
                             public void call(final Throwable throwable) {
                                 // If something goes wrong, call it again
-                                subject.onNext(id);
+                                subject.onNext(song);
                             }
                         });
                 }

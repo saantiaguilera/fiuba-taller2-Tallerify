@@ -1,10 +1,7 @@
 package com.u.tallerify.presenter.base;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.ContentObserver;
-import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
@@ -12,10 +9,9 @@ import android.view.View;
 import com.u.tallerify.contract.base.MusicPlayerContract;
 import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.model.entity.Song;
-import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
-import com.u.tallerify.networking.interactor.user.UserInteractor;
+import com.u.tallerify.networking.interactor.user.MeInteractor;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.utils.CurrentPlay;
 import java.util.ArrayList;
@@ -27,8 +23,6 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-
-import static android.provider.Settings.System.CONTENT_URI;
 
 /**
  * Created by saguilera on 3/15/17.
@@ -150,7 +144,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 }
             });
 
-        UserInteractor.instance().observeSongs()
+        MeInteractor.instance().observeSongs()
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
@@ -193,14 +187,14 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         MusicPlayerHelpers.observeFavoriteClicks((Application) getContext().getApplicationContext(), view)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .compose(this.<Long>bindToView((View) view))
-            .subscribe(new Action1<Long>() {
+            .compose(this.<Song>bindToView((View) view))
+            .subscribe(new Action1<Song>() {
                 @Override
-                public void call(final Long songId) {
-                    if (favorites.contains(songId)) {
-                        favorites.remove(songId);
+                public void call(final Song song) {
+                    if (favorites.contains(song.id())) {
+                        favorites.remove(song.id());
                     } else {
-                        favorites.add(songId);
+                        favorites.add(song.id());
                     }
 
                     requestView();

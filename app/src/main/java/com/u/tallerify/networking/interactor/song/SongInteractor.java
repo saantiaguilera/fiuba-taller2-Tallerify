@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
+import com.u.tallerify.networking.services.me.MeService;
 import com.u.tallerify.networking.services.songs.SongService;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
 
 /**
@@ -44,7 +46,7 @@ public final class SongInteractor {
         return trendingSongsSubject;
     }
 
-    public Observable<Song> song(@NonNull Context context, long songId) {
+    public @NonNull Observable<Song> song(@NonNull Context context, long songId) {
         return RestClient.with(context).create(SongService.class)
             .song(songId)
             .doOnSubscribe(new Action0() {
@@ -70,7 +72,7 @@ public final class SongInteractor {
                 }});
     }
 
-    public Observable<List<Song>> trendingSongs(@NonNull Context context) {
+    public @NonNull Observable<List<Song>> trendingSongs(@NonNull Context context) {
         return RestClient.with(context).create(SongService.class)
             .trendingSongs()
             .doOnSubscribe(new Action0() {
@@ -94,6 +96,22 @@ public final class SongInteractor {
                         .model(songs)
                         .build());
                 }});
+    }
+
+    public @NonNull Observable<Song> likeSong(@NonNull Context context, @NonNull Song song) {
+        return RestClient.with(context).create(SongService.class)
+            .likeSong(song.id());
+    }
+
+    public @NonNull Observable<Song> dislikeSong(@NonNull Context context, @NonNull final Song song) {
+        return RestClient.with(context).create(SongService.class)
+            .dislikeSong(song.id())
+            .map(new Func1<Void, Song>() {
+                @Override
+                public Song call(final Void aVoid) {
+                    return song;
+                }
+            });
     }
 
 }

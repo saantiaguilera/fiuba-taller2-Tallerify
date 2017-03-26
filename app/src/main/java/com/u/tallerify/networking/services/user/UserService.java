@@ -24,25 +24,4 @@ public interface UserService {
     @GET("users/{id}")
     Observable<User> user(@Path("id") long id);
 
-    @POST("user/song/favorite")
-    Observable<List<Song>> addSongFavorite(@Field("song_id") long songId);
-
-    @DELETE("user/song/favorite")
-    Observable<List<Song>> removeSongFavorite(@Field("song_id") long songId);
-
-    @POST("user/artist/favorite")
-    Observable<List<Artist>> addArtistFavorite(@Field("artist_id") long artistId);
-
-    @DELETE("user/artist/favorite")
-    Observable<List<Artist>> removeArtistFavorite(@Field("artist_id") long artistId);
-
-    @GET("user/artists")
-    Observable<List<Artist>> artists();
-
-    @GET("user/songs")
-    Observable<List<Song>> songs();
-
-    @GET("user/playlists")
-    Observable<List<Playlist>> playlists();
-
 }

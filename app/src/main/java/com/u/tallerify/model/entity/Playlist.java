@@ -15,6 +15,7 @@ import rx.schedulers.Schedulers;
 public class Playlist extends Entity implements Serializable, Playable {
 
     private @NonNull String name;
+    private @NonNull String description;
     private @NonNull List<Song> tracks;
     private @NonNull User owner;
 
@@ -27,6 +28,11 @@ public class Playlist extends Entity implements Serializable, Playable {
         name = builder.name;
         tracks = builder.tracks;
         owner = builder.owner;
+        description = builder.description;
+    }
+
+    public @NonNull String description() {
+        return description;
     }
 
     public @NonNull String name() {
@@ -61,6 +67,9 @@ public class Playlist extends Entity implements Serializable, Playable {
         if (!tracks.equals(playlist.tracks)) {
             return false;
         }
+        if (description != null && !description.equals(playlist.description)) {
+            return false;
+        }
         return owner.equals(playlist.owner);
     }
 
@@ -70,6 +79,9 @@ public class Playlist extends Entity implements Serializable, Playable {
         result = 31 * result + name.hashCode();
         result = 31 * result + tracks.hashCode();
         result = 31 * result + owner.hashCode();
+        if (description != null) {
+            result = 31 * result + description.hashCode();
+        }
         return result;
     }
 
@@ -106,6 +118,7 @@ public class Playlist extends Entity implements Serializable, Playable {
         @Nullable String name;
         @Nullable List<Song> tracks;
         @Nullable User owner;
+        @Nullable String description;
 
         public Builder() {
             super();
@@ -116,6 +129,12 @@ public class Playlist extends Entity implements Serializable, Playable {
             name(playlist.name());
             tracks(playlist.songs());
             owner(playlist.creator());
+            description(playlist.description());
+        }
+
+        public final @NonNull Playlist.Builder description(@NonNull final String description) {
+            this.description = description;
+            return this;
         }
 
         public final @NonNull Playlist.Builder name(@NonNull final String name) {
@@ -146,6 +165,7 @@ public class Playlist extends Entity implements Serializable, Playable {
             buildable &= name != null;
             buildable &= tracks != null;
             buildable &= owner != null;
+            buildable &= description != null;
             return buildable;
         }
 

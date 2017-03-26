@@ -12,7 +12,7 @@ import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
-import com.u.tallerify.networking.interactor.user.UserInteractor;
+import com.u.tallerify.networking.interactor.user.MeInteractor;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.supplier.home.card.HeaderCardSupplier;
 import com.u.tallerify.supplier.home.card.NoAccountCardSupplier;
@@ -68,7 +68,7 @@ public class HomePresenter extends Presenter<HomeContract.View>
     }
 
     private void observeRepositories() {
-        UserInteractor.instance().observeArtists()
+        MeInteractor.instance().observeArtists()
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
@@ -81,7 +81,7 @@ public class HomePresenter extends Presenter<HomeContract.View>
                     }
                 }
             });
-        UserInteractor.instance().observeSongs()
+        MeInteractor.instance().observeSongs()
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
@@ -94,7 +94,7 @@ public class HomePresenter extends Presenter<HomeContract.View>
                     }
                 }
             });
-        UserInteractor.instance().observePlaylists()
+        MeInteractor.instance().observePlaylists()
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Playlist>>>bindToLifecycle())

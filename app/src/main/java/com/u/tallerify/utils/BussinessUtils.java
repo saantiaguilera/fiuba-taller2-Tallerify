@@ -2,12 +2,9 @@ package com.u.tallerify.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.View;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
-import com.u.tallerify.networking.interactor.user.UserInteractor;
-import rx.Observable;
+import com.u.tallerify.networking.interactor.user.MeInteractor;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -21,7 +18,7 @@ import static com.u.tallerify.networking.interactor.Interactors.ACTION_NEXT;
 public class BussinessUtils {
 
     public static void requestBasicInfo(@NonNull Context context) {
-        UserInteractor.instance().currentUser(context)
+        MeInteractor.instance().currentUser(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .subscribe(ACTION_NEXT, new Action1<Throwable>() {
@@ -30,7 +27,7 @@ public class BussinessUtils {
                     throwable.printStackTrace();
                 }
             });
-        UserInteractor.instance().artists(context)
+        MeInteractor.instance().artists(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .subscribe(ACTION_NEXT, new Action1<Throwable>() {
@@ -39,7 +36,7 @@ public class BussinessUtils {
                     throwable.printStackTrace();
                 }
             });
-        UserInteractor.instance().songs(context)
+        MeInteractor.instance().songs(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .subscribe(ACTION_NEXT, new Action1<Throwable>() {
@@ -48,7 +45,7 @@ public class BussinessUtils {
                     throwable.printStackTrace();
                 }
             });
-        UserInteractor.instance().playlists(context)
+        MeInteractor.instance().playlists(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .subscribe(ACTION_NEXT, new Action1<Throwable>() {
