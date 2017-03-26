@@ -27,6 +27,6 @@ public interface SongService {
     Observable<Void> dislikeSong(@Path("trackId") long songId);
 
     @POST("tracks/{trackId}/popularity")
-    Observable<Song> rateSong(@Path("trackId") long songId, @Field("rate") int rate);
+    Observable<Integer> rateSong(@Path("trackId") long songId, @Field("rate") int rate);
 
 }

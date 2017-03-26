@@ -11,7 +11,7 @@ import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
-import com.u.tallerify.networking.interactor.user.MeInteractor;
+import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.utils.CurrentPlay;
 import java.util.ArrayList;

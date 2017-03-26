@@ -1,4 +1,4 @@
-package com.u.tallerify.networking.interactor.user;
+package com.u.tallerify.networking.interactor.me;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

@@ -13,7 +13,6 @@ import com.u.tallerify.contract.base.MusicPlayerContract.View;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
-import com.u.tallerify.networking.interactor.user.MeInteractor;
 import com.u.tallerify.utils.CurrentPlay;
 import java.util.ArrayList;
 import java.util.List;
@@ -282,9 +281,9 @@ final class MusicPlayerHelpers {
                     subject.onNext(song);
 
                     if (bool) {
-                        observable = SongInteractor.instance().dislikeSong(application, song);
+                        observable = SongInteractor.instance().dislike(application, song);
                     } else {
-                        observable = SongInteractor.instance().likeSong(application, song);
+                        observable = SongInteractor.instance().like(application, song);
                     }
 
                     observable.observeOn(Schedulers.io())

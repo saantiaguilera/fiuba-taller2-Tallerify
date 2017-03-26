@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
-import com.u.tallerify.networking.interactor.user.MeInteractor;
+import com.u.tallerify.networking.interactor.me.MeInteractor;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -57,11 +57,11 @@ public class BussinessUtils {
     }
 
     public static void requestTrendings(@NonNull Context context) {
-        ArtistInteractor.instance().trendingArtists(context)
+        ArtistInteractor.instance().trendings(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .subscribe(ACTION_NEXT, ACTION_ERROR);
-        SongInteractor.instance().trendingSongs(context)
+        SongInteractor.instance().trendings(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .subscribe(ACTION_NEXT, ACTION_ERROR);

@@ -24,4 +24,10 @@ public interface UserService {
     @GET("users/{id}")
     Observable<User> user(@Path("id") long id);
 
+    @POST("users/{id}/follow")
+    Observable<User> follow(@Path("id") long myId, @Field("userId") long hisId);
+
+    @DELETE("users/{id}/follow")
+    Observable<Void> unfollow(@Path("id") long myId, @Field("userId") long hisId);
+
 }

@@ -72,7 +72,7 @@ public final class ArtistInteractor {
                 }});
     }
 
-    public @NonNull Observable<List<Artist>> trendingArtists(@NonNull Context context) {
+    public @NonNull Observable<List<Artist>> trendings(@NonNull Context context) {
         return RestClient.with(context).create(ArtistService.class)
             .trendingArtists()
             .doOnSubscribe(new Action0() {
@@ -98,12 +98,12 @@ public final class ArtistInteractor {
                 }});
     }
 
-    public @NonNull Observable<Artist> followArtist(@NonNull Context context, final @NonNull Artist artist) {
+    public @NonNull Observable<Artist> follow(@NonNull Context context, final @NonNull Artist artist) {
         return RestClient.with(context).create(ArtistService.class)
             .followArtist(artist.id());
     }
 
-    public @NonNull Observable<Artist> unfollowArtist(@NonNull Context context, final @NonNull Artist artist) {
+    public @NonNull Observable<Artist> unfollow(@NonNull Context context, final @NonNull Artist artist) {
         return RestClient.with(context).create(ArtistService.class)
             .unfollowArtist(artist.id())
             .map(new Func1<Void, Artist>() {

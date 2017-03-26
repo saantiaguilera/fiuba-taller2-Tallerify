@@ -84,12 +84,12 @@ public class PlaylistInteractor {
             });
     }
 
-    public @NonNull Observable<Playlist> addSong(@NonNull Context context, @NonNull Playlist playlist, @NonNull Song song) {
+    public @NonNull Observable<Playlist> add(@NonNull Context context, @NonNull Playlist playlist, @NonNull Song song) {
         return RestClient.with(context).create(PlaylistService.class)
             .addSong(playlist.id(), song.id());
     }
 
-    public @NonNull Observable<Playlist> removeSong(@NonNull Context context, @NonNull final Playlist playlist, @NonNull Song song) {
+    public @NonNull Observable<Playlist> remove(@NonNull Context context, @NonNull final Playlist playlist, @NonNull Song song) {
         return RestClient.with(context).create(PlaylistService.class)
             .removeSong(playlist.id(), song.id())
             .map(new Func1<Void, Playlist>() {
