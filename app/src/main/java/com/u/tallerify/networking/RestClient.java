@@ -188,7 +188,7 @@ public class RestClient {
          *
          * By default it will try to authenticate the request (unless specified).
          *
-         * @param service class to create the instance for
+         * @param service class to withProvider the instance for
          * @return Service instance for doing http request against.
          */
         public @NonNull <T> T create(@NonNull final Class<T> service) {

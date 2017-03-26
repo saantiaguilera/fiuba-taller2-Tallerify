@@ -116,7 +116,7 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.ItemView
         private @Nullable ItemPresenter<VIEW> currentPresenter;
 
         /**
-         * Each card should know how to create its view holder and its presenter.
+         * Each card should know how to withProvider its view holder and its presenter.
          * Of course it will delegate responsibility to each of them on how to draw or
          * react accordingly.
          */

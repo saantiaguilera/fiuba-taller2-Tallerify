@@ -54,9 +54,9 @@ public final class CredentialsInteractor {
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
-    public Observable<AccessToken> create(final @NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
+    public Observable<AccessToken> createWithProvider(final @NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
         return RestClient.with(context).create(CredentialsService.class)
-            .create(body)
+            .withProvider(body)
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
@@ -81,6 +81,40 @@ public final class CredentialsInteractor {
             }});
     }
 
+
+    /**
+     * Create POST api. For error handling please subscribe using {@link Interactors#ACTION_NEXT} and
+     * {@link Interactors#ACTION_ERROR}. Else subscribe as default.
+     *
+     * If you need to right away handle something, add actions in the subscribing as you like.
+     */
+    public Observable<AccessToken> createWithNative(final @NonNull Context context, @NonNull CredentialsService.CreateNativeForm body) {
+        return RestClient.with(context).create(CredentialsService.class)
+            .withNative(body)
+            .doOnSubscribe(new Action0() {
+                @Override
+                public void call() {
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                        .action(ACTION_LOADING)
+                        .build());
+                }
+            }).doOnError(new Action1<Throwable>() {
+                @Override
+                public void call(final Throwable throwable) {
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                        .error(throwable)
+                        .build());
+                }
+            }).doOnNext(new Action1<AccessToken>() {
+                @Override
+                public void call(final AccessToken accessToken) {
+                    AccessTokenManager.instance().write(context, accessToken);
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                        .model(accessToken)
+                        .build());
+                }});
+    }
+
     /**
      * Refresh POST api. For error handling please subscribe using {@link Interactors#ACTION_NEXT} and
      * {@link Interactors#ACTION_ERROR}. Else subscribe as default.
@@ -96,7 +130,7 @@ public final class CredentialsInteractor {
                 @Override
                 public void call() {
                     subject.onNext(new ReactiveModel.Builder<AccessToken>()
-                        .action(1) // TODO create loading action
+                        .action(1) // TODO withProvider loading action
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {

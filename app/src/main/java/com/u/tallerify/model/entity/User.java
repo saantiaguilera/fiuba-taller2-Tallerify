@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.u.tallerify.model.Gender;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Model for the user
@@ -13,11 +14,11 @@ import java.util.Date;
  */
 public class User extends Entity implements Serializable {
 
-    private @NonNull String name;
+    private @NonNull String userName;
     private @NonNull String email;
-    private @NonNull Gender gender;
     private @NonNull Date birthday;
-    private @NonNull Picture picture;
+    private @NonNull List<String> pictures;
+    private @NonNull List<User> contacts;
 
     protected User() {
         super();
@@ -25,31 +26,31 @@ public class User extends Entity implements Serializable {
 
     protected User(@NonNull Builder builder) {
         super(builder);
-        name = builder.name;
+        userName = builder.name;
         email = builder.email;
-        gender = builder.gender;
         birthday = builder.birthday;
-        picture = builder.picture;
+        pictures = builder.pictures;
+        contacts = builder.contacts;
     }
 
     public @NonNull Date birthday() {
         return birthday;
     }
 
-    public @NonNull Picture picture() {
-        return picture;
+    public @NonNull List<String> pictures() {
+        return pictures;
     }
 
     public @NonNull String email() {
         return email;
     }
 
-    public @NonNull Gender gender() {
-        return gender;
+    public @NonNull String name() {
+        return userName;
     }
 
-    public @NonNull String name() {
-        return name;
+    public @NonNull List<User> contacts() {
+        return contacts;
     }
 
     @Override
@@ -66,29 +67,29 @@ public class User extends Entity implements Serializable {
 
         final User user = (User) o;
 
-        if (!name.equals(user.name)) {
+        if (!userName.equals(user.userName)) {
             return false;
         }
         if (!email.equals(user.email)) {
             return false;
         }
-        if (gender != user.gender) {
-            return false;
-        }
         if (!birthday.equals(user.birthday)) {
             return false;
         }
-        return picture.equals(user.picture);
+        if (!contacts.equals(user.contacts)) {
+            return false;
+        }
+        return pictures.equals(user.pictures);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + name.hashCode();
+        result = 31 * result + userName.hashCode();
         result = 31 * result + email.hashCode();
-        result = 31 * result + gender.hashCode();
         result = 31 * result + birthday.hashCode();
-        result = 31 * result + picture.hashCode();
+        result = 31 * result + pictures.hashCode();
+        result = 31 * result + contacts.hashCode();
         return result;
     }
 
@@ -96,9 +97,9 @@ public class User extends Entity implements Serializable {
 
         @Nullable String name;
         @Nullable String email;
-        @Nullable Gender gender;
         @Nullable Date birthday;
-        @Nullable Picture picture;
+        @Nullable List<User> contacts;
+        @Nullable List<String> pictures;
 
         public Builder() {
             super();
@@ -108,9 +109,9 @@ public class User extends Entity implements Serializable {
             super(user);
             name(user.name());
             email(user.email());
-            gender(user.gender());
             birthday(user.birthday());
-            picture(user.picture());
+            pictures(user.pictures());
+            contacts(user.contacts());
         }
 
         public final @NonNull Builder birthday(@NonNull final Date birthday) {
@@ -123,18 +124,18 @@ public class User extends Entity implements Serializable {
             return this;
         }
 
-        public final @NonNull Builder gender(@NonNull final Gender gender) {
-            this.gender = gender;
-            return this;
-        }
-
         public final @NonNull Builder name(@NonNull final String name) {
             this.name = name;
             return this;
         }
 
-        public final @NonNull Builder picture(@NonNull final Picture picture) {
-            this.picture = picture;
+        public final @NonNull Builder pictures(@NonNull final List<String> pictures) {
+            this.pictures = pictures;
+            return this;
+        }
+
+        public final @NonNull Builder contacts(@NonNull final List<User> contacts) {
+            this.contacts = contacts;
             return this;
         }
 
@@ -150,9 +151,9 @@ public class User extends Entity implements Serializable {
             boolean buildable = super.buildable();
             buildable &= name != null;
             buildable &= email != null;
-            buildable &= gender != null;
             buildable &= birthday != null;
-            buildable &= picture != null;
+            buildable &= pictures != null;
+            buildable &= contacts != null;
             return buildable;
         }
 

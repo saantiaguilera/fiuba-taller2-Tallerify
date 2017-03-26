@@ -77,7 +77,7 @@ public class LoginDialogController extends AlertDialogController {
             }
         });
 
-        CredentialsInteractor.instance().create(getApplicationContext(),
+        CredentialsInteractor.instance().createWithProvider(getApplicationContext(),
                 new CredentialsService.CreateCredentialForm(
                     result.getAccessToken().getToken(),
                     AccessToken.Provider.FACEBOOK))

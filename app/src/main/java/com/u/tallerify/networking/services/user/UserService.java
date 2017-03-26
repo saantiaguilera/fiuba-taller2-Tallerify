@@ -9,6 +9,8 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -16,8 +18,11 @@ import rx.Observable;
  */
 public interface UserService {
 
-    @GET("user/")
+    @GET("users/me")
     Observable<User> currentUser();
+
+    @GET("users/{id}")
+    Observable<User> user(@Path("id") long id);
 
     @POST("user/song/favorite")
     Observable<List<Song>> addSongFavorite(@Field("song_id") long songId);
