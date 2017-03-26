@@ -3,8 +3,8 @@ package com.u.tallerify.utils;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
-import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
+import com.u.tallerify.networking.interactor.song.SongInteractor;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 

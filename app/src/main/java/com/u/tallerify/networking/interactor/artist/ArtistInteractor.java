@@ -6,7 +6,6 @@ import com.u.tallerify.model.entity.Artist;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.networking.services.artist.ArtistService;
-import com.u.tallerify.networking.services.me.MeService;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Action0;

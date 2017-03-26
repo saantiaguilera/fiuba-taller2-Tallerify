@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
-import com.u.tallerify.networking.services.me.MeService;
 import com.u.tallerify.networking.services.songs.SongService;
 import java.util.List;
 import rx.Observable;

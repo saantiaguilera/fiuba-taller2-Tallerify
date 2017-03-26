@@ -2,7 +2,6 @@ package com.u.tallerify.networking;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 import com.u.tallerify.BuildConfig;
 import com.u.tallerify.model.AccessToken;

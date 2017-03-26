@@ -1,8 +1,5 @@
 package com.u.tallerify.mocks;
 
-import static com.u.tallerify.mocks.Song.RESPONSE_SONG;
-import static com.u.tallerify.mocks.User.RESPONSE_USER;
-
 /**
  * Created by saguilera on 3/19/17.
  */
