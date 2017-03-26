@@ -114,3 +114,8 @@ How to dance correctly:
 
 (〜￣▽￣)〜
 
+## Cambios talves necesarios
+
+1. El arist devuelve albums_short, que devuelva album asi al empezar a reproducir un artist entero no tengo que hacer una request mas para pedir las canciones (igual que album con tracks seria).
+Sino incluir `Track[]` en el dto de albums_short ( O `TrackShort` me da igual eso )
+

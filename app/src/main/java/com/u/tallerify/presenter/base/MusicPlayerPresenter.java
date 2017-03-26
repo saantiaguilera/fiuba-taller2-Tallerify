@@ -73,8 +73,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
             if (CurrentPlay.instance() != null) {
                 CurrentPlay currentPlay = CurrentPlay.instance();
                 view.setShuffleEnabled(currentPlay.shuffle());
-                view.setImage(currentPlay.currentSong().album().picture());
-                view.setName(currentPlay.currentSong().name(), currentPlay.currentSong().album().artist().name());
+                view.setImage(currentPlay.currentSong().pictures().get(0));
+                view.setName(currentPlay.currentSong().name(), currentPlay.currentSong().artistsName());
                 view.setRepeatMode(currentPlay.repeat());
                 view.setTime((int) currentPlay.currentTime(), (int) currentPlay.currentSong().duration());
                 view.setTrackBarMax((int) currentPlay.currentSong().duration());
@@ -97,8 +97,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                     .doOnNext(new Action1<Song>() {
                         @Override
                         public void call(final Song song) {
-                            names.add(song.name() + " - " + song.album().artist().name());
-                            urls.add(song.album().picture().thumb());
+                            names.add(song.name() + " - " + song.artistsName());
+                            urls.add(song.pictures().get(0));
                         }
                     })
                     .doOnCompleted(new Action0() {

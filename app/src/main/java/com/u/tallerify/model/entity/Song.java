@@ -10,9 +10,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Song extends Entity implements Playable {
 
-    private @NonNull String url;
+    private @NonNull String href;
     private @NonNull String name;
     private @NonNull Album album;
+    private @NonNull List<Artist> artists;
     private long duration;
 
     protected Song() {
@@ -20,7 +21,7 @@ public class Song extends Entity implements Playable {
     }
 
     public @NonNull String url() {
-        return url;
+        return href;
     }
 
     public @NonNull String name() {
@@ -29,6 +30,10 @@ public class Song extends Entity implements Playable {
 
     public @NonNull Album album() {
         return album;
+    }
+
+    public @NonNull List<Artist> artists() {
+        return artists;
     }
 
     public long duration() {
@@ -49,7 +54,7 @@ public class Song extends Entity implements Playable {
 
         final Song song = (Song) o;
 
-        if (!url.equals(song.url)) {
+        if (!href.equals(song.href)) {
             return false;
         }
         if (!name.equals(song.name)) {
@@ -61,15 +66,19 @@ public class Song extends Entity implements Playable {
         if (duration != song.duration) {
             return false;
         }
+        if (artists != song.artists) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + url.hashCode();
+        result = 31 * result + href.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + album.hashCode();
+        result = 31 * result + artists.hashCode();
         result = 31 * result + Long.valueOf(duration).hashCode();
         return result;
     }
@@ -77,19 +86,31 @@ public class Song extends Entity implements Playable {
     @NonNull
     @Override
     public List<String> urls() {
-        return Collections.singletonList(url);
+        return Collections.singletonList(href);
     }
 
     @NonNull
     @Override
-    public Picture picture() {
-        return album.picture();
+    public List<String> pictures() {
+        return album.pictures();
     }
 
     @NonNull
     @Override
     public String fullName() {
-        return name() + " - " + album().artist().name();
+        return name() + " - " + artistsName();
+    }
+
+    public @NonNull String artistsName() {
+        String name = null;
+        for (Artist artist : artists()) {
+            if (name == null) {
+                name = artist.fullName();
+            } else {
+                name += " Ft. " + artist.fullName();
+            }
+        }
+        return name == null ? "" : name;
     }
 
 }

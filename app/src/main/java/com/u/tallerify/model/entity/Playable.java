@@ -12,7 +12,7 @@ public interface Playable {
 
     long id();
     @Nullable List<String> urls();
-    @Nullable Picture picture();
+    @Nullable List<String> pictures();
     @NonNull String fullName();
 
 }

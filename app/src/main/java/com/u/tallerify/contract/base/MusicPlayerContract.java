@@ -3,7 +3,6 @@ package com.u.tallerify.contract.base;
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
-import com.u.tallerify.model.entity.Picture;
 import com.u.tallerify.utils.CurrentPlay;
 import java.util.List;
 import rx.Observable;
@@ -20,7 +19,7 @@ public interface MusicPlayerContract {
     interface View extends ContractView {
 
         void setQueue(@NonNull List<String> names, @NonNull List<String> urls);
-        void setImage(@NonNull Picture picture);
+        void setImage(@NonNull String picture);
         void setPlaying();
         void setPaused();
         void setName(@NonNull String songName, @NonNull String artistName);

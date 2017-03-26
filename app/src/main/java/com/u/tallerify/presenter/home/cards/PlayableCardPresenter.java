@@ -19,7 +19,7 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
 
     @Override
     protected void onAttach(@NonNull final PlayableCardContract.View view) {
-        view.setImage(playable.picture() == null ? null : playable.picture().medium());
+        view.setImage(playable.pictures() == null ? null : playable.pictures().get(0));
         view.setName(playable.fullName());
     }
 

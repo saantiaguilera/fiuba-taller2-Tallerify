@@ -14,7 +14,7 @@ import rx.schedulers.Schedulers;
 @SuppressWarnings("unused")
 public class Artist extends Entity implements Playable {
 
-    private @NonNull Picture picture;
+    private @NonNull List<String> images;
     private @NonNull String name;
     private @NonNull List<Album> albums;
 
@@ -48,8 +48,8 @@ public class Artist extends Entity implements Playable {
             .first();
     }
 
-    public @NonNull Picture picture() {
-        return picture;
+    public @NonNull List<String> pictures() {
+        return images;
     }
 
     @NonNull
@@ -80,7 +80,7 @@ public class Artist extends Entity implements Playable {
 
         final Artist artist = (Artist) o;
 
-        if (!picture.equals(artist.picture)) {
+        if (!images.equals(artist.images)) {
             return false;
         }
         if (!name.equals(artist.name)) {
@@ -95,7 +95,7 @@ public class Artist extends Entity implements Playable {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + picture.hashCode();
+        result = 31 * result + images.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + albums.hashCode();
         return result;
