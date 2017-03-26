@@ -18,6 +18,7 @@ public class Playlist extends Entity implements Serializable, Playable {
     private @NonNull String description;
     private @NonNull List<Song> tracks;
     private @NonNull User owner;
+    private @NonNull List<String> images;
 
     protected Playlist() {
         super();
@@ -29,6 +30,7 @@ public class Playlist extends Entity implements Serializable, Playable {
         tracks = builder.tracks;
         owner = builder.owner;
         description = builder.description;
+        images = builder.pictures;
     }
 
     public @NonNull String description() {
@@ -104,7 +106,7 @@ public class Playlist extends Entity implements Serializable, Playable {
     @Nullable
     @Override
     public List<String> pictures() {
-        return songs().isEmpty() ? null : songs().get(0).pictures(); // TODO aca hacemos un collage con 4 distintos tipo spotify (?)
+        return images;
     }
 
     @NonNull
@@ -119,6 +121,7 @@ public class Playlist extends Entity implements Serializable, Playable {
         @Nullable List<Song> tracks;
         @Nullable User owner;
         @Nullable String description;
+        @Nullable List<String> pictures;
 
         public Builder() {
             super();
@@ -130,6 +133,12 @@ public class Playlist extends Entity implements Serializable, Playable {
             tracks(playlist.songs());
             owner(playlist.creator());
             description(playlist.description());
+            pictures(playlist.pictures());
+        }
+
+        public final @NonNull Playlist.Builder pictures(@NonNull final List<String> pictures) {
+            this.pictures = pictures;
+            return this;
         }
 
         public final @NonNull Playlist.Builder description(@NonNull final String description) {
@@ -166,6 +175,7 @@ public class Playlist extends Entity implements Serializable, Playable {
             buildable &= tracks != null;
             buildable &= owner != null;
             buildable &= description != null;
+            buildable &= pictures != null;
             return buildable;
         }
 
