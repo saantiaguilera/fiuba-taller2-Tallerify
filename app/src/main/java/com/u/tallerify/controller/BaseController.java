@@ -14,7 +14,7 @@ import com.u.tallerify.utils.RouterInteractor;
 public abstract class BaseController extends RxController {
 
     /**
-     * Display the dialog, create a transaction and pushing the controller.
+     * Display the dialog, withProvider a transaction and pushing the controller.
      * @param tag The tag for this controller
      */
     public void showDialog(@NonNull AlertDialogController controller, @Nullable String tag) {

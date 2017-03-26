@@ -14,7 +14,7 @@ import android.view.ViewGroup;
  * A controller that displays a dialog window, floating on top of its activity's window.
  * This is a wrapper over {@link Dialog} object like {@link android.app.DialogFragment}.
  *
- * <p>Implementations should override this class and implement {@link #onCreateDialog(Context context)} to create a custom dialog, such as an {@link android.app.AlertDialog}
+ * <p>Implementations should override this class and implement {@link #onCreateDialog(Context context)} to withProvider a custom dialog, such as an {@link android.app.AlertDialog}
  */
 public abstract class DialogController extends BaseController {
 

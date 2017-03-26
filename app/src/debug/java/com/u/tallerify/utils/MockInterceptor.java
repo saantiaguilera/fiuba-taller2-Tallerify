@@ -26,17 +26,19 @@ public class MockInterceptor implements Interceptor {
 
             if (url.contains("oauth/token")) {
                 responseString = Login.RESPONSE_LOGIN;
-            } else if (url.contains("songs/trending") || url.contains("user/songs") || url.contains("user/song/favorite")) {
+            } else if (url.contains("tracks/trending") || url.contains("me/tracks/favorites")) {
                 responseString = Song.RESPONSE_TRENDING_SONGS;
-            } else if (url.contains("song/")) {
+            } else if (url.contains("track")) {
                 responseString = Song.RESPONSE_SONG;
-            } else if (url.contains("artists/trending") || url.contains("user/artists") || url.contains("user/artist/favorite")) {
+            } else if (url.contains("artists/trending") || url.contains("me/artists/favorites") || url.contains("user/artist/favorite")) {
                 responseString = Artist.RESPONSE_ARTISTS_TRENDING;
-            } else if (url.contains("artist/")) {
+            } else if (url.contains("artist")) {
                 responseString = Artist.RESPONSE_ARTIST;
-            } else if (url.contains("user/playlists")) {
+            } else if (url.contains("me/playlists")) {
                 responseString = Playlist.RESPONSE_USER_PLAYLISTS;
-            } else if (url.contains("user/")) {
+            } else if (url.contains("playlist")){
+                responseString = Playlist.RESPONSE_USER_PLAYLIST;
+            } else if (url.contains("users/")) {
                 responseString = User.RESPONSE_USER;
             } else {
                 responseString = "";

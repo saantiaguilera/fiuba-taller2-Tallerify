@@ -1,7 +1,6 @@
 package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
-import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -14,10 +13,10 @@ import rx.schedulers.Schedulers;
 @SuppressWarnings("unused")
 public class Album extends Entity implements Playable {
 
-    private @NonNull Picture picture;
+    private @NonNull List<String> images;
     private @NonNull String name;
-    private @NonNull List<Song> songs;
-    private @NonNull Artist artist;
+    private @NonNull List<Song> tracks;
+    private @NonNull List<Artist> artists;
 
     protected Album() {
         super();
@@ -26,7 +25,7 @@ public class Album extends Entity implements Playable {
     @NonNull
     @Override
     public List<String> urls() {
-        return Observable.from(songs)
+        return Observable.from(tracks)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .map(new Func1<Song, String>() {
@@ -40,8 +39,8 @@ public class Album extends Entity implements Playable {
             .first();
     }
 
-    public @NonNull Picture picture() {
-        return picture;
+    public @NonNull List<String> pictures() {
+        return images;
     }
 
     @NonNull
@@ -55,11 +54,11 @@ public class Album extends Entity implements Playable {
     }
 
     public @NonNull List<Song> songs() {
-        return songs;
+        return tracks;
     }
 
-    public @NonNull Artist artist() {
-        return artist;
+    public @NonNull List<Artist> artists() {
+        return artists;
     }
 
     @Override
@@ -76,16 +75,16 @@ public class Album extends Entity implements Playable {
 
         final Album album = (Album) o;
 
-        if (!picture.equals(album.picture)) {
+        if (!images.equals(album.images)) {
             return false;
         }
         if (!name.equals(album.name)) {
             return false;
         }
-        if (songs != null && !songs.equals(album.songs)) {
+        if (tracks != null && !tracks.equals(album.tracks)) {
             return false;
         }
-        if (artist != null && !artist.equals(album.artist)) {
+        if (artists != null && !artists.equals(album.artists)) {
             return false;
         }
         return true;
@@ -94,10 +93,10 @@ public class Album extends Entity implements Playable {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + picture.hashCode();
+        result = 31 * result + images.hashCode();
         result = 31 * result + name.hashCode();
-        result = 31 * result + songs.hashCode();
-        result = 31 * result + artist.hashCode();
+        result = 31 * result + tracks.hashCode();
+        result = 31 * result + artists.hashCode();
         return result;
     }
 

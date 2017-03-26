@@ -2,7 +2,6 @@ package com.u.tallerify.networking;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 import com.u.tallerify.BuildConfig;
 import com.u.tallerify.model.AccessToken;
@@ -188,7 +187,7 @@ public class RestClient {
          *
          * By default it will try to authenticate the request (unless specified).
          *
-         * @param service class to create the instance for
+         * @param service class to withProvider the instance for
          * @return Service instance for doing http request against.
          */
         public @NonNull <T> T create(@NonNull final Class<T> service) {
@@ -198,7 +197,6 @@ public class RestClient {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                     .setDateFormat(DATE_FORMAT)
-                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                     .create()))
                 .client(buildHttpClient())
                 .build()

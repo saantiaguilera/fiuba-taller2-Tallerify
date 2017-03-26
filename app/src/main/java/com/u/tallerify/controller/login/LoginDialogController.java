@@ -15,14 +15,10 @@ import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.abstracts.AlertDialogController;
 import com.u.tallerify.model.AccessToken;
-import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.Interactors;
-import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
-import com.u.tallerify.networking.interactor.song.SongInteractor;
-import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
 import com.u.tallerify.presenter.login.LoginDialogPresenter;
@@ -77,7 +73,7 @@ public class LoginDialogController extends AlertDialogController {
             }
         });
 
-        CredentialsInteractor.instance().create(getApplicationContext(),
+        CredentialsInteractor.instance().createWithProvider(getApplicationContext(),
                 new CredentialsService.CreateCredentialForm(
                     result.getAccessToken().getToken(),
                     AccessToken.Provider.FACEBOOK))

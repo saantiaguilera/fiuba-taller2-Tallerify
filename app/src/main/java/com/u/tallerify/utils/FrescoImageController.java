@@ -26,7 +26,7 @@ import java.lang.ref.WeakReference;
  *
  * Simple usage example;
 
- FrescoImageController.create()
+ FrescoImageController.withProvider()
  .load(uriToLoadImageFrom); //Supports uri/url/resId/file
  .listener(new FrescoImageController.Callback() {
  //Override the onSuccess and the onFailure and do what you want
@@ -64,7 +64,7 @@ public class FrescoImageController {
     private @Nullable ImageRequest.CacheChoice cacheChoice;
 
     /**
-     * Static method to create an empty builder. The same can be achieved by doing
+     * Static method to withProvider an empty builder. The same can be achieved by doing
      * new FrescoImageController.Builder();
      *
      * @return empty builder
@@ -364,7 +364,7 @@ public class FrescoImageController {
     }
 
     /**
-     * Builder class to create an immutable FrescoController
+     * Builder class to withProvider an immutable FrescoController
      */
     public static class Builder {
 

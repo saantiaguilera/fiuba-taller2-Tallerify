@@ -10,6 +10,7 @@ import java.util.List;
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
 
 /**
@@ -44,7 +45,7 @@ public final class SongInteractor {
         return trendingSongsSubject;
     }
 
-    public Observable<Song> song(@NonNull Context context, long songId) {
+    public @NonNull Observable<Song> song(@NonNull Context context, long songId) {
         return RestClient.with(context).create(SongService.class)
             .song(songId)
             .doOnSubscribe(new Action0() {
@@ -70,7 +71,7 @@ public final class SongInteractor {
                 }});
     }
 
-    public Observable<List<Song>> trendingSongs(@NonNull Context context) {
+    public @NonNull Observable<List<Song>> trendings(@NonNull Context context) {
         return RestClient.with(context).create(SongService.class)
             .trendingSongs()
             .doOnSubscribe(new Action0() {
@@ -94,6 +95,33 @@ public final class SongInteractor {
                         .model(songs)
                         .build());
                 }});
+    }
+
+    public @NonNull Observable<Song> like(@NonNull Context context, @NonNull Song song) {
+        return RestClient.with(context).create(SongService.class)
+            .likeSong(song.id());
+    }
+
+    public @NonNull Observable<Song> dislike(@NonNull Context context, @NonNull final Song song) {
+        return RestClient.with(context).create(SongService.class)
+            .dislikeSong(song.id())
+            .map(new Func1<Void, Song>() {
+                @Override
+                public Song call(final Void aVoid) {
+                    return song;
+                }
+            });
+    }
+
+    public @NonNull Observable<Song> rate(@NonNull Context context, @NonNull final Song song, int rate) {
+        return RestClient.with(context).create(SongService.class)
+            .rateSong(song.id(), rate)
+            .map(new Func1<Integer, Song>() {
+                @Override
+                public Song call(final Integer integer) {
+                    return song;
+                }
+            });
     }
 
 }

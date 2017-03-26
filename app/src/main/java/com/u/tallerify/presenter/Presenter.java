@@ -48,7 +48,7 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
     }
 
     /**
-     * Display the dialog, create a transaction and pushing the controller.
+     * Display the dialog, withProvider a transaction and pushing the controller.
      * @param tag The tag for this controller
      */
     public void showDialog(@NonNull AlertDialogController controller, @Nullable String tag) {

@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
-import com.u.tallerify.contract.ContractView;
 import com.u.tallerify.contract.search.SearchContract;
 import com.u.tallerify.presenter.Presenter;
 import java.util.concurrent.TimeUnit;
