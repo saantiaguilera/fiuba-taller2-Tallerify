@@ -36,7 +36,7 @@ public class MockInterceptor implements Interceptor {
                 responseString = Artist.RESPONSE_ARTIST;
             } else if (url.contains("user/playlists")) {
                 responseString = Playlist.RESPONSE_USER_PLAYLISTS;
-            } else if (url.contains("user/")) {
+            } else if (url.contains("users/")) {
                 responseString = User.RESPONSE_USER;
             } else {
                 responseString = "";

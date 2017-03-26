@@ -2,7 +2,6 @@ package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.u.tallerify.model.Gender;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +16,7 @@ public class User extends Entity implements Serializable {
     private @NonNull String userName;
     private @NonNull String email;
     private @NonNull Date birthday;
-    private @NonNull List<String> pictures;
+    private @NonNull List<String> images;
     private @NonNull List<User> contacts;
 
     protected User() {
@@ -29,7 +28,7 @@ public class User extends Entity implements Serializable {
         userName = builder.name;
         email = builder.email;
         birthday = builder.birthday;
-        pictures = builder.pictures;
+        images = builder.images;
         contacts = builder.contacts;
     }
 
@@ -38,7 +37,7 @@ public class User extends Entity implements Serializable {
     }
 
     public @NonNull List<String> pictures() {
-        return pictures;
+        return images;
     }
 
     public @NonNull String email() {
@@ -79,7 +78,7 @@ public class User extends Entity implements Serializable {
         if (!contacts.equals(user.contacts)) {
             return false;
         }
-        return pictures.equals(user.pictures);
+        return images.equals(user.images);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class User extends Entity implements Serializable {
         result = 31 * result + userName.hashCode();
         result = 31 * result + email.hashCode();
         result = 31 * result + birthday.hashCode();
-        result = 31 * result + pictures.hashCode();
+        result = 31 * result + images.hashCode();
         result = 31 * result + contacts.hashCode();
         return result;
     }
@@ -99,7 +98,7 @@ public class User extends Entity implements Serializable {
         @Nullable String email;
         @Nullable Date birthday;
         @Nullable List<User> contacts;
-        @Nullable List<String> pictures;
+        @Nullable List<String> images;
 
         public Builder() {
             super();
@@ -130,7 +129,7 @@ public class User extends Entity implements Serializable {
         }
 
         public final @NonNull Builder pictures(@NonNull final List<String> pictures) {
-            this.pictures = pictures;
+            this.images = pictures;
             return this;
         }
 
@@ -152,7 +151,7 @@ public class User extends Entity implements Serializable {
             buildable &= name != null;
             buildable &= email != null;
             buildable &= birthday != null;
-            buildable &= pictures != null;
+            buildable &= images != null;
             buildable &= contacts != null;
             return buildable;
         }
