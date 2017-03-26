@@ -2,40 +2,41 @@ package com.u.tallerify.view.home.cards;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.home.cards.SongCardContract;
-import com.u.tallerify.supplier.home.card.SongCardSupplier;
+import com.u.tallerify.contract.home.cards.PlayableCardContract;
+import com.u.tallerify.supplier.home.card.PlayableCardSupplier;
 import com.u.tallerify.utils.FrescoImageController;
 import com.u.tallerify.utils.MetricsUtils;
 
 /**
  * Created by saguilera on 3/12/17.
  */
-public class SongCardView extends CardView
-        implements SongCardContract.View {
+public class PlayableCardView extends CardView
+        implements PlayableCardContract.View {
 
     private static int bestDimen = 0;
 
     private @NonNull TextView nameView;
     private @NonNull SimpleDraweeView imageView;
 
-    public SongCardView(final Context context) {
+    public PlayableCardView(final Context context) {
         this(context, null);
     }
 
-    public SongCardView(final Context context, final AttributeSet attrs) {
+    public PlayableCardView(final Context context, final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SongCardView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public PlayableCardView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        inflate(context, R.layout.view_card_song, this);
+        inflate(context, R.layout.view_card_playable, this);
 
         RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
             computeBestDimen(),
@@ -45,15 +46,21 @@ public class SongCardView extends CardView
         setRadius(getResources().getDimensionPixelSize(R.dimen.view_card_song_radius));
         setCardElevation(getResources().getDimensionPixelSize(R.dimen.view_card_song_elevation));
 
-        nameView = (TextView) findViewById(R.id.view_card_song_name);
-        imageView = (SimpleDraweeView) findViewById(R.id.view_card_song_image);
+        nameView = (TextView) findViewById(R.id.view_card_playable_name);
+        imageView = (SimpleDraweeView) findViewById(R.id.view_card_playable_image);
     }
 
     @Override
-    public void setImage(@NonNull final String url) {
-        FrescoImageController.create()
-            .load(url)
-            .into(imageView);
+    public void setImage(@Nullable final String url) {
+        if (url != null) {
+            FrescoImageController.create()
+                .load(url)
+                .into(imageView);
+        } else {
+            FrescoImageController.create()
+                .load(R.drawable.placeholder_song)
+                .into(imageView);
+        }
     }
 
     @Override
@@ -65,7 +72,7 @@ public class SongCardView extends CardView
         if (bestDimen != 0) return bestDimen;
 
         int screenWidth = MetricsUtils.getScreenPixelBounds(getContext()).x;
-        int columns = SongCardSupplier.SONGS_PER_ROW;
+        int columns = PlayableCardSupplier.SONGS_PER_ROW;
 
         screenWidth -= (2 * getResources().getDimensionPixelSize(R.dimen.home_item_paddings));
         screenWidth -= ((columns + 1) * getResources().getDimensionPixelSize(R.dimen.home_item_paddings));

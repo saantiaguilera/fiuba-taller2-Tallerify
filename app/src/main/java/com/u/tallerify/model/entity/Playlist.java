@@ -4,16 +4,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import java.io.Serializable;
 import java.util.List;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/14/17.
  */
-
-public class Playlist extends Entity implements Serializable {
+public class Playlist extends Entity implements Serializable, Playable {
 
     private @NonNull String name;
-    private @NonNull List<Song> songs;
-    private @NonNull User creator;
+    private @NonNull String description;
+    private @NonNull List<Song> tracks;
+    private @NonNull User owner;
+    private @NonNull List<String> images;
 
     protected Playlist() {
         super();
@@ -22,8 +27,14 @@ public class Playlist extends Entity implements Serializable {
     protected Playlist(@NonNull Playlist.Builder builder) {
         super(builder);
         name = builder.name;
-        songs = builder.songs;
-        creator = builder.creator;
+        tracks = builder.tracks;
+        owner = builder.owner;
+        description = builder.description;
+        images = builder.pictures;
+    }
+
+    public @NonNull String description() {
+        return description;
     }
 
     public @NonNull String name() {
@@ -31,11 +42,11 @@ public class Playlist extends Entity implements Serializable {
     }
 
     public @NonNull List<Song> songs() {
-        return songs;
+        return tracks;
     }
 
     public @NonNull User creator() {
-        return creator;
+        return owner;
     }
 
     @Override
@@ -55,26 +66,62 @@ public class Playlist extends Entity implements Serializable {
         if (!name.equals(playlist.name)) {
             return false;
         }
-        if (!songs.equals(playlist.songs)) {
+        if (!tracks.equals(playlist.tracks)) {
             return false;
         }
-        return creator.equals(playlist.creator);
+        if (description != null && !description.equals(playlist.description)) {
+            return false;
+        }
+        return owner.equals(playlist.owner);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + name.hashCode();
-        result = 31 * result + songs.hashCode();
-        result = 31 * result + creator.hashCode();
+        result = 31 * result + tracks.hashCode();
+        result = 31 * result + owner.hashCode();
+        if (description != null) {
+            result = 31 * result + description.hashCode();
+        }
         return result;
+    }
+
+    @Nullable
+    @Override
+    public List<String> urls() {
+        return Observable.from(tracks)
+            .observeOn(Schedulers.io())
+            .map(new Func1<Song, String>() {
+                @Override
+                public String call(final Song song) {
+                    return song.url();
+                }
+            }).toList()
+            .observeOn(AndroidSchedulers.mainThread())
+            .toBlocking()
+            .first();
+    }
+
+    @Nullable
+    @Override
+    public List<String> pictures() {
+        return images;
+    }
+
+    @NonNull
+    @Override
+    public String fullName() {
+        return name();
     }
 
     public static class Builder extends Entity.Builder<Playlist> {
 
         @Nullable String name;
-        @Nullable List<Song> songs;
-        @Nullable User creator;
+        @Nullable List<Song> tracks;
+        @Nullable User owner;
+        @Nullable String description;
+        @Nullable List<String> pictures;
 
         public Builder() {
             super();
@@ -83,8 +130,20 @@ public class Playlist extends Entity implements Serializable {
         public Builder(@NonNull Playlist playlist) {
             super(playlist);
             name(playlist.name());
-            songs(playlist.songs());
-            creator(playlist.creator());
+            tracks(playlist.songs());
+            owner(playlist.creator());
+            description(playlist.description());
+            pictures(playlist.pictures());
+        }
+
+        public final @NonNull Playlist.Builder pictures(@NonNull final List<String> pictures) {
+            this.pictures = pictures;
+            return this;
+        }
+
+        public final @NonNull Playlist.Builder description(@NonNull final String description) {
+            this.description = description;
+            return this;
         }
 
         public final @NonNull Playlist.Builder name(@NonNull final String name) {
@@ -92,13 +151,13 @@ public class Playlist extends Entity implements Serializable {
             return this;
         }
 
-        public final @NonNull Playlist.Builder songs(@NonNull final List<Song> songs) {
-            this.songs = songs;
+        public final @NonNull Playlist.Builder tracks(@NonNull final List<Song> songs) {
+            this.tracks = songs;
             return this;
         }
 
-        public final @NonNull Playlist.Builder creator(@NonNull final User creator) {
-            this.creator = creator;
+        public final @NonNull Playlist.Builder owner(@NonNull final User creator) {
+            this.owner = creator;
             return this;
         }
 
@@ -113,8 +172,10 @@ public class Playlist extends Entity implements Serializable {
         public boolean buildable() {
             boolean buildable = super.buildable();
             buildable &= name != null;
-            buildable &= songs != null;
-            buildable &= creator != null;
+            buildable &= tracks != null;
+            buildable &= owner != null;
+            buildable &= description != null;
+            buildable &= pictures != null;
             return buildable;
         }
 

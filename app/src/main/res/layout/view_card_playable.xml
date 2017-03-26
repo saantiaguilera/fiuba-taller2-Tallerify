@@ -3,7 +3,7 @@
        xmlns:fresco="http://schemas.android.com/apk/res-auto">
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/view_card_song_image"
+        android:id="@+id/view_card_playable_image"
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,7 +16,7 @@
         fresco:roundedCornerRadius="@dimen/view_card_song_radius" />
 
     <TextView
-        android:id="@+id/view_card_song_name"
+        android:id="@+id/view_card_playable_name"
 
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_card_song_text_height"

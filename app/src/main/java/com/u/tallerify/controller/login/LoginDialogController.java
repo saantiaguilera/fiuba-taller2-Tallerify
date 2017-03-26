@@ -22,6 +22,7 @@ import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
 import com.u.tallerify.presenter.login.LoginDialogPresenter;
+import com.u.tallerify.utils.BussinessUtils;
 import com.u.tallerify.view.login.LoginDialogView;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -72,7 +73,7 @@ public class LoginDialogController extends AlertDialogController {
             }
         });
 
-        CredentialsInteractor.instance().create(getApplicationContext(),
+        CredentialsInteractor.instance().createWithProvider(getApplicationContext(),
                 new CredentialsService.CreateCredentialForm(
                     result.getAccessToken().getToken(),
                     AccessToken.Provider.FACEBOOK))
@@ -83,6 +84,8 @@ public class LoginDialogController extends AlertDialogController {
                 @Override
                 public void call(final AccessToken accessToken) {
                     if (accessToken != null) {
+                        BussinessUtils.requestBasicInfo(getApplicationContext());
+                        BussinessUtils.requestTrendings(getApplicationContext());
                         getRouter().popCurrentController();
                     }
                 }

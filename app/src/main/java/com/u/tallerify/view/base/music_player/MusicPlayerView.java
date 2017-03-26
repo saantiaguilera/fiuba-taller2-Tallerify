@@ -14,7 +14,6 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.base.MusicPlayerContract;
-import com.u.tallerify.model.entity.Picture;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.MetricsUtils;
 import com.u.tallerify.view.base.music_player.internal.MusicPlayerCompactView;
@@ -158,9 +157,9 @@ public class MusicPlayerView extends FrameLayout
     }
 
     @Override
-    public void setImage(@NonNull final Picture picture) {
-        compactView.setImageUrl(picture.thumb());
-        expandView.setImageUrl(picture.large());
+    public void setImage(@NonNull final String picture) {
+        compactView.setImageUrl(picture);
+        expandView.setImageUrl(picture);
     }
 
     @Override
@@ -274,7 +273,7 @@ public class MusicPlayerView extends FrameLayout
 
     @NonNull
     @Override
-    public Observable<Void> observeFavoriteClicks() {
+    public Observable<Boolean> observeFavoriteClicks() {
         return expandView.observeFavoriteClicks();
     }
 

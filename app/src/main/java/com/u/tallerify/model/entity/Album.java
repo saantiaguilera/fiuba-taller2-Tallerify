@@ -2,24 +2,51 @@ package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
 import java.util.List;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/12/17.
  */
 @SuppressWarnings("unused")
-public class Album extends Entity {
+public class Album extends Entity implements Playable {
 
-    private @NonNull Picture picture;
+    private @NonNull List<String> images;
     private @NonNull String name;
-    private @NonNull List<Song> songs;
-    private @NonNull Artist artist;
+    private @NonNull List<Song> tracks;
+    private @NonNull List<Artist> artists;
 
     protected Album() {
         super();
     }
 
-    public @NonNull Picture picture() {
-        return picture;
+    @NonNull
+    @Override
+    public List<String> urls() {
+        return Observable.from(tracks)
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .map(new Func1<Song, String>() {
+                @Override
+                public String call(final Song song) {
+                    return song.url();
+                }
+            }).toList()
+            .observeOn(AndroidSchedulers.mainThread())
+            .toBlocking()
+            .first();
+    }
+
+    public @NonNull List<String> pictures() {
+        return images;
+    }
+
+    @NonNull
+    @Override
+    public String fullName() {
+        return name();
     }
 
     public @NonNull String name() {
@@ -27,11 +54,11 @@ public class Album extends Entity {
     }
 
     public @NonNull List<Song> songs() {
-        return songs;
+        return tracks;
     }
 
-    public @NonNull Artist artist() {
-        return artist;
+    public @NonNull List<Artist> artists() {
+        return artists;
     }
 
     @Override
@@ -48,16 +75,16 @@ public class Album extends Entity {
 
         final Album album = (Album) o;
 
-        if (!picture.equals(album.picture)) {
+        if (!images.equals(album.images)) {
             return false;
         }
         if (!name.equals(album.name)) {
             return false;
         }
-        if (songs != null && !songs.equals(album.songs)) {
+        if (tracks != null && !tracks.equals(album.tracks)) {
             return false;
         }
-        if (artist != null && !artist.equals(album.artist)) {
+        if (artists != null && !artists.equals(album.artists)) {
             return false;
         }
         return true;
@@ -66,10 +93,10 @@ public class Album extends Entity {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + picture.hashCode();
+        result = 31 * result + images.hashCode();
         result = 31 * result + name.hashCode();
-        result = 31 * result + songs.hashCode();
-        result = 31 * result + artist.hashCode();
+        result = 31 * result + tracks.hashCode();
+        result = 31 * result + artists.hashCode();
         return result;
     }
 

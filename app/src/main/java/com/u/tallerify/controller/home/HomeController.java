@@ -2,18 +2,21 @@ package com.u.tallerify.controller.home;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
-import com.u.tallerify.presenter.home.HomeCardContainerPresenter;
+import com.u.tallerify.controller.search.SearchController;
+import com.u.tallerify.presenter.home.HomePresenter;
 
 /**
  * Created by saguilera on 3/12/17.
@@ -29,33 +32,30 @@ public class HomeController extends FlowController {
     @Override
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
-        inflateToolbar();
         Coordinators.bind(view, new CoordinatorProvider() {
             @Nullable
             @Override
             public Coordinator provideCoordinator(final View view) {
-                return new HomeCardContainerPresenter();
+                return new HomePresenter();
             }
         });
     }
 
-    private void inflateToolbar() {
-        Toolbar toolbar = getActionBar();
-        if (toolbar != null) {
-            toolbar.inflateMenu(R.menu.menu_home);
-            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(final MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.menu_home_search:
-                            //TODO
-                            Toast.makeText(getActivity(), "Search icon", Toast.LENGTH_SHORT).show();
-                            return true;
-                        default:
-                            return false;
-                    }
-                }
-            });
+    @Override
+    public void onCreateOptionsMenu(@NonNull final Menu menu, @NonNull final MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_home, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_home_search:
+                getRouter().pushController(RouterTransaction.with(new SearchController())
+                    .pushChangeHandler(new FadeChangeHandler())
+                    .popChangeHandler(new FadeChangeHandler(false)));
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -63,6 +63,11 @@ public class HomeController extends FlowController {
     @Override
     protected String title() {
         return getResources().getString(R.string.toolbar_home);
+    }
+
+    @Override
+    protected boolean hasOptionsMenu() {
+        return true;
     }
 
 }

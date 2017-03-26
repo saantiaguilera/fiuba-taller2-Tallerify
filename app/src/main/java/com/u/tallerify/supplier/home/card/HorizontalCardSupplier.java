@@ -2,34 +2,34 @@ package com.u.tallerify.supplier.home.card;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.u.tallerify.presenter.home.cards.TrendingSongsCardPresenter;
+import com.u.tallerify.presenter.home.cards.HorizontalCardPresenter;
 import com.u.tallerify.utils.adapter.GenericAdapter;
-import com.u.tallerify.view.home.cards.TrendingSongsCardView;
+import com.u.tallerify.view.home.cards.HorizontalCardView;
 import java.util.List;
 
 /**
  * Created by saguilera on 3/12/17.
  */
-public class TrendingSongsCardSupplier extends GenericAdapter.ItemSupplier<TrendingSongsCardView> {
+public class HorizontalCardSupplier extends GenericAdapter.ItemSupplier<HorizontalCardView> {
 
-    private @NonNull List<GenericAdapter.ItemSupplier> songsSupplier;
+    private @NonNull List<GenericAdapter.ItemSupplier> supplier;
 
-    public TrendingSongsCardSupplier(@NonNull final Context context,
-            @NonNull List<GenericAdapter.ItemSupplier> songsSupplier) {
+    public HorizontalCardSupplier(@NonNull final Context context,
+            @NonNull List<GenericAdapter.ItemSupplier> supplier) {
         super(context);
-        this.songsSupplier = songsSupplier;
+        this.supplier = supplier;
     }
 
     @NonNull
     @Override
-    public TrendingSongsCardView createView() {
-        return new TrendingSongsCardView(context());
+    public HorizontalCardView createView() {
+        return new HorizontalCardView(context());
     }
 
     @NonNull
     @Override
     public GenericAdapter.ItemPresenter<?> createPresenter() {
-        return new TrendingSongsCardPresenter(songsSupplier);
+        return new HorizontalCardPresenter(supplier);
     }
 
     @Override
@@ -44,7 +44,8 @@ public class TrendingSongsCardSupplier extends GenericAdapter.ItemSupplier<Trend
 
     @Override
     public boolean isSameContent(@NonNull final GenericAdapter.ItemSupplier supplier) {
-        return isSameItem(supplier);
+        return isSameItem(supplier) &&
+            ((HorizontalCardSupplier) supplier).supplier.equals(supplier);
     }
 
 }

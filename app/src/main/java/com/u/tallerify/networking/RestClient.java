@@ -2,10 +2,11 @@ package com.u.tallerify.networking;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
+import com.u.tallerify.BuildConfig;
 import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
+import com.u.tallerify.utils.MockInterceptor;
 import com.u.tallerify.utils.StethoUtils;
 import java.io.File;
 import java.io.IOException;
@@ -99,7 +100,7 @@ public class RestClient {
             public Request authenticate(final Route route, final Response response) throws IOException {
                 if (!needsAuth) return null;
 
-                AccessToken accessToken = AccessTokenManager.getInstance().read(context);
+                AccessToken accessToken = AccessTokenManager.instance().read(context);
                 if (accessToken == null)
                     throw new IllegalStateException("Trying to auth with no available access token");
 
@@ -115,7 +116,7 @@ public class RestClient {
                 }
 
                 if (accessToken != null) {
-                    AccessTokenManager.getInstance().write(context, accessToken);
+                    AccessTokenManager.instance().write(context, accessToken);
                     return response.request().newBuilder()
                         .addHeader("Authorization", accessToken.tokenType() + " " + accessToken.accessToken())
                         .build();
@@ -173,6 +174,10 @@ public class RestClient {
                 builder.addNetworkInterceptor(StethoUtils.httpInterceptor());
             }
 
+            if (BuildConfig.DEBUG) {
+                builder.addInterceptor(new MockInterceptor());
+            }
+
             return builder.build();
         }
 
@@ -182,7 +187,7 @@ public class RestClient {
          *
          * By default it will try to authenticate the request (unless specified).
          *
-         * @param service class to create the instance for
+         * @param service class to withProvider the instance for
          * @return Service instance for doing http request against.
          */
         public @NonNull <T> T create(@NonNull final Class<T> service) {
@@ -192,7 +197,6 @@ public class RestClient {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                     .setDateFormat(DATE_FORMAT)
-                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                     .create()))
                 .client(buildHttpClient())
                 .build()

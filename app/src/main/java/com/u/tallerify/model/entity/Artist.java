@@ -1,15 +1,20 @@
 package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
+import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/12/17.
  */
 @SuppressWarnings("unused")
-public class Artist extends Entity {
+public class Artist extends Entity implements Playable {
 
-    private @NonNull Picture picture;
+    private @NonNull List<String> images;
     private @NonNull String name;
     private @NonNull List<Album> albums;
 
@@ -17,8 +22,40 @@ public class Artist extends Entity {
         super();
     }
 
-    public @NonNull Picture picture() {
-        return picture;
+    @NonNull
+    @Override
+    public List<String> urls() {
+        return Observable.from(albums)
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .map(new Func1<Album, List<String>>() {
+                @Override
+                public List<String> call(final Album album) {
+                    return album.urls();
+                }
+            }).toList()
+            .map(new Func1<List<List<String>>, List<String>>() {
+                @Override
+                public List<String> call(final List<List<String>> lists) {
+                    List<String> strings = new ArrayList<>();
+                    for (List<String> innerStrings : lists) {
+                        strings.addAll(innerStrings);
+                    }
+                    return strings;
+                }
+            }).observeOn(AndroidSchedulers.mainThread())
+            .toBlocking()
+            .first();
+    }
+
+    public @NonNull List<String> pictures() {
+        return images;
+    }
+
+    @NonNull
+    @Override
+    public String fullName() {
+        return name();
     }
 
     public @NonNull String name() {
@@ -43,7 +80,7 @@ public class Artist extends Entity {
 
         final Artist artist = (Artist) o;
 
-        if (!picture.equals(artist.picture)) {
+        if (!images.equals(artist.images)) {
             return false;
         }
         if (!name.equals(artist.name)) {
@@ -58,7 +95,7 @@ public class Artist extends Entity {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + picture.hashCode();
+        result = 31 * result + images.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + albums.hashCode();
         return result;

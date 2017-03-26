@@ -1,19 +1,19 @@
 package com.u.tallerify.contract.home.cards;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
-import com.u.tallerify.utils.adapter.GenericAdapter;
-import java.util.List;
 
 /**
  * Created by saguilera on 3/12/17.
  */
-public interface TrendingSongsCardContract {
+public interface PlayableCardContract {
 
     interface View extends ContractView {
 
-        void setData(final @NonNull List<GenericAdapter.ItemSupplier> cards);
+        void setImage(@Nullable String url);
+        void setName(@NonNull String name);
 
     }
 
