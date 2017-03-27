@@ -11,6 +11,7 @@ import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
 /**
@@ -25,14 +26,21 @@ public final class ArtistInteractor {
 
     @NonNull BehaviorSubject<ReactiveModel<Artist>> artistSubject;
     @NonNull BehaviorSubject<ReactiveModel<List<Artist>>> trendingArtistsSubject;
+    @NonNull BehaviorSubject<ReactiveModel<List<Artist>>> querySubject;
 
     private ArtistInteractor() {
         artistSubject = BehaviorSubject.create();
         trendingArtistsSubject = BehaviorSubject.create();
+        querySubject = BehaviorSubject.create();
     }
 
     public static @NonNull ArtistInteractor instance() {
         return instance;
+    }
+
+    @NonNull
+    public Observable<ReactiveModel<List<Artist>>> observeSearches() {
+        return querySubject;
     }
 
     @NonNull
@@ -109,6 +117,45 @@ public final class ArtistInteractor {
                 @Override
                 public Artist call(final Void aVoid) {
                     return artist;
+                }
+            });
+    }
+
+    public @NonNull Observable<List<Artist>> search(@NonNull Context context, @NonNull String query) {
+        return RestClient.with(context).create(ArtistService.class)
+            .queryArtists(query)
+            .doOnSubscribe(new Action0() {
+                @Override
+                public void call() {
+                    querySubject.onNext(new ReactiveModel.Builder<List<Artist>>()
+                        .action(ACTION_LOADING)
+                        .build());
+                }
+            }).doOnError(new Action1<Throwable>() {
+                @Override
+                public void call(final Throwable throwable) {
+                    querySubject.onNext(new ReactiveModel.Builder<List<Artist>>()
+                        .error(throwable)
+                        .build());
+                }
+            }).doOnNext(new Action1<List<Artist>>() {
+                @Override
+                public void call(final List<Artist> artists) {
+                    Observable.from(artists)
+                        .observeOn(Schedulers.io())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(new Action1<Artist>() {
+                            @Override
+                            public void call(final Artist artist) {
+                                artistSubject.onNext(new ReactiveModel.Builder<>()
+                                    .model(artist)
+                                    .build());
+                            }
+                        });
+
+                    querySubject.onNext(new ReactiveModel.Builder<List<Artist>>()
+                        .model(artists)
+                        .build());
                 }
             });
     }
