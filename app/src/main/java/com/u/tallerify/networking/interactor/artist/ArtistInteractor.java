@@ -14,6 +14,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by saguilera on 3/19/17.
@@ -28,12 +29,12 @@ public final class ArtistInteractor {
 
     @NonNull BehaviorSubject<ReactiveModel<Artist>> artistSubject;
     @NonNull BehaviorSubject<ReactiveModel<List<Artist>>> trendingArtistsSubject;
-    @NonNull BehaviorSubject<ReactiveModel<List<Artist>>> querySubject;
+    @NonNull PublishSubject<ReactiveModel<List<Artist>>> querySubject;
 
     private ArtistInteractor() {
         artistSubject = BehaviorSubject.create();
         trendingArtistsSubject = BehaviorSubject.create();
-        querySubject = BehaviorSubject.create();
+        querySubject = PublishSubject.create();
     }
 
     public static @NonNull ArtistInteractor instance() {

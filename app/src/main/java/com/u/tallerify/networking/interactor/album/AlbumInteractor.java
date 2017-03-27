@@ -16,6 +16,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by saguilera on 3/19/17.
@@ -29,11 +30,11 @@ public final class AlbumInteractor {
     private static final @NonNull AlbumInteractor instance = new AlbumInteractor();
 
     @NonNull BehaviorSubject<ReactiveModel<Album>> albumSubject;
-    @NonNull BehaviorSubject<ReactiveModel<List<Album>>> querySubject;
+    @NonNull PublishSubject<ReactiveModel<List<Album>>> querySubject;
 
     private AlbumInteractor() {
         albumSubject = BehaviorSubject.create();
-        querySubject = BehaviorSubject.create();
+        querySubject = PublishSubject.create();
     }
 
     public static @NonNull AlbumInteractor instance() {

@@ -38,14 +38,6 @@ public class SearchBarPresenter extends Presenter<SearchBarContract.View>
             });
     }
 
-    @Override
-    protected void onDetach(@NonNull final SearchBarContract.View view) {
-        super.onDetach(view);
-        dispatch(SongInteractor.instance().search(getContext(), ""));
-        dispatch(AlbumInteractor.instance().search(getContext(), ""));
-        dispatch(ArtistInteractor.instance().search(getContext(), ""));
-    }
-
     void dispatch(Observable<?> observable) {
         observable.observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())

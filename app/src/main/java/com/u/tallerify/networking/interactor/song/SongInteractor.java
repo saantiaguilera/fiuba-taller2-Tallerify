@@ -13,6 +13,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by saguilera on 3/19/17.
@@ -27,12 +28,12 @@ public final class SongInteractor {
 
     @NonNull BehaviorSubject<ReactiveModel<Song>> songSubject;
     @NonNull BehaviorSubject<ReactiveModel<List<Song>>> trendingSongsSubject;
-    @NonNull BehaviorSubject<ReactiveModel<List<Song>>> searchSubject;
+    @NonNull PublishSubject<ReactiveModel<List<Song>>> searchSubject;
 
     private SongInteractor() {
         songSubject = BehaviorSubject.create();
         trendingSongsSubject = BehaviorSubject.create();
-        searchSubject = BehaviorSubject.create();
+        searchSubject = PublishSubject.create();
     }
 
     public static @NonNull SongInteractor instance() {
