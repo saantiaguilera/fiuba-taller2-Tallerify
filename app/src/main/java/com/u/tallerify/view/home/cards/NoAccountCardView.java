@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import com.jakewharton.rxbinding.view.RxView;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.home.cards.NoAccountCardContract;
+import com.u.tallerify.contract.abstracts.cards.NoAccountCardContract;
 import rx.Observable;
 
 /**

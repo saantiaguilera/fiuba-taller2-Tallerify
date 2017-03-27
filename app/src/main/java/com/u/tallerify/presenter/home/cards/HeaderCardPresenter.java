@@ -1,7 +1,7 @@
 package com.u.tallerify.presenter.home.cards;
 
 import android.support.annotation.NonNull;
-import com.u.tallerify.contract.home.cards.HeaderCardContract;
+import com.u.tallerify.contract.abstracts.cards.HeaderCardContract;
 import com.u.tallerify.utils.adapter.GenericAdapter;
 
 /**

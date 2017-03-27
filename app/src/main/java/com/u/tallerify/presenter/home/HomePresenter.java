@@ -2,7 +2,7 @@ package com.u.tallerify.presenter.home;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.u.tallerify.contract.home.HomeContract;
+import com.u.tallerify.contract.abstracts.GenericGridContract;
 import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.model.entity.Artist;
 import com.u.tallerify.model.entity.Playable;
@@ -26,13 +26,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 
 /**
  * Created by saguilera on 3/12/17.
  */
-public class HomePresenter extends Presenter<HomeContract.View>
-        implements HomeContract.Presenter {
+public class HomePresenter extends Presenter<GenericGridContract.View>
+        implements GenericGridContract.Presenter {
 
     @Nullable List<Artist> userArtists;
     @Nullable List<Song> userSongs;
@@ -41,37 +42,42 @@ public class HomePresenter extends Presenter<HomeContract.View>
     @Nullable List<Artist> trendingArtists;
     boolean loggedIn;
 
-    @NonNull PublishSubject<Void> notifier;
+    @NonNull BehaviorSubject<Void> notifier;
 
     @Nullable List<GenericAdapter.ItemSupplier> dataSnapshot;
 
     @Override
-    protected void onAttach(@NonNull final HomeContract.View view) {
-        notifier = PublishSubject.create();
+    protected void onAttach(@NonNull final GenericGridContract.View view) {
+        notifier = BehaviorSubject.create((Void) null);
         observeNotifier();
         observeRepositories();
-
-        notifier.onNext(null);
     }
 
     @Override
-    protected void onViewRequested(@NonNull final HomeContract.View view) {
+    protected void onViewRequested(@NonNull final GenericGridContract.View view) {
         super.onViewRequested(view);
         consumeSnapshot(view);
     }
 
-    private void consumeSnapshot(@NonNull final HomeContract.View view) {
+    /**
+     * Consume a snapshot of data and draw the view with it
+     */
+    private void consumeSnapshot(@NonNull final GenericGridContract.View view) {
         if (dataSnapshot != null) {
             view.setData(dataSnapshot);
             dataSnapshot = null;
         }
     }
 
+    /**
+     * Observe the data we want to react from
+     */
     private void observeRepositories() {
         MeInteractor.instance().observeArtists()
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
@@ -85,6 +91,7 @@ public class HomePresenter extends Presenter<HomeContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Song>> listReactiveModel) {
@@ -98,6 +105,7 @@ public class HomePresenter extends Presenter<HomeContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Playlist>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Playlist>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Playlist>> listReactiveModel) {
@@ -111,6 +119,7 @@ public class HomePresenter extends Presenter<HomeContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Song>> listReactiveModel) {
@@ -124,6 +133,7 @@ public class HomePresenter extends Presenter<HomeContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
@@ -137,6 +147,7 @@ public class HomePresenter extends Presenter<HomeContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override
                 public void call(final ReactiveModel<AccessToken> accessTokenReactiveModel) {
@@ -148,6 +159,10 @@ public class HomePresenter extends Presenter<HomeContract.View>
             });
     }
 
+    /**
+     * Starts observing the notifier with a debounce of half a second to avoid backpressure from backend.
+     * When notified it flatmaps all the data and saves a snapshot asking the view to be redrawn from it.
+     */
     private void observeNotifier() {
         notifier.observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
@@ -158,8 +173,7 @@ public class HomePresenter extends Presenter<HomeContract.View>
                 public List<GenericAdapter.ItemSupplier> call(final Void aVoid) {
                     return flatMap();
                 }
-            }).observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
+            })
             .subscribe(new Action1<List<GenericAdapter.ItemSupplier>>() {
                 @Override
                 public void call(final List<GenericAdapter.ItemSupplier> itemSuppliers) {
@@ -169,6 +183,10 @@ public class HomePresenter extends Presenter<HomeContract.View>
             });
     }
 
+    /**
+     * Flat maps a snapshot of all the data in the moment, creating accordingly the headers for each type of data
+     * @return a list of suppliers for a recycler view to show the data snapshot collected
+     */
     @NonNull List<GenericAdapter.ItemSupplier> flatMap() {
         List<GenericAdapter.ItemSupplier> data = new ArrayList<>();
 
@@ -187,6 +205,9 @@ public class HomePresenter extends Presenter<HomeContract.View>
         return data;
     }
 
+    /**
+     * Inflates for a given header and a list of playable objects a list of item suppliers for a recycler view
+     */
     @NonNull List<GenericAdapter.ItemSupplier> inflate(@NonNull String header, @Nullable List<? extends Playable> list) {
         List<GenericAdapter.ItemSupplier> aux = new ArrayList<>();
 

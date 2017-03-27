@@ -7,7 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.home.HomeContract;
+import com.u.tallerify.contract.abstracts.GenericGridContract;
 import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.view.home.recyclerview.BaseHomeItemDecorator;
 import java.util.List;
@@ -15,19 +15,19 @@ import java.util.List;
 /**
  * Created by saguilera on 3/12/17.
  */
-public class HomeView extends RecyclerView implements HomeContract.View {
+public class GenericGridView extends RecyclerView implements GenericGridContract.View {
 
     @NonNull GenericAdapter adapter;
 
-    public HomeView(final Context context) {
+    public GenericGridView(final Context context) {
         this(context, null);
     }
 
-    public HomeView(final Context context, final AttributeSet attrs) {
+    public GenericGridView(final Context context, final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public HomeView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public GenericGridView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));

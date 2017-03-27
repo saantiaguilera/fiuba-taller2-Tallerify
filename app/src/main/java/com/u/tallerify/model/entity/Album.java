@@ -1,6 +1,7 @@
 package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import java.util.List;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -13,16 +14,16 @@ import rx.schedulers.Schedulers;
 @SuppressWarnings("unused")
 public class Album extends Entity implements Playable {
 
-    private @NonNull List<String> images;
-    private @NonNull String name;
-    private @NonNull List<Song> tracks;
-    private @NonNull List<Artist> artists;
+    private @Nullable List<String> images;
+    private @Nullable String name;
+    private @Nullable List<Song> tracks;
+    private @Nullable List<Artist> artists;
 
     protected Album() {
         super();
     }
 
-    @NonNull
+    @Nullable
     @Override
     public List<String> urls() {
         return Observable.from(tracks)
@@ -39,25 +40,25 @@ public class Album extends Entity implements Playable {
             .first();
     }
 
-    public @NonNull List<String> pictures() {
+    public @Nullable List<String> pictures() {
         return images;
     }
 
-    @NonNull
+    @Nullable
     @Override
     public String fullName() {
         return name();
     }
 
-    public @NonNull String name() {
+    public @Nullable String name() {
         return name;
     }
 
-    public @NonNull List<Song> songs() {
+    public @Nullable List<Song> songs() {
         return tracks;
     }
 
-    public @NonNull List<Artist> artists() {
+    public @Nullable List<Artist> artists() {
         return artists;
     }
 
@@ -75,28 +76,25 @@ public class Album extends Entity implements Playable {
 
         final Album album = (Album) o;
 
-        if (!images.equals(album.images)) {
+        if (images != null ? !images.equals(album.images) : album.images != null) {
             return false;
         }
-        if (!name.equals(album.name)) {
+        if (name != null ? !name.equals(album.name) : album.name != null) {
             return false;
         }
-        if (tracks != null && !tracks.equals(album.tracks)) {
+        if (tracks != null ? !tracks.equals(album.tracks) : album.tracks != null) {
             return false;
         }
-        if (artists != null && !artists.equals(album.artists)) {
-            return false;
-        }
-        return true;
+        return artists != null ? artists.equals(album.artists) : album.artists == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + images.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + tracks.hashCode();
-        result = 31 * result + artists.hashCode();
+        result = 31 * result + (images != null ? images.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        result = 31 * result + (artists != null ? artists.hashCode() : 0);
         return result;
     }
 

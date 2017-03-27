@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.home.cards.PlayableCardContract;
+import com.u.tallerify.contract.abstracts.cards.PlayableCardContract;
 import com.u.tallerify.supplier.home.card.PlayableCardSupplier;
 import com.u.tallerify.utils.FrescoImageController;
 import com.u.tallerify.utils.MetricsUtils;

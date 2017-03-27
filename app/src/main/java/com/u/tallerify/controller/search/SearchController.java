@@ -10,8 +10,9 @@ import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
+import com.u.tallerify.presenter.search.SearchBarPresenter;
 import com.u.tallerify.presenter.search.SearchPresenter;
-import com.u.tallerify.view.search.SearchView;
+import com.u.tallerify.view.search.SearchBarView;
 
 /**
  * Created by saguilera on 3/24/17.
@@ -29,13 +30,20 @@ public class SearchController extends FlowController {
 
     @Override
     protected void onAttach(@NonNull final View view) {
-        View searchView = new SearchView(getActivity());
+        super.onAttach(view);
+
+        View searchView = new SearchBarView(getActivity());
         searchView.setTag(SEARCH_VIEW_TAG);
         getActionBar().addView(searchView);
 
-        super.onAttach(view);
-
         Coordinators.bind(searchView, new CoordinatorProvider() {
+            @Nullable
+            @Override
+            public Coordinator provideCoordinator(final View view) {
+                return new SearchBarPresenter();
+            }
+        });
+        Coordinators.bind(view, new CoordinatorProvider() {
             @Nullable
             @Override
             public Coordinator provideCoordinator(final View view) {
@@ -54,7 +62,7 @@ public class SearchController extends FlowController {
     @Nullable
     @Override
     protected String title() {
-        return null; // TODO removehardcoded
+        return null;
     }
 
 }

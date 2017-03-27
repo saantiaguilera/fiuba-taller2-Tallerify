@@ -1,23 +1,24 @@
-package com.u.tallerify.contract.search;
+package com.u.tallerify.contract.abstracts.cards;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
-import rx.Observable;
 
 /**
- * Created by saguilera on 3/24/17.
+ * Created by saguilera on 3/12/17.
  */
-
-public interface SearchContract {
+public interface PlayableCardContract {
 
     interface View extends ContractView {
 
-        @NonNull Observable<String> observeInputs();
+        void setImage(@Nullable String url);
+        void setName(@NonNull String name);
 
     }
 
     interface Presenter extends ContractPresenter {
+
     }
 
 }

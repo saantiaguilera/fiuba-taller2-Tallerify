@@ -2,17 +2,20 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditText
-        android:id="@+id/view_search_edit_text"
+        android:id="@+id/view_search_bar_edit_text"
 
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
 
         android:hint="@string/view_search_hint"
-        android:textColorHint="@color/view_search_hint"
+        android:textColorHint="@color/view_search_bar_hint"
 
         android:textSize="@dimen/view_search_text_size"
         android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+
+        android:textCursorDrawable="@null"
 
         android:maxLines="1"
         android:inputType="text"
@@ -21,11 +24,13 @@
         android:background="@color/transparent"/>
 
     <ImageView
-        android:id="@+id/view_search_clear"
+        android:id="@+id/view_search_bar_clear"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:src="@drawable/ic_shuffle_black_36dp" />
+        android:visibility="gone"
+
+        android:src="@drawable/ic_clear_black_36dp" />
 
 </merge>

@@ -11,7 +11,9 @@ import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by saguilera on 3/19/17.
@@ -20,15 +22,18 @@ import rx.subjects.BehaviorSubject;
 public final class SongInteractor {
 
     public static final int ACTION_LOADING = 0;
+    public static final int ACTION_EMPTY_SEARCH = 1;
 
     private static final @NonNull SongInteractor instance = new SongInteractor();
 
     @NonNull BehaviorSubject<ReactiveModel<Song>> songSubject;
     @NonNull BehaviorSubject<ReactiveModel<List<Song>>> trendingSongsSubject;
+    @NonNull PublishSubject<ReactiveModel<List<Song>>> searchSubject;
 
     private SongInteractor() {
         songSubject = BehaviorSubject.create();
         trendingSongsSubject = BehaviorSubject.create();
+        searchSubject = PublishSubject.create();
     }
 
     public static @NonNull SongInteractor instance() {
@@ -38,6 +43,11 @@ public final class SongInteractor {
     @NonNull
     public Observable<ReactiveModel<Song>> observeSong() {
         return songSubject;
+    }
+
+    @NonNull
+    public Observable<ReactiveModel<List<Song>>> observeSearches() {
+        return searchSubject;
     }
 
     @NonNull
@@ -94,7 +104,65 @@ public final class SongInteractor {
                     trendingSongsSubject.onNext(new ReactiveModel.Builder<List<Song>>()
                         .model(songs)
                         .build());
-                }});
+                }
+            });
+    }
+
+    public @NonNull Observable<List<Song>> search(@NonNull Context context, @NonNull String query) {
+        if (query.isEmpty()) {
+            return Observable.just(null)
+                .map(new Func1<Object, List<Song>>() {
+                    @Override
+                    public List<Song> call(final Object o) {
+                        return null;
+                    }
+                })
+                .doOnNext(new Action1<List<Song>>() {
+                    @Override
+                    public void call(final List<Song> o) {
+                        searchSubject.onNext(new ReactiveModel.Builder<List<Song>>()
+                            .action(ACTION_EMPTY_SEARCH)
+                            .build());
+                    }
+                });
+        } else {
+            return RestClient.with(context).create(SongService.class)
+                .querySongs(query)
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        searchSubject.onNext(new ReactiveModel.Builder<List<Song>>()
+                            .action(ACTION_LOADING)
+                            .build());
+                    }
+                }).doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(final Throwable throwable) {
+                        searchSubject.onNext(new ReactiveModel.Builder<List<Song>>()
+                            .error(throwable)
+                            .build());
+                    }
+                }).doOnNext(new Action1<List<Song>>() {
+                    @Override
+                    public void call(final List<Song> songs) {
+                        Observable.from(songs)
+                            .observeOn(Schedulers.io())
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(new Action1<Song>() {
+                                @Override
+                                public void call(final Song song) {
+                                    songSubject.onNext(new ReactiveModel.Builder<>()
+                                        .model(song)
+                                        .build());
+                                }
+                            });
+
+                        searchSubject.onNext(new ReactiveModel.Builder<List<Song>>()
+                            .model(songs)
+                            .build());
+                    }
+                });
+        }
     }
 
     public @NonNull Observable<Song> like(@NonNull Context context, @NonNull Song song) {

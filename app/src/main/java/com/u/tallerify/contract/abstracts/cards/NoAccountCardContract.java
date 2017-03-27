@@ -1,17 +1,18 @@
-package com.u.tallerify.contract.home.cards;
+package com.u.tallerify.contract.abstracts.cards;
 
-import android.support.annotation.NonNull;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
+import rx.Observable;
 
 /**
  * Created by saguilera on 3/12/17.
  */
-public interface HeaderCardContract {
+
+public interface NoAccountCardContract {
 
     interface View extends ContractView {
 
-        void setTitle(@NonNull CharSequence charSequence);
+        Observable<Void> observeCreateAccountsClicks();
 
     }
 

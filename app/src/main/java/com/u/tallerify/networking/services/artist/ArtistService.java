@@ -1,11 +1,13 @@
 package com.u.tallerify.networking.services.artist;
 
 import com.u.tallerify.model.entity.Artist;
+import com.u.tallerify.model.entity.Song;
 import java.util.List;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -18,6 +20,9 @@ public interface ArtistService {
 
     @GET("artists/trending")
     Observable<List<Artist>> trendingArtists();
+
+    @GET("artists/search")
+    Observable<List<Artist>> queryArtists(@Query("query") String query);
 
     @POST("me/artists/{artistId}/follow")
     Observable<Artist> followArtist(@Path("artistId") long artistId);

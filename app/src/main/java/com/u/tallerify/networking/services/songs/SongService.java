@@ -7,6 +7,7 @@ import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -19,6 +20,9 @@ public interface SongService {
 
     @GET("tracks/trending")
     Observable<List<Song>> trendingSongs();
+
+    @GET("tracks/search")
+    Observable<List<Song>> querySongs(@Query("query") String query);
 
     @POST("tracks/{trackId}/like")
     Observable<Song> likeSong(@Path("trackId") long songId);

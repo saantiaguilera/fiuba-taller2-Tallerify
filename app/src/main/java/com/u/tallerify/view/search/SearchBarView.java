@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.search.SearchContract;
+import com.u.tallerify.contract.search.SearchBarContract;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -21,18 +21,18 @@ import rx.subjects.PublishSubject;
  *
  * Created by saguilera on 3/24/17.
  */
-public class SearchView extends LinearLayout
-        implements SearchContract.View {
+public class SearchBarView extends LinearLayout
+        implements SearchBarContract.View {
 
     @NonNull EditText editTextView;
     @NonNull ImageView clearView;
 
     @Nullable PublishSubject<String> subject;
 
-    public SearchView(final Context context) {
+    public SearchBarView(final Context context) {
         super(context);
 
-        inflate(context, R.layout.view_search, this);
+        inflate(context, R.layout.view_search_bar, this);
 
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
@@ -40,8 +40,8 @@ public class SearchView extends LinearLayout
         setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT));
 
-        editTextView = (EditText) findViewById(R.id.view_search_edit_text);
-        clearView = (ImageView) findViewById(R.id.view_search_clear);
+        editTextView = (EditText) findViewById(R.id.view_search_bar_edit_text);
+        clearView = (ImageView) findViewById(R.id.view_search_bar_clear);
 
         editTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -55,10 +55,10 @@ public class SearchView extends LinearLayout
                     if (clearView.getVisibility() != View.VISIBLE) {
                         clearView.setVisibility(View.VISIBLE);
                     }
+                }
 
-                    if (subject != null) {
-                        subject.onNext(s.toString());
-                    }
+                if (subject != null) {
+                    subject.onNext(s.toString());
                 }
             }
 

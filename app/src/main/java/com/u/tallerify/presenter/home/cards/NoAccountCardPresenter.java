@@ -1,7 +1,7 @@
 package com.u.tallerify.presenter.home.cards;
 
 import android.support.annotation.NonNull;
-import com.u.tallerify.contract.home.cards.NoAccountCardContract;
+import com.u.tallerify.contract.abstracts.cards.NoAccountCardContract;
 import com.u.tallerify.controller.login.LoginDialogController;
 import com.u.tallerify.utils.adapter.GenericAdapter;
 import rx.android.schedulers.AndroidSchedulers;

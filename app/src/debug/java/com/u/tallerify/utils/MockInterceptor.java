@@ -1,5 +1,6 @@
 package com.u.tallerify.utils;
 
+import com.u.tallerify.mocks.Album;
 import com.u.tallerify.mocks.Artist;
 import com.u.tallerify.mocks.Login;
 import com.u.tallerify.mocks.Playlist;
@@ -26,11 +27,14 @@ public class MockInterceptor implements Interceptor {
 
             if (url.contains("oauth/token")) {
                 responseString = Login.RESPONSE_LOGIN;
-            } else if (url.contains("tracks/trending") || url.contains("me/tracks/favorites")) {
+            } else if (url.contains("tracks/trending") || url.contains("me/tracks/favorites")
+                    || url.contains("tracks/search")) {
                 responseString = Song.RESPONSE_TRENDING_SONGS;
             } else if (url.contains("track")) {
                 responseString = Song.RESPONSE_SONG;
-            } else if (url.contains("artists/trending") || url.contains("me/artists/favorites") || url.contains("user/artist/favorite")) {
+            } else if (url.contains("artists/trending") || url.contains("me/artists/favorites")
+                    || url.contains("artists/search")
+                    || url.contains("user/artist/favorite")) {
                 responseString = Artist.RESPONSE_ARTISTS_TRENDING;
             } else if (url.contains("artist")) {
                 responseString = Artist.RESPONSE_ARTIST;
@@ -40,6 +44,10 @@ public class MockInterceptor implements Interceptor {
                 responseString = Playlist.RESPONSE_USER_PLAYLIST;
             } else if (url.contains("users/")) {
                 responseString = User.RESPONSE_USER;
+            } else if (url.contains("albums/search")) {
+                responseString = Album.RESPONSE_ALBUMS;
+            } else if (url.contains("albums")) {
+                responseString = Album.RESPONSE_ALBUM;
             } else {
                 responseString = "";
             }
