@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import com.u.tallerify.model.entity.Album;
 import com.u.tallerify.model.entity.Artist;
+import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.networking.services.album.AlbumService;
@@ -23,6 +24,7 @@ import rx.subjects.BehaviorSubject;
 public final class AlbumInteractor {
 
     public static final int ACTION_LOADING = 0;
+    public static final int ACTION_EMPTY_SEARCH = 1;
 
     private static final @NonNull AlbumInteractor instance = new AlbumInteractor();
 
@@ -75,42 +77,60 @@ public final class AlbumInteractor {
     }
 
     public @NonNull Observable<List<Album>> search(@NonNull Context context, @NonNull String query) {
-        return RestClient.with(context).create(AlbumService.class)
-            .queryAlbums(query)
-            .doOnSubscribe(new Action0() {
-                @Override
-                public void call() {
-                    querySubject.onNext(new ReactiveModel.Builder<List<Album>>()
-                        .action(ACTION_LOADING)
-                        .build());
-                }
-            }).doOnError(new Action1<Throwable>() {
-                @Override
-                public void call(final Throwable throwable) {
-                    querySubject.onNext(new ReactiveModel.Builder<List<Album>>()
-                        .error(throwable)
-                        .build());
-                }
-            }).doOnNext(new Action1<List<Album>>() {
-                @Override
-                public void call(final List<Album> albums) {
-                    Observable.from(albums)
-                        .observeOn(Schedulers.io())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(new Action1<Album>() {
-                            @Override
-                            public void call(final Album album) {
-                                albumSubject.onNext(new ReactiveModel.Builder<>()
-                                    .model(album)
-                                    .build());
-                            }
-                        });
+        if (query.isEmpty()) {
+            return Observable.just(null)
+                .map(new Func1<Object, List<Album>>() {
+                    @Override
+                    public List<Album> call(final Object o) {
+                        return null;
+                    }
+                })
+                .doOnNext(new Action1<List<Album>>() {
+                    @Override
+                    public void call(final List<Album> o) {
+                        querySubject.onNext(new ReactiveModel.Builder<List<Song>>()
+                            .action(ACTION_EMPTY_SEARCH)
+                            .build());
+                    }
+                });
+        } else {
+            return RestClient.with(context).create(AlbumService.class)
+                .queryAlbums(query)
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        querySubject.onNext(new ReactiveModel.Builder<List<Album>>()
+                            .action(ACTION_LOADING)
+                            .build());
+                    }
+                }).doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(final Throwable throwable) {
+                        querySubject.onNext(new ReactiveModel.Builder<List<Album>>()
+                            .error(throwable)
+                            .build());
+                    }
+                }).doOnNext(new Action1<List<Album>>() {
+                    @Override
+                    public void call(final List<Album> albums) {
+                        Observable.from(albums)
+                            .observeOn(Schedulers.io())
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(new Action1<Album>() {
+                                @Override
+                                public void call(final Album album) {
+                                    albumSubject.onNext(new ReactiveModel.Builder<>()
+                                        .model(album)
+                                        .build());
+                                }
+                            });
 
-                    querySubject.onNext(new ReactiveModel.Builder<List<Album>>()
-                        .model(albums)
-                        .build());
-                }
-            });
+                        querySubject.onNext(new ReactiveModel.Builder<List<Album>>()
+                            .model(albums)
+                            .build());
+                    }
+                });
+        }
     }
 
 }

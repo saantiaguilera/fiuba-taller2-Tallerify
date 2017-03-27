@@ -24,7 +24,6 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
-import rx.subjects.PublishSubject;
 
 /**
  * Created by saguilera on 3/26/17.
@@ -74,8 +73,6 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                     return flatMap();
                 }
             })
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
             .subscribe(new Action1<List<GenericAdapter.ItemSupplier>>() {
                 @Override
                 public void call(final List<GenericAdapter.ItemSupplier> itemSuppliers) {
@@ -95,8 +92,11 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                 public void call(final ReactiveModel<List<Song>> listReactiveModel) {
                     if (listReactiveModel.model() != null) {
                         songs = listReactiveModel.model();
-                        notifier.onNext(null);
+                    } else if (listReactiveModel.action() == SongInteractor.ACTION_EMPTY_SEARCH) {
+                        songs = null;
                     }
+
+                    notifier.onNext(null);
                 }
             });
         ArtistInteractor.instance().observeSearches()
@@ -108,8 +108,11 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                 public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
                     if (listReactiveModel.model() != null) {
                         artists = listReactiveModel.model();
-                        notifier.onNext(null);
+                    } else if (listReactiveModel.action() == ArtistInteractor.ACTION_EMPTY_SEARCH) {
+                        artists = null;
                     }
+
+                    notifier.onNext(null);
                 }
             });
         AlbumInteractor.instance().observeSearches()
@@ -121,8 +124,11 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                 public void call(final ReactiveModel<List<Album>> listReactiveModel) {
                     if (listReactiveModel.model() != null) {
                         albums = listReactiveModel.model();
-                        notifier.onNext(null);
+                    } else if (listReactiveModel.action() == AlbumInteractor.ACTION_EMPTY_SEARCH) {
+                        albums = null;
                     }
+
+                    notifier.onNext(null);
                 }
             });
     }

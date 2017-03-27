@@ -174,8 +174,6 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                     return flatMap();
                 }
             })
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
             .subscribe(new Action1<List<GenericAdapter.ItemSupplier>>() {
                 @Override
                 public void call(final List<GenericAdapter.ItemSupplier> itemSuppliers) {
