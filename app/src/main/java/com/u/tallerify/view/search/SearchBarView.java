@@ -32,7 +32,7 @@ public class SearchBarView extends LinearLayout
     public SearchBarView(final Context context) {
         super(context);
 
-        inflate(context, R.layout.view_search, this);
+        inflate(context, R.layout.view_search_bar, this);
 
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
@@ -40,8 +40,8 @@ public class SearchBarView extends LinearLayout
         setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT));
 
-        editTextView = (EditText) findViewById(R.id.view_search_edit_text);
-        clearView = (ImageView) findViewById(R.id.view_search_clear);
+        editTextView = (EditText) findViewById(R.id.view_search_bar_edit_text);
+        clearView = (ImageView) findViewById(R.id.view_search_bar_clear);
 
         editTextView.addTextChangedListener(new TextWatcher() {
             @Override

@@ -77,6 +77,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
@@ -90,6 +91,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Song>> listReactiveModel) {
@@ -103,6 +105,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Playlist>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Playlist>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Playlist>> listReactiveModel) {
@@ -116,6 +119,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Song>> listReactiveModel) {
@@ -129,6 +133,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
                 @Override
                 public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
@@ -142,6 +147,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
+            .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override
                 public void call(final ReactiveModel<AccessToken> accessTokenReactiveModel) {
