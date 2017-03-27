@@ -55,10 +55,10 @@ public class SearchBarView extends LinearLayout
                     if (clearView.getVisibility() != View.VISIBLE) {
                         clearView.setVisibility(View.VISIBLE);
                     }
+                }
 
-                    if (subject != null) {
-                        subject.onNext(s.toString());
-                    }
+                if (subject != null) {
+                    subject.onNext(s.toString());
                 }
             }
 
