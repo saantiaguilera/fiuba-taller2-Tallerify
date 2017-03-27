@@ -46,7 +46,7 @@ public class MockInterceptor implements Interceptor {
                 responseString = User.RESPONSE_USER;
             } else if (url.contains("albums/search")) {
                 responseString = Album.RESPONSE_ALBUMS;
-            } else if (url.contains("album")) {
+            } else if (url.contains("albums")) {
                 responseString = Album.RESPONSE_ALBUM;
             } else {
                 responseString = "";

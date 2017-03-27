@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.home.cards.HorizontalCardContract;
+import com.u.tallerify.contract.abstracts.cards.HorizontalCardContract;
 import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.view.home.recyclerview.TrendingSongsItemDecorator;
 import java.util.List;

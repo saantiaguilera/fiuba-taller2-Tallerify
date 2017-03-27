@@ -1,6 +1,7 @@
 package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,29 +11,29 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Song extends Entity implements Playable {
 
-    private @NonNull String href;
-    private @NonNull String name;
-    private @NonNull Album album;
-    private @NonNull List<Artist> artists;
+    private @Nullable String href;
+    private @Nullable String name;
+    private @Nullable Album album;
+    private @Nullable List<Artist> artists;
     private long duration;
 
     protected Song() {
         super();
     }
 
-    public @NonNull String url() {
+    public @Nullable String url() {
         return href;
     }
 
-    public @NonNull String name() {
+    public @Nullable String name() {
         return name;
     }
 
-    public @NonNull Album album() {
+    public @Nullable Album album() {
         return album;
     }
 
-    public @NonNull List<Artist> artists() {
+    public @Nullable List<Artist> artists() {
         return artists;
     }
 
@@ -54,32 +55,29 @@ public class Song extends Entity implements Playable {
 
         final Song song = (Song) o;
 
-        if (!href.equals(song.href)) {
-            return false;
-        }
-        if (!name.equals(song.name)) {
-            return false;
-        }
-        if (!album.equals(song.album)) {
-            return false;
-        }
         if (duration != song.duration) {
             return false;
         }
-        if (artists != song.artists) {
+        if (href != null ? !href.equals(song.href) : song.href != null) {
             return false;
         }
-        return true;
+        if (name != null ? !name.equals(song.name) : song.name != null) {
+            return false;
+        }
+        if (album != null ? !album.equals(song.album) : song.album != null) {
+            return false;
+        }
+        return artists != null ? artists.equals(song.artists) : song.artists == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + href.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + album.hashCode();
-        result = 31 * result + artists.hashCode();
-        result = 31 * result + Long.valueOf(duration).hashCode();
+        result = 31 * result + (href != null ? href.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (album != null ? album.hashCode() : 0);
+        result = 31 * result + (artists != null ? artists.hashCode() : 0);
+        result = 31 * result + (int) (duration ^ (duration >>> 32));
         return result;
     }
 
@@ -89,19 +87,19 @@ public class Song extends Entity implements Playable {
         return Collections.singletonList(href);
     }
 
-    @NonNull
+    @Nullable
     @Override
     public List<String> pictures() {
         return album.pictures();
     }
 
-    @NonNull
+    @Nullable
     @Override
     public String fullName() {
         return name() + " - " + artistsName();
     }
 
-    public @NonNull String artistsName() {
+    public @Nullable String artistsName() {
         String name = null;
         for (Artist artist : artists()) {
             if (name == null) {

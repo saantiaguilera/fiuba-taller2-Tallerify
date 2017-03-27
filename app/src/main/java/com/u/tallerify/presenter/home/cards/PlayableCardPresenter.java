@@ -1,7 +1,7 @@
 package com.u.tallerify.presenter.home.cards;
 
 import android.support.annotation.NonNull;
-import com.u.tallerify.contract.home.cards.PlayableCardContract;
+import com.u.tallerify.contract.abstracts.cards.PlayableCardContract;
 import com.u.tallerify.model.entity.Playable;
 import com.u.tallerify.utils.adapter.GenericAdapter;
 

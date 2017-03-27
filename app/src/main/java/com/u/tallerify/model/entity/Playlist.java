@@ -14,11 +14,11 @@ import rx.schedulers.Schedulers;
  */
 public class Playlist extends Entity implements Serializable, Playable {
 
-    private @NonNull String name;
-    private @NonNull String description;
-    private @NonNull List<Song> tracks;
-    private @NonNull User owner;
-    private @NonNull List<String> images;
+    private @Nullable String name;
+    private @Nullable String description;
+    private @Nullable List<Song> tracks;
+    private @Nullable User owner;
+    private @Nullable List<String> images;
 
     protected Playlist() {
         super();
@@ -33,19 +33,19 @@ public class Playlist extends Entity implements Serializable, Playable {
         images = builder.pictures;
     }
 
-    public @NonNull String description() {
+    public @Nullable String description() {
         return description;
     }
 
-    public @NonNull String name() {
+    public @Nullable String name() {
         return name;
     }
 
-    public @NonNull List<Song> songs() {
+    public @Nullable List<Song> songs() {
         return tracks;
     }
 
-    public @NonNull User creator() {
+    public @Nullable User creator() {
         return owner;
     }
 
@@ -63,27 +63,29 @@ public class Playlist extends Entity implements Serializable, Playable {
 
         final Playlist playlist = (Playlist) o;
 
-        if (!name.equals(playlist.name)) {
+        if (name != null ? !name.equals(playlist.name) : playlist.name != null) {
             return false;
         }
-        if (!tracks.equals(playlist.tracks)) {
+        if (description != null ? !description.equals(playlist.description) : playlist.description != null) {
             return false;
         }
-        if (description != null && !description.equals(playlist.description)) {
+        if (tracks != null ? !tracks.equals(playlist.tracks) : playlist.tracks != null) {
             return false;
         }
-        return owner.equals(playlist.owner);
+        if (owner != null ? !owner.equals(playlist.owner) : playlist.owner != null) {
+            return false;
+        }
+        return images != null ? images.equals(playlist.images) : playlist.images == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + tracks.hashCode();
-        result = 31 * result + owner.hashCode();
-        if (description != null) {
-            result = 31 * result + description.hashCode();
-        }
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        result = 31 * result + (images != null ? images.hashCode() : 0);
         return result;
     }
 
@@ -109,7 +111,7 @@ public class Playlist extends Entity implements Serializable, Playable {
         return images;
     }
 
-    @NonNull
+    @Nullable
     @Override
     public String fullName() {
         return name();

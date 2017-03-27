@@ -1,6 +1,7 @@
 package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
@@ -14,15 +15,15 @@ import rx.schedulers.Schedulers;
 @SuppressWarnings("unused")
 public class Artist extends Entity implements Playable {
 
-    private @NonNull List<String> images;
-    private @NonNull String name;
-    private @NonNull List<Album> albums;
+    private @Nullable List<String> images;
+    private @Nullable String name;
+    private @Nullable List<Album> albums;
 
     protected Artist() {
         super();
     }
 
-    @NonNull
+    @Nullable
     @Override
     public List<String> urls() {
         return Observable.from(albums)
@@ -48,21 +49,21 @@ public class Artist extends Entity implements Playable {
             .first();
     }
 
-    public @NonNull List<String> pictures() {
+    public @Nullable List<String> pictures() {
         return images;
     }
 
-    @NonNull
+    @Nullable
     @Override
     public String fullName() {
         return name();
     }
 
-    public @NonNull String name() {
+    public @Nullable String name() {
         return name;
     }
 
-    public @NonNull List<Album> albums() {
+    public @Nullable List<Album> albums() {
         return albums;
     }
 
@@ -80,24 +81,21 @@ public class Artist extends Entity implements Playable {
 
         final Artist artist = (Artist) o;
 
-        if (!images.equals(artist.images)) {
+        if (images != null ? !images.equals(artist.images) : artist.images != null) {
             return false;
         }
-        if (!name.equals(artist.name)) {
+        if (name != null ? !name.equals(artist.name) : artist.name != null) {
             return false;
         }
-        if (albums != null && !albums.equals(artist.albums)) {
-            return false;
-        }
-        return true;
+        return albums != null ? albums.equals(artist.albums) : artist.albums == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + images.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + albums.hashCode();
+        result = 31 * result + (images != null ? images.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (albums != null ? albums.hashCode() : 0);
         return result;
     }
 

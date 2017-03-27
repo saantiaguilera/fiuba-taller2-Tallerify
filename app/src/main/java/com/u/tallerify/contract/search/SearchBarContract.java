@@ -1,23 +1,23 @@
-package com.u.tallerify.contract.home.cards;
+package com.u.tallerify.contract.search;
 
+import android.support.annotation.NonNull;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
 import rx.Observable;
 
 /**
- * Created by saguilera on 3/12/17.
+ * Created by saguilera on 3/24/17.
  */
 
-public interface NoAccountCardContract {
+public interface SearchBarContract {
 
     interface View extends ContractView {
 
-        Observable<Void> observeCreateAccountsClicks();
+        @NonNull Observable<String> observeInputs();
 
     }
 
     interface Presenter extends ContractPresenter {
-
     }
 
 }

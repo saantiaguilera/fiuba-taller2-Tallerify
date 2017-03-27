@@ -12,10 +12,10 @@ import rx.Observable;
  */
 public interface AlbumService {
 
-    @GET("album/{id}")
+    @GET("albums/{id}")
     Observable<Album> album(@Path("id") long albumId);
 
-    @GET("album/search")
+    @GET("albums/search")
     Observable<List<Album>> queryAlbums(@Query("query") String query);
 
 }

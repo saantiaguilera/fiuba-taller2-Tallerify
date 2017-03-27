@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.search.SearchContract;
+import com.u.tallerify.contract.search.SearchBarContract;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -21,15 +21,15 @@ import rx.subjects.PublishSubject;
  *
  * Created by saguilera on 3/24/17.
  */
-public class SearchView extends LinearLayout
-        implements SearchContract.View {
+public class SearchBarView extends LinearLayout
+        implements SearchBarContract.View {
 
     @NonNull EditText editTextView;
     @NonNull ImageView clearView;
 
     @Nullable PublishSubject<String> subject;
 
-    public SearchView(final Context context) {
+    public SearchBarView(final Context context) {
         super(context);
 
         inflate(context, R.layout.view_search, this);

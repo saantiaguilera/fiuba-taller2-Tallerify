@@ -9,7 +9,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.home.cards.HeaderCardContract;
+import com.u.tallerify.contract.abstracts.cards.HeaderCardContract;
 
 /**
  * Created by saguilera on 3/12/17.
