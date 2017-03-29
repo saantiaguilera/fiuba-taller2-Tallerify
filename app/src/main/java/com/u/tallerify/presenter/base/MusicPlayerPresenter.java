@@ -53,7 +53,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     @Override
     protected void onDetach(@NonNull final MusicPlayerContract.View view) {
         super.onDetach(view);
-        MusicPlayerHelpers.unbindAudioSystem((Application) getContext().getApplicationContext(), contentObserver);
+        RxPlayerHelper.unbindAudioSystem((Application) getContext().getApplicationContext(), contentObserver);
     }
 
     @Override
@@ -161,7 +161,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                             public Long call(final Song song) {
                                 return song.id();
                             }
-                        }).toList()
+                        })
+                        .toList()
                         .toBlocking()
                         .first();
 
@@ -171,20 +172,20 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
 
         // Register a content resolver for the music volume changes, whenever it changes, change the current play
-        contentObserver = MusicPlayerHelpers.bindAudioSystem((Application) getContext().getApplicationContext());
+        contentObserver = RxPlayerHelper.bindAudioSystem((Application) getContext().getApplicationContext());
     }
 
     private void observeView(@NonNull MusicPlayerContract.View view) {
-        MusicPlayerHelpers.observePlayStateClicks(view);
-        MusicPlayerHelpers.observeBackwardClicks(view);
-        MusicPlayerHelpers.observeForwardClicks(view);
-        MusicPlayerHelpers.observePlaylistSkips(view);
-        MusicPlayerHelpers.observeRepeatClicks(view);
-        MusicPlayerHelpers.observeShuffleClicks(view);
-        MusicPlayerHelpers.observeTimeSeeks(view);
-        MusicPlayerHelpers.observeVolumeSeeks((Application) getContext().getApplicationContext(), view);
+        RxPlayerHelper.observePlayStateClicks(view);
+        RxPlayerHelper.observeBackwardClicks(view);
+        RxPlayerHelper.observeForwardClicks(view);
+        RxPlayerHelper.observePlaylistSkips(view);
+        RxPlayerHelper.observeRepeatClicks(view);
+        RxPlayerHelper.observeShuffleClicks(view);
+        RxPlayerHelper.observeTimeSeeks(view);
+        RxPlayerHelper.observeVolumeSeeks((Application) getContext().getApplicationContext(), view);
 
-        MusicPlayerHelpers.observeFavoriteClicks((Application) getContext().getApplicationContext(), view)
+        RxPlayerHelper.observeFavoriteClicks((Application) getContext().getApplicationContext(), view)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<Song>bindToView((View) view))
@@ -202,7 +203,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
             });
 
         // We need the result because this comunicates with a backend
-        MusicPlayerHelpers.observeRatingSeeks(view)
+        RxPlayerHelper.observeRatingSeeks(view)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<Pair<Long, Integer>>bindToView((View) view))

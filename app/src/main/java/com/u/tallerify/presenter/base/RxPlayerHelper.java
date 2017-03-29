@@ -12,6 +12,7 @@ import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.contract.base.MusicPlayerContract.View;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.interactor.Interactors;
+import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.utils.CurrentPlay;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import static android.provider.Settings.System.CONTENT_URI;
 /**
  * Created by saguilera on 3/21/17.
  */
-final class MusicPlayerHelpers {
+final class RxPlayerHelper {
 
     static @NonNull ContentObserver bindAudioSystem(@NonNull final Application context) {
         ContentObserver contentObserver;
@@ -287,7 +288,17 @@ final class MusicPlayerHelpers {
                     }
 
                     observable.observeOn(Schedulers.io())
-                        .subscribe(Interactors.ACTION_NEXT, new Action1<Throwable>() {
+                        .subscribe(new Action1<Song>() {
+                            @Override
+                            public void call(final Song song) {
+                                // Api is bad, and gives us a song, request the favorites again for syncronizing
+                                MeInteractor.instance().songs(application)
+                                    .observeOn(Schedulers.io())
+                                    .subscribeOn(Schedulers.io())
+                                    // Not composed, this method can last whatever he wants. It has timeout also
+                                    .subscribe(Interactors.ACTION_NEXT, Interactors.ACTION_ERROR);
+                            }
+                        }, new Action1<Throwable>() {
                             @Override
                             public void call(final Throwable throwable) {
                                 // If something goes wrong, call it again
