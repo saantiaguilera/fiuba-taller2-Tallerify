@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/view_user_info_name"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:textSize="18sp"
+        android:text="Testing user name"
+        android:textColor="@color/black"
+
+        android:layout_marginTop="20dp"
+
+        android:layout_toLeftOf="@+id/view_user_info_image"
+        android:layout_alignTop="@+id/view_user_info_image"
+
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/view_user_info_location"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:textSize="14sp"
+        android:text="Testing location"
+        android:textColor="@color/black"
+
+        android:layout_toLeftOf="@+id/view_user_info_image"
+        android:layout_alignBottom="@+id/view_user_info_image"
+        android:layout_below="@+id/view_user_info_name"
+
+        android:gravity="center_horizontal|top" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/view_user_info_image"
+
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+
+        android:layout_marginRight="16dp"
+
+        fresco:placeholderImage="@drawable/placeholder_song"
+        fresco:roundAsCircle="true"/>
+
+</merge>

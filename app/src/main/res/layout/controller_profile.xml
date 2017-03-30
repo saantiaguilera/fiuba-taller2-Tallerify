@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:fillViewport="true" >
+
+    <com.u.tallerify.view.profile.UserInfoView
+        android:id="@+id/controller_profile_info"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.u.tallerify.view.home.GenericGridView
+        android:id="@+id/controller_profile_recycler_view"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</ScrollView>

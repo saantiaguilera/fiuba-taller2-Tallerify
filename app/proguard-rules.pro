@@ -106,3 +106,6 @@
 -keep public class pl.droidsonroids.gif.GifIOException{<init>(int);}
 
 -keepnames @com.u.tallerify.annotations.KeepName class *
+-keepclassmembernames class * {
+    @com.u.tallerify.annotations.KeepName *;
+}
