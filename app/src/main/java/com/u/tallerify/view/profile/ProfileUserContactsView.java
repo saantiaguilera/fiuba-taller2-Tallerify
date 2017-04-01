@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.profile.ProfileUserContactsContract;
-import com.u.tallerify.view.abstracts.FixedListView;
+import com.u.tallerify.view.abstracts.FixedSimpleListView;
 import com.u.tallerify.view.base.cards.HeaderCardView;
 import java.util.List;
 import rx.Observable;
@@ -20,7 +20,7 @@ public class ProfileUserContactsView extends LinearLayout
         implements ProfileUserContactsContract.View {
 
     private @NonNull HeaderCardView headerView;
-    private @NonNull FixedListView recyclerView;
+    private @NonNull FixedSimpleListView recyclerView;
 
     public ProfileUserContactsView(final Context context) {
         this(context, null);
@@ -35,7 +35,7 @@ public class ProfileUserContactsView extends LinearLayout
 
         // For perfmance, since its just 2 custom views, add them programatically
         headerView = new HeaderCardView(context);
-        recyclerView = new FixedListView(context);
+        recyclerView = new FixedSimpleListView(context);
 
         setOrientation(VERTICAL);
 

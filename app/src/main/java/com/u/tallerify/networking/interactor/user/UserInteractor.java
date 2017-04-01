@@ -2,9 +2,11 @@ package com.u.tallerify.networking.interactor.user;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.networking.services.user.UserService;
+import java.util.List;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -33,6 +35,12 @@ public final class UserInteractor {
             .noAuth()
             .create(UserService.class)
             .create(user, password);
+    }
+
+    public @NonNull Observable<List<Song>> activity(@NonNull Context context, long userId) {
+        return RestClient.with(context)
+            .create(UserService.class)
+            .activity(userId);
     }
 
     public @NonNull Observable<User> follow(@NonNull Context context, @NonNull User me, @NonNull User him) {

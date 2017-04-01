@@ -13,14 +13,14 @@ import java.util.List;
  */
 public class User extends Entity implements Serializable {
 
-    private @NonNull String userName;
-    private @NonNull String firstName;
-    private @NonNull String lastName;
-    private @NonNull String country;
-    private @NonNull String email;
-    private @NonNull Date birthday;
-    private @NonNull List<String> images;
-    private @NonNull List<User> contacts;
+    private @Nullable String userName;
+    private @Nullable String firstName;
+    private @Nullable String lastName;
+    private @Nullable String country;
+    private @Nullable String email;
+    private @Nullable Date birthday;
+    private @Nullable List<String> images;
+    private @Nullable List<User> contacts;
 
     protected User() {
         super();
@@ -38,35 +38,35 @@ public class User extends Entity implements Serializable {
         country = builder.country;
     }
 
-    public @NonNull Date birthday() {
+    public @Nullable Date birthday() {
         return birthday;
     }
 
-    public @NonNull List<String> pictures() {
+    public @Nullable List<String> pictures() {
         return images;
     }
 
-    public @NonNull String email() {
+    public @Nullable String email() {
         return email;
     }
 
-    public @NonNull String firstName() {
+    public @Nullable String firstName() {
         return firstName;
     }
 
-    public @NonNull String lastName() {
+    public @Nullable String lastName() {
         return lastName;
     }
 
-    public @NonNull String country() {
+    public @Nullable String country() {
         return country;
     }
 
-    public @NonNull String name() {
+    public @Nullable String name() {
         return userName;
     }
 
-    public @NonNull List<User> contacts() {
+    public @Nullable List<User> contacts() {
         return contacts;
     }
 

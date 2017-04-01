@@ -10,7 +10,7 @@ import rx.Observable;
  * Created by saguilera on 4/1/17.
  */
 
-public interface FixedListContract {
+public interface FixedSimpleListContract {
 
     interface View extends ContractView {
 

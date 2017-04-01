@@ -259,7 +259,7 @@
 
             </LinearLayout>
 
-            <com.u.tallerify.view.abstracts.FixedListView
+            <com.u.tallerify.view.abstracts.FixedSimpleListView
                 android:id="@+id/view_music_player_expanded_playlist"
 
                 android:layout_width="match_parent"

@@ -6,29 +6,32 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import com.u.tallerify.contract.abstracts.FixedListContract;
+import com.u.tallerify.contract.abstracts.FixedSimpleListContract;
 import com.u.tallerify.view.abstracts.internals.FixedListChildView;
 import java.util.List;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
 /**
+ * Fixed list for presenting simple data with a title and a name
+ * This does not uses recycler view, but it does use the same recycling concept to avoid trashing memory
+ *
  * Created by saguilera on 3/30/17.
  */
-public class FixedListView extends LinearLayout
-        implements FixedListContract.View {
+public class FixedSimpleListView extends LinearLayout
+        implements FixedSimpleListContract.View {
 
     @Nullable PublishSubject<Integer> clickSubject;
 
-    public FixedListView(final Context context) {
+    public FixedSimpleListView(final Context context) {
         this(context, null);
     }
 
-    public FixedListView(final Context context, @Nullable final AttributeSet attrs) {
+    public FixedSimpleListView(final Context context, @Nullable final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public FixedListView(final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
+    public FixedSimpleListView(final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         setOrientation(VERTICAL);

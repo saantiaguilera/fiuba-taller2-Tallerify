@@ -20,7 +20,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.u.tallerify.R;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.FrescoImageController;
-import com.u.tallerify.view.abstracts.FixedListView;
+import com.u.tallerify.view.abstracts.FixedSimpleListView;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Func1;
@@ -51,7 +51,7 @@ public class MusicPlayerExpandedView extends ScrollView {
     private @NonNull ImageView expandShuffle;
     private @NonNull ImageView expandFavorite;
     private @NonNull RatingBar expandRatingBar;
-    private @NonNull FixedListView expandPlaylistContainer;
+    private @NonNull FixedSimpleListView expandPlaylistContainer;
 
     boolean favorited;
 
@@ -86,7 +86,7 @@ public class MusicPlayerExpandedView extends ScrollView {
         expandRepeat = (ImageView) findViewById(R.id.view_music_player_expanded_repeat);
         expandFavorite = (ImageView) findViewById(R.id.view_music_player_expanded_favorite);
         expandRatingBar = (RatingBar) findViewById(R.id.view_music_player_expanded_rating_bar);
-        expandPlaylistContainer = (FixedListView) findViewById(R.id.view_music_player_expanded_playlist);
+        expandPlaylistContainer = (FixedSimpleListView) findViewById(R.id.view_music_player_expanded_playlist);
 
         tintDrawable(expandTrackBar.getProgressDrawable());
         tintDrawable(expandVolumeBar.getProgressDrawable());
