@@ -7,14 +7,20 @@
 
     android:fillViewport="true" >
 
-    <com.u.tallerify.view.profile.UserInfoView
+    <com.u.tallerify.view.profile.ProfileUserInfoView
         android:id="@+id/controller_profile_info"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.u.tallerify.view.home.GenericGridView
-        android:id="@+id/controller_profile_recycler_view"
+    <com.u.tallerify.view.profile.ProfileUserActivityView
+        android:id="@+id/controller_profile_activity"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.u.tallerify.view.profile.ProfileUserContactsView
+        android:id="@+id/controller_profile_contacts"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

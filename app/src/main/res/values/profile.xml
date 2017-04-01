@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Headers -->
+    <string name="view_profile_last_activity_header_title">Actividad reciente</string>
+    <string name="view_profile_contacts_header_title">Contactos</string>
+
+</resources>

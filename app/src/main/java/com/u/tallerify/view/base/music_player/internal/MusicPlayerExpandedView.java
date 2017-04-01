@@ -6,13 +6,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -22,10 +20,10 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.u.tallerify.R;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.FrescoImageController;
+import com.u.tallerify.view.abstracts.FixedListView;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Func1;
-import rx.subjects.PublishSubject;
 
 /**
  * Ideally instead of having this mega class, we should have components like:
@@ -53,11 +51,9 @@ public class MusicPlayerExpandedView extends ScrollView {
     private @NonNull ImageView expandShuffle;
     private @NonNull ImageView expandFavorite;
     private @NonNull RatingBar expandRatingBar;
-    private @NonNull LinearLayout expandPlaylistContainer;
+    private @NonNull FixedListView expandPlaylistContainer;
 
     boolean favorited;
-
-    @Nullable PublishSubject<Integer> skipSongsSubject;
 
     public MusicPlayerExpandedView(final Context context) {
         this(context, null);
@@ -90,7 +86,7 @@ public class MusicPlayerExpandedView extends ScrollView {
         expandRepeat = (ImageView) findViewById(R.id.view_music_player_expanded_repeat);
         expandFavorite = (ImageView) findViewById(R.id.view_music_player_expanded_favorite);
         expandRatingBar = (RatingBar) findViewById(R.id.view_music_player_expanded_rating_bar);
-        expandPlaylistContainer = (LinearLayout) findViewById(R.id.view_music_player_expanded_playlist);
+        expandPlaylistContainer = (FixedListView) findViewById(R.id.view_music_player_expanded_playlist);
 
         tintDrawable(expandTrackBar.getProgressDrawable());
         tintDrawable(expandVolumeBar.getProgressDrawable());
@@ -109,11 +105,7 @@ public class MusicPlayerExpandedView extends ScrollView {
     }
 
     public @NonNull Observable<Integer> observePlaylistSkipClicks() {
-        if (skipSongsSubject == null) {
-            skipSongsSubject = PublishSubject.create();
-        }
-
-        return skipSongsSubject;
+        return expandPlaylistContainer.observePositionClicks();
     }
 
     public @NonNull Observable<Boolean> observeFavoriteClicks() {
@@ -151,49 +143,14 @@ public class MusicPlayerExpandedView extends ScrollView {
         return RxView.clicks(expandRepeat);
     }
 
-    private void attachLast(@NonNull String name, @NonNull String url) {
-        final MusicPlayerNextSong view = new MusicPlayerNextSong(getContext());
-        view.setTitle(name);
-        view.setImageUrl(url);
-        view.setTag(expandPlaylistContainer.getChildCount() + 1);
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (skipSongsSubject != null) {
-                    skipSongsSubject.onNext((Integer) view.getTag());
-                }
-            }
-        });
-
-        expandPlaylistContainer.addView(view);
-    }
-
-    public void setQueue(@NonNull List<String> names, @NonNull List<String> urls) {
-        if (names.size() != urls.size()) throw new IllegalStateException("Names size != urls size");
-
-        if (expandPlaylistContainer.getChildCount() > names.size()) {
-            for (int i = expandPlaylistContainer.getChildCount() ; i > names.size() ; --i) {
-                int absPosition = i - 1;
-                expandPlaylistContainer.removeViewAt(absPosition);
-            }
-        }
-
-        for (int i = 0 ; i < names.size() ; ++i) {
-            if (expandPlaylistContainer.getChildCount() < i + 1) {
-                attachLast(names.get(i), urls.get(i));
-            } else {
-                MusicPlayerNextSong currentSong = (MusicPlayerNextSong) expandPlaylistContainer.getChildAt(i);
-
-                currentSong.setImageUrl(urls.get(i));
-                currentSong.setTitle(names.get(i));
-            }
-        }
-    }
-
     public void setImageUrl(@NonNull String url) {
         FrescoImageController.create()
             .load(url)
             .into(expandImage);
+    }
+
+    public void setQueue(@NonNull List<String> names, @NonNull List<String> urls) {
+        expandPlaylistContainer.setData(names, urls);
     }
 
     public void setPlaying() {

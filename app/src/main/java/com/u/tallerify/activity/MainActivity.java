@@ -15,7 +15,7 @@ import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.splash.SplashController;
 import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
-import com.u.tallerify.presenter.base.MusicPlayerPresenter;
+import com.u.tallerify.presenter.base.music_player.MusicPlayerPresenter;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.RequestCodes;
 import com.u.tallerify.utils.RouterInteractor;

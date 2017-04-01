@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import com.jakewharton.rxbinding.view.RxView;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.base.MusicPlayerContract;
+import com.u.tallerify.contract.base.music_player.MusicPlayerContract;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.MetricsUtils;
 import com.u.tallerify.view.base.music_player.internal.MusicPlayerCompactView;
