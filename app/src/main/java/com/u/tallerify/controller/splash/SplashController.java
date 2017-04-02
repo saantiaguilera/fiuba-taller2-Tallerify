@@ -67,7 +67,7 @@ public class SplashController extends FlowController {
                 public void call(final Long aLong) {
                     getRouter()
                         .setPopsLastView(true)
-                        .pushController(RouterTransaction.with(new ProfileController()) // TODO Change this
+                        .pushController(RouterTransaction.with(new HomeController())
                             .popChangeHandler(new FadeChangeHandler(false))
                             .pushChangeHandler(new FadeChangeHandler()));
                 }
