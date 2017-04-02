@@ -3,9 +3,11 @@
 
     <!-- Toolbar -->
     <string name="toolbar_home">@string/app_name</string>
+    <string name="toolbar_profile">Perfil</string>
 
     <!-- Menu -->
     <string name="menu_home_search">Buscar</string>
+    <string name="menu_home_profile">Perfil</string>
 
     <!-- Music player view -->
     <string name="view_music_player_up_next">UP NEXT</string>

@@ -1,6 +1,8 @@
 package com.u.tallerify.networking.services.user;
 
+import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.model.entity.User;
+import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -22,6 +24,9 @@ public interface UserService {
 
     @POST("users/")
     Observable<User> create(@Body User user, @Field("password") String password);
+
+    @GET("users/{id}/activity")
+    Observable<List<Song>> activity(@Path("id") long id);
 
     @POST("users/{id}/follow")
     Observable<User> follow(@Path("id") long myId, @Field("userId") long hisId);

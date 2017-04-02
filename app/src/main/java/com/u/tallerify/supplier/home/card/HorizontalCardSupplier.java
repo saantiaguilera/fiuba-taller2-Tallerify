@@ -2,9 +2,9 @@ package com.u.tallerify.supplier.home.card;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.u.tallerify.presenter.home.cards.HorizontalCardPresenter;
+import com.u.tallerify.presenter.base.cards.HorizontalCardPresenter;
 import com.u.tallerify.utils.adapter.GenericAdapter;
-import com.u.tallerify.view.home.cards.HorizontalCardView;
+import com.u.tallerify.view.base.cards.HorizontalCardView;
 import java.util.List;
 
 /**

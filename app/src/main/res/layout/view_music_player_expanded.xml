@@ -259,15 +259,13 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <com.u.tallerify.view.abstracts.FixedSimpleListView
                 android:id="@+id/view_music_player_expanded_playlist"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:animateLayoutChanges="true"
-
-                android:orientation="vertical"/>
+                android:animateLayoutChanges="true" />
 
         </LinearLayout>
 

@@ -12,6 +12,7 @@ import com.facebook.drawee.view.DraweeView;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.home.HomeController;
+import com.u.tallerify.controller.profile.ProfileController;
 import com.u.tallerify.networking.AccessTokenManager;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.utils.BussinessUtils;

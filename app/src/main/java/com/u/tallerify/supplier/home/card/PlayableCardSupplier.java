@@ -3,9 +3,9 @@ package com.u.tallerify.supplier.home.card;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import com.u.tallerify.model.entity.Playable;
-import com.u.tallerify.presenter.home.cards.PlayableCardPresenter;
+import com.u.tallerify.presenter.base.cards.PlayableCardPresenter;
 import com.u.tallerify.utils.adapter.GenericAdapter;
-import com.u.tallerify.view.home.cards.PlayableCardView;
+import com.u.tallerify.view.base.cards.PlayableCardView;
 
 /**
  * Created by saguilera on 3/12/17.

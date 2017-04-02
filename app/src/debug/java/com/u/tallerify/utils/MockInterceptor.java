@@ -28,7 +28,7 @@ public class MockInterceptor implements Interceptor {
             if (url.contains("oauth/token")) {
                 responseString = Login.RESPONSE_LOGIN;
             } else if (url.contains("tracks/trending") || url.contains("me/tracks/favorites")
-                    || url.contains("tracks/search")) {
+                    || url.contains("tracks/search") || url.contains("/activity")) {
                 responseString = Song.RESPONSE_TRENDING_SONGS;
             } else if (url.contains("track")) {
                 responseString = Song.RESPONSE_SONG;
@@ -40,7 +40,7 @@ public class MockInterceptor implements Interceptor {
                 responseString = Artist.RESPONSE_ARTIST;
             } else if (url.contains("me/playlists")) {
                 responseString = Playlist.RESPONSE_USER_PLAYLISTS;
-            } else if (url.contains("playlist")){
+            } else if (url.contains("playlist")) {
                 responseString = Playlist.RESPONSE_USER_PLAYLIST;
             } else if (url.contains("users/")) {
                 responseString = User.RESPONSE_USER;

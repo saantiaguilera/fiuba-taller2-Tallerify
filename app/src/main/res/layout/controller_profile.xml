@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:nestedScrollingEnabled="true"
+    android:background="@color/white"
+    android:fillViewport="true" >
+
+    <LinearLayout
+        android:id="@+id/controller_profile_root"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingLeft="@dimen/view_profile_default_margin"
+        android:paddingRight="@dimen/view_profile_default_margin"
+
+        android:orientation="vertical">
+
+        <com.u.tallerify.view.profile.ProfileUserInfoView
+            android:id="@+id/controller_profile_info"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.u.tallerify.view.profile.ProfileUserActivityView
+            android:id="@+id/controller_profile_activity"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.u.tallerify.view.profile.ProfileUserContactsView
+            android:id="@+id/controller_profile_contacts"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</ScrollView>
