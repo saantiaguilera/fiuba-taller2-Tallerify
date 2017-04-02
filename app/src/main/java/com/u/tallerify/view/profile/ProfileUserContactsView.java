@@ -39,7 +39,12 @@ public class ProfileUserContactsView extends LinearLayout
 
         setOrientation(VERTICAL);
 
-        headerView.setTitle(getResources().getString(R.string.view_profile_last_activity_header_title));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(headerView.getLayoutParams());
+        int margin = getResources().getDimensionPixelSize(R.dimen.view_profile_default_margin);
+        params.setMargins(0, margin, 0, margin);
+        headerView.setLayoutParams(params);
+
+        headerView.setTitle(getResources().getString(R.string.view_profile_contacts_header_title));
 
         addView(headerView);
         addView(recyclerView);

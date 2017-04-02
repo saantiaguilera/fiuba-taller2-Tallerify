@@ -5,24 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
+    android:nestedScrollingEnabled="true"
     android:fillViewport="true" >
 
-    <com.u.tallerify.view.profile.ProfileUserInfoView
-        android:id="@+id/controller_profile_info"
+    <LinearLayout
+        android:id="@+id/controller_profile_root"
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
 
-    <com.u.tallerify.view.profile.ProfileUserActivityView
-        android:id="@+id/controller_profile_activity"
+        android:paddingLeft="@dimen/view_profile_default_margin"
+        android:paddingRight="@dimen/view_profile_default_margin"
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:orientation="vertical">
 
-    <com.u.tallerify.view.profile.ProfileUserContactsView
-        android:id="@+id/controller_profile_contacts"
+        <com.u.tallerify.view.profile.ProfileUserInfoView
+            android:id="@+id/controller_profile_info"
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.u.tallerify.view.profile.ProfileUserActivityView
+            android:id="@+id/controller_profile_activity"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.u.tallerify.view.profile.ProfileUserContactsView
+            android:id="@+id/controller_profile_contacts"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </ScrollView>

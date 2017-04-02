@@ -51,6 +51,10 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
                     // TODO go to chat. with users.get(integer)
                 }
             });
+
+        if (users != null) {
+            onViewRequested(view);
+        }
     }
 
     @Override

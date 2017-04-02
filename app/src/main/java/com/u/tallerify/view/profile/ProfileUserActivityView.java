@@ -3,6 +3,7 @@ package com.u.tallerify.view.profile;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import com.u.tallerify.R;
@@ -22,11 +23,11 @@ public class ProfileUserActivityView extends LinearLayout
     private @NonNull HorizontalCardView recyclerView;
 
     public ProfileUserActivityView(final Context context) {
-        super(context);
+        this(context, null);
     }
 
     public ProfileUserActivityView(final Context context, @Nullable final AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public ProfileUserActivityView(final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
@@ -37,6 +38,11 @@ public class ProfileUserActivityView extends LinearLayout
         recyclerView = new HorizontalCardView(context);
 
         setOrientation(VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(headerView.getLayoutParams());
+        int margin = getResources().getDimensionPixelSize(R.dimen.view_profile_default_margin);
+        params.setMargins(0, margin, 0, margin);
+        headerView.setLayoutParams(params);
 
         headerView.setTitle(getResources().getString(R.string.view_profile_last_activity_header_title));
 

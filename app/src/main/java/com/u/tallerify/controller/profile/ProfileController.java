@@ -15,6 +15,7 @@ import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.presenter.profile.ProfileUserActivityPresenter;
 import com.u.tallerify.presenter.profile.ProfileUserContactsPresenter;
 import com.u.tallerify.presenter.profile.ProfileUserInfoPresenter;
+import com.u.tallerify.utils.CoordinatorsInstaller;
 
 /**
  * Created by saguilera on 3/30/17.
@@ -41,17 +42,19 @@ public class ProfileController extends FlowController {
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
 
-        Coordinators.installBinder((ViewGroup) view, new CoordinatorProvider() {
-            private Graph graph;
+        CoordinatorsInstaller.installBinder(
+            (ViewGroup) view.findViewById(R.id.controller_profile_root),
+            new CoordinatorProvider() {
+                private Graph graph;
 
-            @Nullable
-            @Override
-            public Coordinator provideCoordinator(final View view) {
-                if (graph == null) {
-                    graph = new Graph();
+                @Nullable
+                @Override
+                public Coordinator provideCoordinator(final View view) {
+                    if (graph == null) {
+                        graph = new Graph();
+                    }
+                    return graph.present(view);
                 }
-                return graph.present(view);
-            }
         });
     }
 

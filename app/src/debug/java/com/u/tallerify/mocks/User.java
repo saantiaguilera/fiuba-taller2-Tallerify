@@ -21,26 +21,56 @@ public class User {
         "    \"contacts\": [\n" +
         "      {\n" +
         "        \"id\": 0,\n" +
+        "    \"images\": [\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\"\n" +
+        "    ],\n" +
         "        \"userName\": \"Cathleen Dodson\"\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 1,\n" +
+        "    \"images\": [\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\"\n" +
+        "    ],\n" +
         "        \"userName\": \"Little Bauer\"\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 2,\n" +
+        "    \"images\": [\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\"\n" +
+        "    ],\n" +
         "        \"userName\": \"Ronda Graves\"\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 3,\n" +
+        "    \"images\": [\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\"\n" +
+        "    ],\n" +
         "        \"userName\": \"Lupe Olsen\"\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 4,\n" +
+        "    \"images\": [\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\"\n" +
+        "    ],\n" +
         "        \"userName\": \"Mable Clay\"\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 5,\n" +
+        "    \"images\": [\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\",\n" +
+        "      \"http://placehold.it/320x320\"\n" +
+        "    ],\n" +
         "        \"userName\": \"Casey Parrish\"\n" +
         "      }\n" +
         "    ]\n" +
