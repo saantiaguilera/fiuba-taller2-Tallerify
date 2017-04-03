@@ -3,7 +3,6 @@ package com.u.tallerify.view.profile;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import com.u.tallerify.R;

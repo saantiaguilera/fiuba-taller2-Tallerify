@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
-import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.presenter.AbstractPresenterGraph;

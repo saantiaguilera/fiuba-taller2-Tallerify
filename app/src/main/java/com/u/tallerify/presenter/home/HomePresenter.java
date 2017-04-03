@@ -22,12 +22,10 @@ import com.u.tallerify.utils.adapter.GenericAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
-import rx.subjects.PublishSubject;
 
 /**
  * Created by saguilera on 3/12/17.

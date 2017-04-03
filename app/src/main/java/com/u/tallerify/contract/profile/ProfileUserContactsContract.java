@@ -3,7 +3,6 @@ package com.u.tallerify.contract.profile;
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
-import com.u.tallerify.model.entity.User;
 import java.util.List;
 import rx.Observable;
 
