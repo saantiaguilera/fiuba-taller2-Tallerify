@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 apply from: 'jacoco.gradle'
 
@@ -37,6 +38,10 @@ android {
 dependencies {
     compile support.design
     compile support.cardView
+
+    compile firebase.database
+    compile firebase.auth
+    compile firebase.messaging
 
     compile misc.gif
     compile misc.fresco
