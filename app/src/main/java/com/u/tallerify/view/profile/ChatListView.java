@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.u.tallerify.contract.profile.ChatListContract;
-import com.u.tallerify.model.Message;
 
 /**
  * Created by saguilera on 4/4/17.

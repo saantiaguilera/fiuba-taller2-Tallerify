@@ -12,20 +12,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.profile.ChatListContract;
+import com.u.tallerify.controller.profile.ChatController;
 import com.u.tallerify.model.Message;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.utils.FrescoImageController;
-import java.util.HashMap;
-import org.json.JSONObject;
 
 /**
  * Created by saguilera on 4/4/17.
  */
 public class ChatListPresenter extends Presenter<ChatListContract.View>
         implements ChatListContract.Presenter {
-
-    private static final @NonNull String DATABASE_KEY = "messages";
 
     @NonNull User him;
     @NonNull User me;
@@ -42,7 +39,7 @@ public class ChatListPresenter extends Presenter<ChatListContract.View>
             Message.class,
             R.layout.view_chat_message,
             MessageViewHolder.class,
-            database.child(DATABASE_KEY)
+            database.child(ChatController.composeSerialKey(me, him))
         ) {
 
             @Override
@@ -50,7 +47,7 @@ public class ChatListPresenter extends Presenter<ChatListContract.View>
                 // Since the default parses asks us to keep either setter/getters (we dont allow mutable models
                 // Or public fields (wtf m8), we do it on our own
                 return new Gson().fromJson(
-                    new Gson().toJson(snapshot.getValue()),
+                    (String) snapshot.getValue(),
                     Message.class
                 );
             }

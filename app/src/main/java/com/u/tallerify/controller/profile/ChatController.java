@@ -13,6 +13,7 @@ import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
+import com.u.tallerify.presenter.profile.ChatInputPresenter;
 import com.u.tallerify.presenter.profile.ChatListPresenter;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -66,6 +67,17 @@ public class ChatController extends FlowController {
                 return new ChatListPresenter(me, him);
             }
         });
+
+        Coordinators.bind(view.findViewById(R.id.controller_chat_input), new CoordinatorProvider() {
+            @Nullable
+            @Override
+            public Coordinator provideCoordinator(final View view) {
+                if (me == null || him == null) {
+                    return null;
+                }
+                return new ChatInputPresenter(me, him);
+            }
+        });
     }
 
     @Nullable
@@ -75,6 +87,15 @@ public class ChatController extends FlowController {
             throw new IllegalStateException("No user for chat controller. Forgot calling with(User)?");
         }
         return him.name();
+    }
+
+    public static @NonNull String composeSerialKey(@NonNull User me, @NonNull User him) {
+        // Creates a unique firebase identifier for two users to chat.
+        // We can call it "it creates a channel for both users to chat"
+        // Precedence for the lower one
+        long lower = me.id() < him.id() ? me.id() : him.id();
+        long higher = lower == me.id() ? him.id() : me.id();
+        return lower + "_" + higher;
     }
 
 }
