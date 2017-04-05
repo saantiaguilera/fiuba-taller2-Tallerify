@@ -126,7 +126,7 @@ public class ChatController extends FlowController {
         @Nullable
         @Override
         public Presenter<?> present(@NonNull final View view) {
-            return get((Integer) view.getTag());
+            return view.getTag() == null ? null : get((Integer) view.getTag());
         }
 
         @Override
