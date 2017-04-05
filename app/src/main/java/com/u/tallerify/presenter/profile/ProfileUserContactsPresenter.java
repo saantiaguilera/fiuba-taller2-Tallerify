@@ -2,7 +2,10 @@ package com.u.tallerify.presenter.profile;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.u.tallerify.contract.profile.ProfileUserContactsContract;
+import com.u.tallerify.controller.profile.ChatController;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
@@ -48,7 +51,14 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
             .subscribe(new Action1<Integer>() {
                 @Override
                 public void call(final Integer integer) {
-                    // TODO go to chat. with users.get(integer)
+                    User him = users.get(integer);
+
+                    getMainRouter().pushController(RouterTransaction.with(
+                            new ChatController()
+                                .with(him)
+                        )
+                        .popChangeHandler(new FadeChangeHandler(false))
+                        .pushChangeHandler(new FadeChangeHandler()));
                 }
             });
 

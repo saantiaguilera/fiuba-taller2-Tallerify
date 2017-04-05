@@ -2,13 +2,11 @@ package com.u.tallerify.presenter.search;
 
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.search.SearchBarContract;
-import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.album.AlbumInteractor;
 import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.presenter.Presenter;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.functions.Action1;

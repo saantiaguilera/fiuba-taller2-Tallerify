@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+   <EditText
+       android:id="@+id/view_chat_input_edit_text"
+
+       android:layout_width="0dp"
+       android:layout_weight="1"
+       android:layout_height="match_parent"
+
+       android:hint="@string/view_chat_input_hint"
+
+       android:inputType="textLongMessage"
+
+       android:imeOptions="actionSend"
+
+       android:paddingLeft="@dimen/view_chat_input_default_margin"
+
+       android:textSize="@dimen/view_chat_input_text_size"
+       android:textColor="@color/black"/>
+
+   <ImageView
+       android:id="@+id/view_chat_input_send"
+
+       android:layout_width="wrap_content"
+       android:layout_height="match_parent"
+
+       android:adjustViewBounds="true"
+
+       android:layout_margin="@dimen/view_chat_input_default_margin"
+
+       android:src="@drawable/ic_send_black_36dp"/>
+
+</merge>

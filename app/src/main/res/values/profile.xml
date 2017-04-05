@@ -7,5 +7,12 @@
 
     <!-- Margins -->
     <dimen name="view_profile_default_margin">8dp</dimen>
+    <dimen name="view_chat_input_default_margin">8dp</dimen>
+
+    <!-- Chat -->
+    <dimen name="chat_input_height">48dp</dimen>
+    <string name="view_chat_input_hint">Escribi algo...</string>
+    <dimen name="view_chat_input_text_size">16sp</dimen>
+    <color name="line_separator">#3e000000</color>
 
 </resources>

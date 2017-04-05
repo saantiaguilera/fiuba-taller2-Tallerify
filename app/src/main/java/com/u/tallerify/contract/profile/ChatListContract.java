@@ -1,24 +1,23 @@
 package com.u.tallerify.contract.profile;
 
 import android.support.annotation.NonNull;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
-import java.util.List;
-import rx.Observable;
 
 /**
- * Created by saguilera on 3/30/17.
+ * Created by saguilera on 4/4/17.
  */
-public interface ProfileUserContactsContract {
+public interface ChatListContract {
 
     interface View extends ContractView {
 
-        void setContacts(final @NonNull List<String> names, final @NonNull List<String> urls);
-        @NonNull Observable<Integer> observeContactClicks();
+        void setAdapter(@NonNull FirebaseRecyclerAdapter adapter);
 
     }
 
     interface Presenter extends ContractPresenter {
+
     }
 
 }

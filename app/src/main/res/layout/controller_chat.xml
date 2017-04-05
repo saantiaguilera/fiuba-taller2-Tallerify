@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:background="@color/white"
+
+    android:orientation="vertical"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.u.tallerify.view.profile.ChatListView
+        android:id="@+id/controller_chat_list"
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_separator" />
+
+    <com.u.tallerify.view.profile.ChatInputView
+        android:id="@+id/controller_chat_input"
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/chat_input_height" />
+
+</LinearLayout>
