@@ -2,6 +2,7 @@ package com.u.tallerify.controller;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -23,6 +24,13 @@ public abstract class FlowController extends BaseController {
                 getActionBar().setTitle(" " + title());
             } else {
                 getActionBar().setTitle("");
+            }
+
+            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) getActionBar().getLayoutParams();
+            if (hasScrollingActionBar()) {
+                params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL|AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+            } else {
+                params.setScrollFlags(0);
             }
 
             if (!hasOptionsMenu()) {
@@ -56,6 +64,10 @@ public abstract class FlowController extends BaseController {
                 coordinatorView.setLayoutParams(params);
             }
         }
+    }
+
+    protected boolean hasScrollingActionBar() {
+        return true;
     }
 
     protected boolean hasActionBar() {

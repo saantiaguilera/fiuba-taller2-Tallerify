@@ -79,7 +79,7 @@ public class ProfileController extends FlowController {
 
         @Override
         public int size() {
-            return 2;
+            return 3;
         }
 
     }
