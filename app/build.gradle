@@ -35,13 +35,19 @@ android {
     }
 }
 
+configurations {
+    compile.exclude group: "com.google.firebase", module: "firebase-analytics"
+    // A mi no me vengas a chicanear con tu plugin loco google, anda a injectarle codigo a tu abuela
+    // Aguante ios gil
+}
+
 dependencies {
     compile support.design
     compile support.cardView
 
     compile firebase.database
     compile firebase.auth
-    compile firebase.messaging
+    compile firebase.ui
 
     compile misc.gif
     compile misc.fresco

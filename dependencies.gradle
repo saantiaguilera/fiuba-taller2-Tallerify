@@ -21,6 +21,7 @@ ext {
     facebookVersion = '[4,5)'
 
     firebaseVersion = '10.2.1'
+    firebaseUIVersion = '1.2.0'
 
     support = [
         design : "com.android.support:design:$supportVersion",
@@ -28,9 +29,10 @@ ext {
     ]
 
     firebase = [
+        authInjectedGoogleLib : "com.google.firebase:firebase-core:$firebaseVersion",
         database : "com.google.firebase:firebase-database:$firebaseVersion",
         auth : "com.google.firebase:firebase-auth:$firebaseVersion",
-        messaging : "com.google.firebase:firebase-messaging:$firebaseVersion"
+        ui : "com.firebaseui:firebase-ui-database:$firebaseUIVersion"
     ]
 
     misc = [
