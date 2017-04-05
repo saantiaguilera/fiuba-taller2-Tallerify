@@ -1,11 +1,13 @@
 package com.u.tallerify.model;
 
 import android.support.annotation.NonNull;
+import com.u.tallerify.annotations.KeepName;
 import javax.annotation.Nullable;
 
 /**
  * Created by saguilera on 4/4/17.
  */
+@KeepName
 public final class Message {
 
     private long senderId;
