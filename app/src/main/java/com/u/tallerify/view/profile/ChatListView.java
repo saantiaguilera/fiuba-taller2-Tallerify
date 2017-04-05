@@ -28,23 +28,14 @@ public class ChatListView extends RecyclerView
     }
 
     @Override
-    public void setAdapter(@NonNull final FirebaseRecyclerAdapter adapter) {
+    public void setAdapter(@NonNull FirebaseRecyclerAdapter adapter) {
         setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
-
-                int count = adapter.getItemCount();
-                int lastVisiblePosition =
-                    ((LinearLayoutManager) getLayoutManager()).findLastCompletelyVisibleItemPosition();
-
-                if (lastVisiblePosition == -1 ||
-                    (positionStart >= (count - 1) &&
-                        lastVisiblePosition == (positionStart - 1))) {
-                    scrollToPosition(positionStart);
-                }
+                smoothScrollToPosition(getAdapter().getItemCount() - 1);
             }
         });
 

@@ -1,8 +1,12 @@
 package com.u.tallerify.presenter.profile;
 
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -53,8 +57,14 @@ public class ChatListPresenter extends Presenter<ChatListContract.View>
             }
 
             @Override
-            protected void populateViewHolder(final MessageViewHolder viewHolder, final Message model,
+            protected void populateViewHolder(MessageViewHolder viewHolder, final Message model,
                     final int position) {
+                viewHolder.inflate(
+                    model.senderId() == me.id() ?
+                        R.layout.view_chat_message_me :
+                        R.layout.view_chat_message_him
+                );
+
                 viewHolder.textView.setText(model.message());
                 FrescoImageController.create()
                     .load(model.senderId() == me.id() ? me.pictures().get(0) : him.pictures().get(0))
@@ -68,11 +78,17 @@ public class ChatListPresenter extends Presenter<ChatListContract.View>
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        private @NonNull TextView textView;
-        private @NonNull SimpleDraweeView imageView;
+        @NonNull TextView textView;
+        @NonNull SimpleDraweeView imageView;
 
         public MessageViewHolder(final View itemView) {
             super(itemView);
+        }
+
+        public void inflate(@LayoutRes int id) {
+            ((ViewGroup) itemView).removeAllViews();
+            LayoutInflater.from(itemView.getContext()).inflate(id, (ViewGroup) itemView);
+
             textView = (TextView) itemView.findViewById(R.id.view_chat_message_text);
             imageView = (SimpleDraweeView) itemView.findViewById(R.id.view_chat_message_image);
         }
