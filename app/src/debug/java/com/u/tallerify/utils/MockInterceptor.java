@@ -25,7 +25,7 @@ public class MockInterceptor implements Interceptor {
 
             final String url = chain.request().url().uri().toString();
 
-            if (url.contains("oauth/token")) {
+            if (url.contains("token")) {
                 responseString = Login.RESPONSE_LOGIN;
             } else if (url.contains("tracks/trending") || url.contains("me/tracks/favorites")
                     || url.contains("tracks/search") || url.contains("/activity")) {

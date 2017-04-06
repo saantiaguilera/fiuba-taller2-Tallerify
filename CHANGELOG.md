@@ -1,6 +1,7 @@
 ### Changelog
 
 #### v1.0.0
+- Utiliza la version de debug este release ya que el backend esta mockeado
 - Incluye Splash
 - Incluye Home
 - Incluye Search
