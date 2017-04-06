@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
 
         android:textSize="18sp"
-        android:text="Testing user name"
         android:textColor="@color/black"
 
         android:layout_marginTop="20dp"
@@ -26,7 +25,6 @@
         android:layout_height="wrap_content"
 
         android:textSize="14sp"
-        android:text="Testing location"
         android:textColor="@color/black"
 
         android:layout_toLeftOf="@+id/view_user_info_image"
