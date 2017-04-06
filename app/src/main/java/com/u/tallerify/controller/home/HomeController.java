@@ -19,29 +19,41 @@ import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.profile.ProfileController;
 import com.u.tallerify.controller.search.SearchController;
 import com.u.tallerify.presenter.home.HomePresenter;
+import com.u.tallerify.utils.BussinessUtils;
 
 /**
  * Created by saguilera on 3/12/17.
  */
 public class HomeController extends FlowController {
 
+    private @Nullable CoordinatorProvider provider;
+
     @NonNull
     @Override
     protected View onCreateView(@NonNull final LayoutInflater inflater, @NonNull final ViewGroup container) {
-        //setRetainViewMode(RetainViewMode.RETAIN_DETACH); // Im commenting this, but probably this is the desired ux behavior
+        setRetainViewMode(RetainViewMode.RETAIN_DETACH); // but probably this is the desired ux behavior
         return inflater.inflate(R.layout.controller_home, container, false);
     }
 
     @Override
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
-        Coordinators.bind(view, new CoordinatorProvider() {
-            @Nullable
-            @Override
-            public Coordinator provideCoordinator(final View view) {
-                return new HomePresenter();
-            }
-        });
+
+        BussinessUtils.requestBasicInfo(getApplicationContext());
+        BussinessUtils.requestTrendings(getApplicationContext());
+
+        if (provider == null) {
+            // Keep it because since its retained in detach, it will queue presenters a same view if not
+            provider = new CoordinatorProvider() {
+                @Nullable
+                @Override
+                public Coordinator provideCoordinator(final View view) {
+                    return new HomePresenter();
+                }
+            };
+
+            Coordinators.bind(view, provider);
+        }
     }
 
     @Override
