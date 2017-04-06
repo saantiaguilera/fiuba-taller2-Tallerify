@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.os.OperationCanceledException;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.interfaces.DraweeController;
@@ -19,7 +18,6 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.MediaVariations;
 import com.facebook.imagepipeline.request.Postprocessor;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 
@@ -28,7 +26,7 @@ import java.lang.ref.WeakReference;
  *
  * Simple usage example;
 
- FrescoImageController.create()
+ FrescoImageController.withProvider()
  .load(uriToLoadImageFrom); //Supports uri/url/resId/file
  .listener(new FrescoImageController.Callback() {
  //Override the onSuccess and the onFailure and do what you want
@@ -66,7 +64,7 @@ public class FrescoImageController {
     private @Nullable ImageRequest.CacheChoice cacheChoice;
 
     /**
-     * Static method to create an empty builder. The same can be achieved by doing
+     * Static method to withProvider an empty builder. The same can be achieved by doing
      * new FrescoImageController.Builder();
      *
      * @return empty builder
@@ -366,7 +364,7 @@ public class FrescoImageController {
     }
 
     /**
-     * Builder class to create an immutable FrescoController
+     * Builder class to withProvider an immutable FrescoController
      */
     public static class Builder {
 

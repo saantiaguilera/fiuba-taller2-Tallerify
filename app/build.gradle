@@ -18,32 +18,47 @@ android {
         debug {
             minifyEnabled false
             shrinkResources false
-            testCoverageEnabled = true
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            testCoverageEnabled = true
         }
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError true
+        warning "InvalidPackage", "NewApi"
     }
+}
+
+configurations {
+    compile.exclude group: "com.google.firebase", module: "firebase-analytics"
+    // A mi no me vengas a chicanear con tu plugin loco google, anda a injectarle codigo a tu abuela
+    // Aguante ios gil
 }
 
 dependencies {
     compile support.design
     compile support.cardView
 
+    compile firebase.database
+    compile firebase.auth
+    compile firebase.ui
+    compile firebase.location
+    compile firebase.places
+
     compile misc.gif
     compile misc.fresco
+    compile misc.facebook
 
     compile rx.java
     compile rx.android
     compile rx.bindings
     compile rx.lifecycle
+    compile rx.location
 
     compile structure.conductor
     compile structure.coordinator
@@ -54,6 +69,8 @@ dependencies {
     compile http.fresco
 
     debugCompile misc.leakCanary
+    debugCompile test.stetho
+    debugCompile http.stetho
 
     releaseCompile misc.leakCanaryStub
 
@@ -61,3 +78,5 @@ dependencies {
     testCompile test.junit
     testCompile misc.leakCanaryStub
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -7,16 +7,18 @@
 
     <!-- Palette -->
     <color name="transparent">#00000000</color>
-    <color name="black">#000000</color>
+    <color name="black">#333333</color>
     <color name="white">#ffffff</color>
     <color name="blue">#0000ff</color>
     <color name="red">#ff0000</color>
-    <color name="default_shadow">#bb000000</color>
 
     <!-- Controllers -->
     <color name="splash_background_color">#141414</color>
 
     <!-- Dialogs -->
     <color name="dialog_shadow">#72000000</color>
+
+    <!-- Music player -->
+    <color name="view_music_player_expanded_rating_non_selected">#74ffffff</color>
 
 </resources>

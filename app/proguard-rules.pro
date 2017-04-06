@@ -32,6 +32,7 @@
 # Local issues to remove warnings/notes that external libraries say its no problem / should take them into account.
 -dontwarn retrofit2.adapter.rxjava.CompletableHelper$**
 -dontwarn okio.**
+-dontwarn com.facebook.**
 -dontnote pl.droidsonroids.**
 -dontnote libcore.icu.ICU
 -dontnote sun.misc.Unsafe
@@ -44,6 +45,7 @@
 -dontnote org.apache.http.**
 -dontnote rx.internal.util.PlatformDependent
 -dontnote com.google.gson.internal.UnsafeAllocator
+-dontnote com.facebook.**
 
 # Be careful with these, it produces way too much output so im silencing it but it should be payed atention to
 -keepattributes EnclosingMethod
@@ -53,9 +55,34 @@
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
 
+# Firebase rules
+-keepnames class com.google.android.gms.dynamic.IObjectWrapper
+-keepnames class com.google.android.gms.internal.**
+-keepnames class com.google.firebase.FirebaseApp
+-keepnames class com.firebase.ui.database.FirebaseRecyclerAdapter
+-keepnames class com.google.firebase.database.connection.idl.zz*
+-keep class com.google.android.gms.dynamite.DynamiteModule$DynamiteLoaderClassLoader
+-keep class com.google.android.gms.dynamite.descriptors.com.google.android.gms.flags.ModuleDescriptor
+-keep class com.google.android.gms.dynamite.descriptors.com.google.android.gms.firebase_database.ModuleDescriptor
+-dontnote com.google.appengine.api.ThreadManager
+-dontnote com.google.android.gms.gcm.GcmListenerService
+-dontnote com.google.android.gms.**
+
+# Fresco rules
+-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+-keep @com.facebook.common.internal.DoNotStrip class *
+-keepclassmembers class * {
+    @com.facebook.common.internal.DoNotStrip *;
+}
+
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
+
 # Application classes that will be serialized/deserialized over Gson
--keep class com.u.app.networking.services.** { *; }
--keep class com.u.app.model.** { *; }
+-keep class com.u.tallerify.networking.services.** { *; }
+-keep class com.u.tallerify.model.** { *; }
 
 -keep class retrofit2.** { *; }
 -keepclasseswithmembers class * {
@@ -90,3 +117,8 @@
 }
 
 -keep public class pl.droidsonroids.gif.GifIOException{<init>(int);}
+
+-keepnames @com.u.tallerify.annotations.KeepName class *
+-keepclassmembernames class * {
+    @com.u.tallerify.annotations.KeepName *;
+}

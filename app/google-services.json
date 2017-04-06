@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "533897002828",
+    "firebase_url": "https://fort-media-player.firebaseio.com",
+    "project_id": "fort-media-player",
+    "storage_bucket": "fort-media-player.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533897002828:android:9a741061cdb75d72",
+        "android_client_info": {
+          "package_name": "com.u.tallerify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533897002828-nio542nj56sdhktrk2kv8t2hn0i2ass2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCavHo2pkLVG2HKZXjP-150_YP9rcQXgvs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

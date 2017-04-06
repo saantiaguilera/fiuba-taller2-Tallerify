@@ -58,7 +58,13 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.ItemView
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
-        array.get(position).presenter().attach(holder.itemView);
+        if (holder.presenter != null) {
+            holder.presenter.detach(holder.itemView);
+        }
+
+        ItemPresenter presenter = array.get(position).presenter();
+        presenter.attach(holder.itemView);
+        holder.presenter = presenter;
     }
 
     @Override
@@ -77,6 +83,8 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.ItemView
      * View for a card
      */
     static class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        @Nullable ItemPresenter presenter;
 
         public ItemViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -108,7 +116,7 @@ public class GenericAdapter extends RecyclerView.Adapter<GenericAdapter.ItemView
         private @Nullable ItemPresenter<VIEW> currentPresenter;
 
         /**
-         * Each card should know how to create its view holder and its presenter.
+         * Each card should know how to withProvider its view holder and its presenter.
          * Of course it will delegate responsibility to each of them on how to draw or
          * react accordingly.
          */

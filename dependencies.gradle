@@ -6,6 +6,7 @@ ext {
     rxAndroidVersion = '1.2.1'
     rxJavaVersion = '1.1.6'
     rxBindingsVersion = '1.0.0'
+    rxLocationVersion = '0.10'
 
     retrofitVersion = '2.1.0'
 
@@ -14,26 +15,43 @@ ext {
 
     robolectricVersion = '3.2.2'
     junitVersion = '4.12'
+    stethoVersion = '1.4.2'
 
     leakCanaryVersion = '1.5'
+
+    facebookVersion = '[4,5)'
+
+    firebaseVersion = '10.2.1'
+    firebaseUIVersion = '1.2.0'
 
     support = [
         design : "com.android.support:design:$supportVersion",
         cardView : "com.android.support:cardview-v7:$supportVersion"
     ]
 
+    firebase = [
+        authInjectedGoogleLib : "com.google.firebase:firebase-core:$firebaseVersion",
+        database : "com.google.firebase:firebase-database:$firebaseVersion",
+        auth : "com.google.firebase:firebase-auth:$firebaseVersion",
+        ui : "com.firebaseui:firebase-ui-database:$firebaseUIVersion",
+        location : "com.google.android.gms:play-services-location:$firebaseVersion",
+        places : "com.google.android.gms:play-services-places:$firebaseVersion"
+    ]
+
     misc = [
         gif : "com.facebook.fresco:animated-gif:$frescoVersion",
         fresco : "com.facebook.fresco:fresco:$frescoVersion",
         leakCanary : "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
-        leakCanaryStub : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+        leakCanaryStub : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion",
+        facebook : "com.facebook.android:facebook-android-sdk:$facebookVersion"
     ]
 
     rx = [
         android : "io.reactivex:rxandroid:$rxAndroidVersion",
         java : "io.reactivex:rxjava:$rxJavaVersion",
         bindings : "com.jakewharton.rxbinding:rxbinding:$rxBindingsVersion",
-        lifecycle : "com.bluelinelabs:conductor-rxlifecycle:$conductorVersion"
+        lifecycle : "com.bluelinelabs:conductor-rxlifecycle:$conductorVersion",
+        location : "pl.charmas.android:android-reactive-location:$rxLocationVersion"
     ]
 
     structure = [
@@ -45,11 +63,13 @@ ext {
         core : "com.squareup.retrofit2:retrofit:$retrofitVersion",
         parser : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
         rx : "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion",
-        fresco : "com.facebook.fresco:imagepipeline-okhttp3:$frescoVersion"
+        fresco : "com.facebook.fresco:imagepipeline-okhttp3:$frescoVersion",
+        stetho : "com.facebook.stetho:stetho-okhttp3:$stethoVersion"
     ]
 
     test = [
         junit : "junit:junit:$junitVersion",
-        robolectric : "org.robolectric:robolectric:$robolectricVersion"
+        robolectric : "org.robolectric:robolectric:$robolectricVersion",
+        stetho : "com.facebook.stetho:stetho:$stethoVersion"
     ]
 }

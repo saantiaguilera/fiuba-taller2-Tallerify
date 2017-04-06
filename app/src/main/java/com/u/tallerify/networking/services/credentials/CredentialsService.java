@@ -16,7 +16,7 @@ import rx.Observable;
 @SuppressWarnings("unused")
 public interface CredentialsService {
 
-    String PATH_URL = "oauth/token";
+    String PATH_URL = "token";
 
     String GRANT_TYPE_CREATE = "assertion";
     String GRANT_TYPE_REFRESH = "refresh_token";
@@ -30,7 +30,17 @@ public interface CredentialsService {
      * @return Application Access Token.
      */
     @POST(PATH_URL)
-    Observable<AccessToken> create(@Body CreateCredentialForm body);
+    Observable<AccessToken> withProvider(@Body CreateCredentialForm body);
+
+    /**
+     * Post to create an AccessToken
+     *
+     * #NO AUTH
+     *
+     * @return Application Access Token
+     */
+    @POST(PATH_URL)
+    Observable<AccessToken> withNative(@Body CreateNativeForm body);
 
     /**
      * Post to refresh an access token
@@ -43,7 +53,7 @@ public interface CredentialsService {
     Observable<AccessToken> refresh(@Body RefreshCredentialForm body);
 
     /**
-     * Class for the with request body
+     * Class for the withProvider with request body
      */
     class CreateCredentialForm implements Serializable {
 
@@ -55,6 +65,19 @@ public interface CredentialsService {
             @NonNull Provider provider) {
             this.assertion = accessToken;
             this.provider = provider;
+        }
+
+    }
+
+    class CreateNativeForm implements Serializable {
+
+        private @NonNull String userName;
+        private @NonNull String password;
+
+        public CreateNativeForm(@NonNull String userName,
+            @NonNull String password) {
+            this.userName = userName;
+            this.password = password;
         }
 
     }

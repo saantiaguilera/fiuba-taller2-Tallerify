@@ -1,15 +1,17 @@
 package com.u.tallerify.presenter.login;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Toast;
-import com.bluelinelabs.conductor.RouterTransaction;
+import com.facebook.login.LoginResult;
+import com.u.tallerify.R;
 import com.u.tallerify.contract.login.LoginContract;
-import com.u.tallerify.controller.home.HomeController;
 import com.u.tallerify.model.AccessToken;
+import com.u.tallerify.networking.ReactiveModel;
+import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
+import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
 import com.u.tallerify.presenter.Presenter;
+import java.util.Arrays;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -21,34 +23,27 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
 
     @Override
     protected void onAttach(@NonNull final LoginContract.View view) {
-        view.observeOnFacebookLoginClick()
+        observeView(view);
+        observeInteractors(view);
+    }
+
+    private void observeView(final LoginContract.View view) {
+        view.observeFacebookLoginClicks()
             .observeOn(Schedulers.newThread())
             .subscribeOn(AndroidSchedulers.mainThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {
-                    //TODO get access token from fb.. and that stuff.
-                    notifyLogin(null);
+                    FacebookInteractor.instance().loginWithReadPermissions(getAuxiliaryRouter().getActivity(),
+                        Arrays.asList(getContext().getResources().getStringArray(R.array.facebook_read_permissions)));
                 }
             });
 
-        view.observeOnGoogleLoginClick()
-            .observeOn(Schedulers.newThread())
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
-            .subscribe(new Action1<Void>() {
-                @Override
-                public void call(final Void aVoid) {
-                    //TODO get access token from google.. and that stuff.
-                    notifyLogin(null);
-                }
-            });
-
-        view.observeOnTermsAndConditionsClick()
+        view.observeTermsAndConditionsClicks()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.newThread())
-            .compose(this.<Void>bindToLifecycle((View) view))
+            .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {
@@ -59,17 +54,34 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
             });
     }
 
-    void notifyLogin(@NonNull AccessToken.Provider login) {
-        //TODO Do the login... Meanwhile we go to the home to keep the testings
-        // Most probably this will be handled by the controller, since we only want
-        // 1 of the observables to get called at a time.
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                getAuxiliaryRouter().popCurrentController();
-                getMainRouter().pushController(RouterTransaction.with(new HomeController()));
-            }
-        });
+    private void observeInteractors(final LoginContract.View view) {
+        FacebookInteractor.instance().observeFacebookLogins()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .compose(this.<ReactiveModel<LoginResult>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<LoginResult>>() {
+                @Override
+                public void call(final ReactiveModel<LoginResult> reactiveModel) {
+                    if (reactiveModel.hasError() ||
+                        reactiveModel.action() == FacebookInteractor.ACTION_DECLINED_PERMISSIONS) {
+                        view.showError();
+                    }
+                    // If it was cancelled dont do anything
+                }
+            });
+
+        CredentialsInteractor.instance().observeToken()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+                @Override
+                public void call(final ReactiveModel<AccessToken> reactiveModel) {
+                    if (reactiveModel.hasError()) {
+                        view.showError();
+                    }
+                }
+            });
     }
 
 }

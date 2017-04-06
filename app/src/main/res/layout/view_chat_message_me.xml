@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+
+    android:orientation="horizontal"
+
+    android:gravity="center_vertical|right"
+
+    android:minHeight="48dp"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/view_chat_message_text"
+
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+
+        android:gravity="right"
+
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/view_chat_message_image"
+
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+
+        android:layout_margin="8dp"
+
+        fresco:roundAsCircle="true" />
+
+</LinearLayout>

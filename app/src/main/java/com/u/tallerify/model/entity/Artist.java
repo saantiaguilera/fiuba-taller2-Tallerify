@@ -1,31 +1,68 @@
 package com.u.tallerify.model.entity;
 
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/12/17.
  */
 @SuppressWarnings("unused")
-public class Artist extends Entity {
+public class Artist extends Entity implements Playable {
 
-    private @NonNull Picture picture;
-    private @NonNull String name;
-    private @NonNull List<Album> albums;
+    private @Nullable List<String> images;
+    private @Nullable String name;
+    private @Nullable List<Album> albums;
 
     protected Artist() {
         super();
     }
 
-    public @NonNull Picture picture() {
-        return picture;
+    @Nullable
+    @Override
+    public List<String> urls() {
+        return Observable.from(albums)
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .map(new Func1<Album, List<String>>() {
+                @Override
+                public List<String> call(final Album album) {
+                    return album.urls();
+                }
+            }).toList()
+            .map(new Func1<List<List<String>>, List<String>>() {
+                @Override
+                public List<String> call(final List<List<String>> lists) {
+                    List<String> strings = new ArrayList<>();
+                    for (List<String> innerStrings : lists) {
+                        strings.addAll(innerStrings);
+                    }
+                    return strings;
+                }
+            }).observeOn(AndroidSchedulers.mainThread())
+            .toBlocking()
+            .first();
     }
 
-    public @NonNull String name() {
+    public @Nullable List<String> pictures() {
+        return images;
+    }
+
+    @Nullable
+    @Override
+    public String fullName() {
+        return name();
+    }
+
+    public @Nullable String name() {
         return name;
     }
 
-    public @NonNull List<Album> albums() {
+    public @Nullable List<Album> albums() {
         return albums;
     }
 
@@ -43,21 +80,21 @@ public class Artist extends Entity {
 
         final Artist artist = (Artist) o;
 
-        if (!picture.equals(artist.picture)) {
+        if (images != null ? !images.equals(artist.images) : artist.images != null) {
             return false;
         }
-        if (!name.equals(artist.name)) {
+        if (name != null ? !name.equals(artist.name) : artist.name != null) {
             return false;
         }
-        return albums.equals(artist.albums);
+        return albums != null ? albums.equals(artist.albums) : artist.albums == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + picture.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + albums.hashCode();
+        result = 31 * result + (images != null ? images.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (albums != null ? albums.hashCode() : 0);
         return result;
     }
 

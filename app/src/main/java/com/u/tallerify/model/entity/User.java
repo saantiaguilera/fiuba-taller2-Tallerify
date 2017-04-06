@@ -2,9 +2,9 @@ package com.u.tallerify.model.entity;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.u.tallerify.model.Gender;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Model for the user
@@ -13,11 +13,14 @@ import java.util.Date;
  */
 public class User extends Entity implements Serializable {
 
-    private @NonNull String name;
-    private @NonNull String email;
-    private @NonNull Gender gender;
-    private @NonNull Date birthday;
-    private @NonNull Picture picture;
+    private @Nullable String userName;
+    private @Nullable String firstName;
+    private @Nullable String lastName;
+    private @Nullable String country;
+    private @Nullable String email;
+    private @Nullable Date birthday;
+    private @Nullable List<String> images;
+    private @Nullable List<User> contacts;
 
     protected User() {
         super();
@@ -25,31 +28,46 @@ public class User extends Entity implements Serializable {
 
     protected User(@NonNull Builder builder) {
         super(builder);
-        name = builder.name;
+        userName = builder.name;
         email = builder.email;
-        gender = builder.gender;
         birthday = builder.birthday;
-        picture = builder.picture;
+        images = builder.images;
+        contacts = builder.contacts;
+        firstName = builder.firstName;
+        lastName = builder.lastName;
+        country = builder.country;
     }
 
-    public Date birthday() {
+    public @Nullable Date birthday() {
         return birthday;
     }
 
-    public Picture picture() {
-        return picture;
+    public @Nullable List<String> pictures() {
+        return images;
     }
 
-    public String email() {
+    public @Nullable String email() {
         return email;
     }
 
-    public Gender gender() {
-        return gender;
+    public @Nullable String firstName() {
+        return firstName;
     }
 
-    public String name() {
-        return name;
+    public @Nullable String lastName() {
+        return lastName;
+    }
+
+    public @Nullable String country() {
+        return country;
+    }
+
+    public @Nullable String name() {
+        return userName;
+    }
+
+    public @Nullable List<User> contacts() {
+        return contacts;
     }
 
     @Override
@@ -66,29 +84,41 @@ public class User extends Entity implements Serializable {
 
         final User user = (User) o;
 
-        if (!name.equals(user.name)) {
+        if (userName != null ? !userName.equals(user.userName) : user.userName != null) {
             return false;
         }
-        if (!email.equals(user.email)) {
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) {
             return false;
         }
-        if (gender != user.gender) {
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) {
             return false;
         }
-        if (!birthday.equals(user.birthday)) {
+        if (country != null ? !country.equals(user.country) : user.country != null) {
             return false;
         }
-        return picture.equals(user.picture);
+        if (email != null ? !email.equals(user.email) : user.email != null) {
+            return false;
+        }
+        if (birthday != null ? !birthday.equals(user.birthday) : user.birthday != null) {
+            return false;
+        }
+        if (images != null ? !images.equals(user.images) : user.images != null) {
+            return false;
+        }
+        return contacts != null ? contacts.equals(user.contacts) : user.contacts == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + gender.hashCode();
-        result = 31 * result + birthday.hashCode();
-        result = 31 * result + picture.hashCode();
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (country != null ? country.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
+        result = 31 * result + (images != null ? images.hashCode() : 0);
+        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
         return result;
     }
 
@@ -96,9 +126,12 @@ public class User extends Entity implements Serializable {
 
         @Nullable String name;
         @Nullable String email;
-        @Nullable Gender gender;
         @Nullable Date birthday;
-        @Nullable Picture picture;
+        @Nullable List<User> contacts;
+        @Nullable List<String> images;
+        @Nullable String firstName;
+        @Nullable String lastName;
+        @Nullable String country;
 
         public Builder() {
             super();
@@ -108,9 +141,27 @@ public class User extends Entity implements Serializable {
             super(user);
             name(user.name());
             email(user.email());
-            gender(user.gender());
             birthday(user.birthday());
-            picture(user.picture());
+            pictures(user.pictures());
+            contacts(user.contacts());
+            firstName(user.firstName());
+            lastName(user.lastName());
+            country(user.country());
+        }
+
+        public final @NonNull Builder country(@NonNull final String country) {
+            this.country = country;
+            return this;
+        }
+
+        public final @NonNull Builder firstName(@NonNull final String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public final @NonNull Builder lastName(@NonNull final String lastName) {
+            this.lastName = lastName;
+            return this;
         }
 
         public final @NonNull Builder birthday(@NonNull final Date birthday) {
@@ -123,18 +174,18 @@ public class User extends Entity implements Serializable {
             return this;
         }
 
-        public final @NonNull Builder gender(@NonNull final Gender gender) {
-            this.gender = gender;
-            return this;
-        }
-
         public final @NonNull Builder name(@NonNull final String name) {
             this.name = name;
             return this;
         }
 
-        public final @NonNull Builder picture(@NonNull final Picture picture) {
-            this.picture = picture;
+        public final @NonNull Builder pictures(@NonNull final List<String> pictures) {
+            this.images = pictures;
+            return this;
+        }
+
+        public final @NonNull Builder contacts(@NonNull final List<User> contacts) {
+            this.contacts = contacts;
             return this;
         }
 
@@ -150,9 +201,12 @@ public class User extends Entity implements Serializable {
             boolean buildable = super.buildable();
             buildable &= name != null;
             buildable &= email != null;
-            buildable &= gender != null;
             buildable &= birthday != null;
-            buildable &= picture != null;
+            buildable &= images != null;
+            buildable &= contacts != null;
+            buildable &= firstName != null;
+            buildable &= lastName != null;
+            buildable &= country != null;
             return buildable;
         }
 

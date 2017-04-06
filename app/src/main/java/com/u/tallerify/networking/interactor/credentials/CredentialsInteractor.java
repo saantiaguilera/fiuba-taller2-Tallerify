@@ -3,8 +3,10 @@ package com.u.tallerify.networking.interactor.credentials;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import com.u.tallerify.model.AccessToken;
+import com.u.tallerify.networking.AccessTokenManager;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
+import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -20,53 +22,110 @@ import rx.subjects.BehaviorSubject;
  * Created by saguilera on 3/12/17.
  */
 @SuppressWarnings("unchecked")
-public class CredentialsInteractor {
+public final class CredentialsInteractor {
 
-    private static final @NonNull CredentialsInteractor instance = new CredentialsInteractor();
+    public static final int ACTION_LOADING = 0;
 
-    @NonNull BehaviorSubject<ReactiveModel<AccessToken>> tokenBehaviorSubject;
+    private static @NonNull CredentialsInteractor instance = new CredentialsInteractor();
+
+    @NonNull BehaviorSubject<ReactiveModel<AccessToken>> subject;
 
     private CredentialsInteractor() {
-        tokenBehaviorSubject = BehaviorSubject.create();
+        subject = BehaviorSubject.create();
     }
 
     public static @NonNull CredentialsInteractor instance() {
         return instance;
     }
 
-    public Observable<ReactiveModel<AccessToken>> observeToken() {
-        return tokenBehaviorSubject;
+    public void dispatchToken(@NonNull AccessToken token) {
+        subject.onNext(new ReactiveModel.Builder<>()
+            .model(token)
+            .build());
     }
 
-    public Observable<?> create(@NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
-        return RestClient.with(context).create(CredentialsService.class)
-            .create(body)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
+    public @NonNull Observable<ReactiveModel<AccessToken>> observeToken() {
+        return subject;
+    }
+
+    /**
+     * Create POST api. For error handling please subscribe using {@link Interactors#ACTION_NEXT} and
+     * {@link Interactors#ACTION_ERROR}. Else subscribe as default.
+     *
+     * If you need to right away handle something, add actions in the subscribing as you like.
+     */
+    public @NonNull Observable<AccessToken> createWithProvider(final @NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
+        return RestClient.with(context)
+            .noAuth()
+            .create(CredentialsService.class)
+            .withProvider(body)
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
-                        .action(1) // TODO create loading action
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                        .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .error(throwable)
                         .build());
                 }
             }).doOnNext(new Action1<AccessToken>() {
                 @Override
                 public void call(final AccessToken accessToken) {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    AccessTokenManager.instance().write(context, accessToken);
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                        .model(accessToken)
+                        .build());
+            }});
+    }
+
+
+    /**
+     * Create POST api. For error handling please subscribe using {@link Interactors#ACTION_NEXT} and
+     * {@link Interactors#ACTION_ERROR}. Else subscribe as default.
+     *
+     * If you need to right away handle something, add actions in the subscribing as you like.
+     */
+    public @NonNull Observable<AccessToken> createWithNative(final @NonNull Context context, @NonNull CredentialsService.CreateNativeForm body) {
+        return RestClient.with(context)
+            .noAuth()
+            .create(CredentialsService.class)
+            .withNative(body)
+            .doOnSubscribe(new Action0() {
+                @Override
+                public void call() {
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                        .action(ACTION_LOADING)
+                        .build());
+                }
+            }).doOnError(new Action1<Throwable>() {
+                @Override
+                public void call(final Throwable throwable) {
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                        .error(throwable)
+                        .build());
+                }
+            }).doOnNext(new Action1<AccessToken>() {
+                @Override
+                public void call(final AccessToken accessToken) {
+                    AccessTokenManager.instance().write(context, accessToken);
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .model(accessToken)
                         .build());
                 }});
     }
 
-    public Observable<?> refresh(@NonNull Context context, @NonNull CredentialsService.RefreshCredentialForm body) {
+    /**
+     * Refresh POST api. For error handling please subscribe using {@link Interactors#ACTION_NEXT} and
+     * {@link Interactors#ACTION_ERROR}. Else subscribe as default.
+     *
+     * If you need to right away handle something, add actions in the subscribing as you like.
+     */
+    public @NonNull Observable<AccessToken> refresh(final @NonNull Context context, @NonNull CredentialsService.RefreshCredentialForm body) {
         return RestClient.with(context).create(CredentialsService.class)
             .refresh(body)
             .observeOn(AndroidSchedulers.mainThread())
@@ -74,21 +133,22 @@ public class CredentialsInteractor {
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
-                        .action(1) // TODO create loading action
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                        .action(1) // TODO withProvider loading action
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .error(throwable)
                         .build());
                 }
             }).doOnNext(new Action1<AccessToken>() {
                 @Override
                 public void call(final AccessToken accessToken) {
-                    tokenBehaviorSubject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    AccessTokenManager.instance().write(context, accessToken);
+                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
                         .model(accessToken)
                         .build());
                 }});

@@ -13,14 +13,13 @@ public interface LoginContract {
 
     interface View extends ContractView {
 
-        @NonNull Observable<Void> observeOnTermsAndConditionsClick();
-        @NonNull Observable<Void> observeOnFacebookLoginClick();
-        @NonNull Observable<Void> observeOnGoogleLoginClick();
+        @NonNull Observable<Void> observeTermsAndConditionsClicks();
+        @NonNull Observable<Void> observeFacebookLoginClicks();
+        void showError();
 
     }
 
     interface Presenter extends ContractPresenter {
-
     }
 
 }
