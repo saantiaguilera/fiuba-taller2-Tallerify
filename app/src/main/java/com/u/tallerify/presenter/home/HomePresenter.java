@@ -215,7 +215,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
         data.addAll(inflate("Tus canciones preferidas", userSongs));
 
         if (!loggedIn) {
-            data.add(new HeaderCardSupplier(getContext(), "Maeame no es lo mismo sin vos!"));
+            data.add(new HeaderCardSupplier(getContext(), "Queres manejar un Rolls Royce?"));
             data.add(new NoAccountCardSupplier(getContext()));
         }
 
