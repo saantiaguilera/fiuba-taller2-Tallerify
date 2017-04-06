@@ -5,14 +5,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceFilter;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.u.tallerify.utils.RequestCodes;
 import com.u.tallerify.utils.RouterInteractor;
+import java.util.List;
+import java.util.Locale;
 import javax.annotation.Nullable;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
@@ -75,7 +81,7 @@ public class LocationInteractor {
 
         Activity activity = RouterInteractor.instance().mainRouter().getActivity();
         providerSubscription = new ReactiveLocationProvider(activity.getApplicationContext())
-            .getCurrentPlace(new PlaceFilter())
+            .getCurrentPlace(null)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             // This wont be composed, it lasts for the whole application lifetime.
@@ -95,7 +101,10 @@ public class LocationInteractor {
                 @Override
                 public String call(final PlaceLikelihoodBuffer placeLikelihoods) {
                     Place place = placeLikelihoods.get(0).getPlace();
-                    return place.getAddress() + ", " + place.getName();
+                    String address = place.getAddress().toString();
+                    placeLikelihoods.release();
+
+                    return address;
                 }
             })
             .subscribe(new Action1<String>() {
