@@ -1,17 +1,10 @@
 package com.u.tallerify.networking.interactor.location;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceFilter;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
-import com.u.tallerify.utils.RequestCodes;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.u.tallerify.utils.RouterInteractor;
 import javax.annotation.Nullable;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
@@ -43,29 +36,9 @@ public class LocationInteractor {
     }
 
     public @NonNull Observable<String> observeLocations() {
-        // Before observing check if we have the permission + we are listening for it
-        Activity activity = RouterInteractor.instance().mainRouter().getActivity();
-
-        int permissionCheck = ContextCompat.checkSelfPermission(activity.getApplicationContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION);
-
-        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            // Re run it again for everyone that wants to start observing, so we trigger an updated event :)
-            startObservingLocations();
-        } else {
-            ActivityCompat.requestPermissions(activity,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                RequestCodes.REQUEST_LOCATION_PERMISSION.value());
-        }
+        startObservingLocations();
 
         return locationSubject;
-    }
-
-    public void postPermissionResults(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RequestCodes.REQUEST_LOCATION_PERMISSION.value() &&
-                resultCode == Activity.RESULT_OK) {
-            startObservingLocations();
-        }
     }
 
     private void startObservingLocations() {
@@ -73,35 +46,47 @@ public class LocationInteractor {
             providerSubscription.unsubscribe();
         }
 
-        Activity activity = RouterInteractor.instance().mainRouter().getActivity();
-        providerSubscription = new ReactiveLocationProvider(activity.getApplicationContext())
-            .getCurrentPlace(new PlaceFilter())
+        new RxPermissions(RouterInteractor.instance().mainRouter().getActivity())
+            .request(Manifest.permission.ACCESS_FINE_LOCATION)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            // This wont be composed, it lasts for the whole application lifetime.
-            .filter(new Func1<PlaceLikelihoodBuffer, Boolean>() {
+            .subscribe(new Action1<Boolean>() {
                 @Override
-                public Boolean call(final PlaceLikelihoodBuffer placeLikelihoods) {
-                    boolean release = !placeLikelihoods.getStatus().isSuccess();
+                public void call(final Boolean granted) {
+                    if (granted) {
+                        providerSubscription = new ReactiveLocationProvider(
+                                RouterInteractor.instance().mainRouter()
+                                    .getActivity().getApplicationContext())
+                            .getCurrentPlace(null)
+                            .filter(new Func1<PlaceLikelihoodBuffer, Boolean>() {
+                                @Override
+                                public Boolean call(final PlaceLikelihoodBuffer placeLikelihoods) {
+                                    boolean release = !placeLikelihoods.getStatus().isSuccess();
 
-                    if (release) {
-                        placeLikelihoods.release();
+                                    if (release) {
+                                        placeLikelihoods.release();
+                                    }
+
+                                    return !release;
+                                }
+                            })
+                            .map(new Func1<PlaceLikelihoodBuffer, String>() {
+                                @Override
+                                public String call(final PlaceLikelihoodBuffer placeLikelihoods) {
+                                    Place place = placeLikelihoods.get(0).getPlace();
+                                    String address = place.getAddress().toString();
+                                    placeLikelihoods.release();
+
+                                    return address;
+                                }
+                            })
+                            .subscribe(new Action1<String>() {
+                                @Override
+                                public void call(final String s) {
+                                    locationSubject.onNext(s);
+                                }
+                            });
                     }
-
-                    return !release;
-                }
-            })
-            .map(new Func1<PlaceLikelihoodBuffer, String>() {
-                @Override
-                public String call(final PlaceLikelihoodBuffer placeLikelihoods) {
-                    Place place = placeLikelihoods.get(0).getPlace();
-                    return place.getAddress() + ", " + place.getName();
-                }
-            })
-            .subscribe(new Action1<String>() {
-                @Override
-                public void call(final String s) {
-                    locationSubject.onNext(s);
                 }
             });
     }
