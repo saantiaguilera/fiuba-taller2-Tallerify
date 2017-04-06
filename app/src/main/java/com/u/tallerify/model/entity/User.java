@@ -84,41 +84,41 @@ public class User extends Entity implements Serializable {
 
         final User user = (User) o;
 
-        if (!userName.equals(user.userName)) {
+        if (userName != null ? !userName.equals(user.userName) : user.userName != null) {
             return false;
         }
-        if (!email.equals(user.email)) {
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) {
             return false;
         }
-        if (!birthday.equals(user.birthday)) {
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) {
             return false;
         }
-        if (!contacts.equals(user.contacts)) {
+        if (country != null ? !country.equals(user.country) : user.country != null) {
             return false;
         }
-        if (!country.equals(user.country)) {
+        if (email != null ? !email.equals(user.email) : user.email != null) {
             return false;
         }
-        if (!firstName.equals(user.firstName)) {
+        if (birthday != null ? !birthday.equals(user.birthday) : user.birthday != null) {
             return false;
         }
-        if (!lastName.equals(user.lastName)) {
+        if (images != null ? !images.equals(user.images) : user.images != null) {
             return false;
         }
-        return images.equals(user.images);
+        return contacts != null ? contacts.equals(user.contacts) : user.contacts == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + userName.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + birthday.hashCode();
-        result = 31 * result + images.hashCode();
-        result = 31 * result + contacts.hashCode();
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
-        result = 31 * result + country.hashCode();
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (country != null ? country.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
+        result = 31 * result + (images != null ? images.hashCode() : 0);
+        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
         return result;
     }
 

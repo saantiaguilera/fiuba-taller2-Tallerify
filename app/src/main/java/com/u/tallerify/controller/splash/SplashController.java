@@ -52,10 +52,9 @@ public class SplashController extends FlowController {
 
         if (AccessTokenManager.instance().read(getActivity()) != null) {
             BussinessUtils.requestBasicInfo(getActivity());
+            BussinessUtils.requestTrendings(getActivity());
             CredentialsInteractor.instance().dispatchToken(AccessTokenManager.instance().snapshot());
         }
-
-        BussinessUtils.requestTrendings(getActivity());
 
         Observable.timer(SPLASH_DEFAULT_TIME, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.newThread())
@@ -65,8 +64,7 @@ public class SplashController extends FlowController {
                 @Override
                 public void call(final Long aLong) {
                     getRouter()
-                        .setPopsLastView(true)
-                        .pushController(RouterTransaction.with(new HomeController())
+                        .setRoot(RouterTransaction.with(new HomeController())
                             .popChangeHandler(new FadeChangeHandler(false))
                             .pushChangeHandler(new FadeChangeHandler()));
                 }

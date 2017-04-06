@@ -18,35 +18,72 @@ import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.profile.ProfileController;
 import com.u.tallerify.controller.search.SearchController;
+import com.u.tallerify.model.AccessToken;
+import com.u.tallerify.networking.ReactiveModel;
+import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.presenter.home.HomePresenter;
+import com.u.tallerify.utils.BussinessUtils;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/12/17.
  */
 public class HomeController extends FlowController {
 
+    private @Nullable CoordinatorProvider provider;
+
+    boolean hasProfileIcon;
+
     @NonNull
     @Override
     protected View onCreateView(@NonNull final LayoutInflater inflater, @NonNull final ViewGroup container) {
-        //setRetainViewMode(RetainViewMode.RETAIN_DETACH); // Im commenting this, but probably this is the desired ux behavior
+        setRetainViewMode(RetainViewMode.RETAIN_DETACH); // but probably this is the desired ux behavior
         return inflater.inflate(R.layout.controller_home, container, false);
     }
 
     @Override
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
-        Coordinators.bind(view, new CoordinatorProvider() {
-            @Nullable
-            @Override
-            public Coordinator provideCoordinator(final View view) {
-                return new HomePresenter();
-            }
-        });
+
+        CredentialsInteractor.instance().observeToken()
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+                @Override
+                public void call(final ReactiveModel<AccessToken> accessTokenReactiveModel) {
+                    if (!accessTokenReactiveModel.hasError() && accessTokenReactiveModel.model() != null) {
+                        BussinessUtils.requestBasicInfo(getApplicationContext());
+                        BussinessUtils.requestTrendings(getApplicationContext());
+
+                        hasProfileIcon = true;
+                    } else {
+                        hasProfileIcon = false;
+                    }
+
+                    getActivity().invalidateOptionsMenu();
+                }
+            });
+
+        if (provider == null) {
+            // Keep it because since its retained in detach, it will queue presenters a same view if not
+            provider = new CoordinatorProvider() {
+                @Nullable
+                @Override
+                public Coordinator provideCoordinator(final View view) {
+                    return new HomePresenter();
+                }
+            };
+
+            Coordinators.bind(view, provider);
+        }
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull final Menu menu, @NonNull final MenuInflater inflater) {
         inflater.inflate(R.menu.menu_home, menu);
+        menu.findItem(R.id.menu_home_profile).setVisible(hasProfileIcon);
     }
 
     @Override

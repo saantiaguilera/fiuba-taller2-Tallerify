@@ -65,14 +65,6 @@ public class LoginDialogController extends AlertDialogController {
     }
 
     void nativeLogin(@NonNull LoginResult result) {
-        // TODO remove this, testing purposes
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getApplicationContext(), "Native login...", Toast.LENGTH_LONG).show();
-            }
-        });
-
         CredentialsInteractor.instance().createWithProvider(getApplicationContext(),
                 new CredentialsService.CreateCredentialForm(
                     result.getAccessToken().getToken(),
@@ -86,7 +78,9 @@ public class LoginDialogController extends AlertDialogController {
                     if (accessToken != null) {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
                         BussinessUtils.requestTrendings(getApplicationContext());
-                        getRouter().popCurrentController();
+
+                        if (getDialog() != null)
+                            getDialog().dismiss();
                     }
                 }
             }, Interactors.ACTION_ERROR);

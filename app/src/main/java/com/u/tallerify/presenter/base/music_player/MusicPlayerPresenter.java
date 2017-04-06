@@ -53,7 +53,10 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     @Override
     protected void onDetach(@NonNull final MusicPlayerContract.View view) {
         super.onDetach(view);
-        RxPlayerHelper.unbindAudioSystem((Application) getContext().getApplicationContext(), contentObserver);
+        // We need to check it to avoid when app closes (because of last backpressed)
+        if (getContext() != null) {
+            RxPlayerHelper.unbindAudioSystem((Application) getContext().getApplicationContext(), contentObserver);
+        }
     }
 
     @Override

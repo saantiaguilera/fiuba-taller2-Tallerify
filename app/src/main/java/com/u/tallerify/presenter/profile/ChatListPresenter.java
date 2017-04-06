@@ -58,11 +58,12 @@ public class ChatListPresenter extends Presenter<ChatListContract.View>
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder, final Message model,
                     final int position) {
-                viewHolder.inflate(
-                    model.senderId() == me.id() ?
-                        R.layout.view_chat_message_me :
-                        R.layout.view_chat_message_him
-                );
+                int resId = model.senderId() == me.id() ?
+                    R.layout.view_chat_message_me :
+                    R.layout.view_chat_message_him;
+                if (viewHolder.resId != resId) {
+                    viewHolder.inflate(resId);
+                }
 
                 viewHolder.textView.setText(model.message());
                 FrescoImageController.create()
@@ -77,6 +78,8 @@ public class ChatListPresenter extends Presenter<ChatListContract.View>
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
+        @LayoutRes int resId;
+
         @NonNull TextView textView;
         @NonNull SimpleDraweeView imageView;
 
@@ -85,6 +88,8 @@ public class ChatListPresenter extends Presenter<ChatListContract.View>
         }
 
         public void inflate(@LayoutRes int id) {
+            resId = id;
+
             ((ViewGroup) itemView).removeAllViews();
             LayoutInflater.from(itemView.getContext()).inflate(id, (ViewGroup) itemView);
 

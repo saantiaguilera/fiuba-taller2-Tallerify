@@ -22,6 +22,7 @@ import com.u.tallerify.utils.adapter.GenericAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -40,13 +41,23 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
     @Nullable List<Artist> trendingArtists;
     boolean loggedIn;
 
-    @NonNull BehaviorSubject<Void> notifier;
+    @NonNull BehaviorSubject<Void> notifierArtists;
+    @NonNull BehaviorSubject<Void> notifierSongs;
+    @NonNull BehaviorSubject<Void> notifierPlaylists;
+    @NonNull BehaviorSubject<Void> notifierTrendingSongs;
+    @NonNull BehaviorSubject<Void> notifierTrendingArtists;
+    @NonNull BehaviorSubject<Void> notifierLogin;
 
     @Nullable List<GenericAdapter.ItemSupplier> dataSnapshot;
 
     @Override
     protected void onAttach(@NonNull final GenericGridContract.View view) {
-        notifier = BehaviorSubject.create((Void) null);
+        notifierArtists = BehaviorSubject.create((Void) null);
+        notifierSongs = BehaviorSubject.create((Void) null);
+        notifierPlaylists = BehaviorSubject.create((Void) null);
+        notifierTrendingSongs = BehaviorSubject.create((Void) null);
+        notifierTrendingArtists = BehaviorSubject.create((Void) null);
+        notifierLogin = BehaviorSubject.create((Void) null);
         observeNotifier();
         observeRepositories();
     }
@@ -81,7 +92,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
                     if (listReactiveModel.model() != null) {
                         userArtists = listReactiveModel.model();
-                        notifier.onNext(null);
+                        notifierArtists.onNext(null);
                     }
                 }
             });
@@ -95,7 +106,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 public void call(final ReactiveModel<List<Song>> listReactiveModel) {
                     if (listReactiveModel.model() != null) {
                         userSongs = listReactiveModel.model();
-                        notifier.onNext(null);
+                        notifierSongs.onNext(null);
                     }
                 }
             });
@@ -109,7 +120,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 public void call(final ReactiveModel<List<Playlist>> listReactiveModel) {
                     if (listReactiveModel.model() != null) {
                         userPlaylists = listReactiveModel.model();
-                        notifier.onNext(null);
+                        notifierPlaylists.onNext(null);
                     }
                 }
             });
@@ -123,7 +134,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 public void call(final ReactiveModel<List<Song>> listReactiveModel) {
                     if (listReactiveModel.model() != null) {
                         trendingSongs = listReactiveModel.model();
-                        notifier.onNext(null);
+                        notifierTrendingSongs.onNext(null);
                     }
                 }
             });
@@ -137,7 +148,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
                     if (listReactiveModel.model() != null) {
                         trendingArtists = listReactiveModel.model();
-                        notifier.onNext(null);
+                        notifierTrendingArtists.onNext(null);
                     }
                 }
             });
@@ -152,7 +163,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                     loggedIn = accessTokenReactiveModel.model() != null &&
                         accessTokenReactiveModel.action() == ReactiveModel.NO_ACTION;
 
-                    notifier.onNext(null);
+                    notifierLogin.onNext(null);
                 }
             });
     }
@@ -162,7 +173,15 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
      * When notified it flatmaps all the data and saves a snapshot asking the view to be redrawn from it.
      */
     private void observeNotifier() {
-        notifier.observeOn(Schedulers.io())
+        Observable.merge(
+                notifierArtists,
+                notifierSongs,
+                notifierPlaylists,
+                notifierTrendingArtists,
+                notifierTrendingSongs,
+                notifierLogin
+            )
+            .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .compose(this.<Void>bindToLifecycle())
             .debounce(500, TimeUnit.MILLISECONDS) // To avoid drawing all the time if repositories are active

@@ -46,7 +46,6 @@ public abstract class AlertDialogController extends DialogController {
         return !isCancellable() || super.handleBack();
     }
 
-
     public boolean isCancellable() {
         return true;
     }

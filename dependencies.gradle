@@ -6,6 +6,7 @@ ext {
     rxAndroidVersion = '1.2.1'
     rxJavaVersion = '1.1.6'
     rxBindingsVersion = '1.0.0'
+    rxLocationVersion = '0.10'
 
     retrofitVersion = '2.1.0'
 
@@ -32,7 +33,9 @@ ext {
         authInjectedGoogleLib : "com.google.firebase:firebase-core:$firebaseVersion",
         database : "com.google.firebase:firebase-database:$firebaseVersion",
         auth : "com.google.firebase:firebase-auth:$firebaseVersion",
-        ui : "com.firebaseui:firebase-ui-database:$firebaseUIVersion"
+        ui : "com.firebaseui:firebase-ui-database:$firebaseUIVersion",
+        location : "com.google.android.gms:play-services-location:$firebaseVersion",
+        places : "com.google.android.gms:play-services-places:$firebaseVersion"
     ]
 
     misc = [
@@ -47,7 +50,8 @@ ext {
         android : "io.reactivex:rxandroid:$rxAndroidVersion",
         java : "io.reactivex:rxjava:$rxJavaVersion",
         bindings : "com.jakewharton.rxbinding:rxbinding:$rxBindingsVersion",
-        lifecycle : "com.bluelinelabs:conductor-rxlifecycle:$conductorVersion"
+        lifecycle : "com.bluelinelabs:conductor-rxlifecycle:$conductorVersion",
+        location : "pl.charmas.android:android-reactive-location:$rxLocationVersion"
     ]
 
     structure = [

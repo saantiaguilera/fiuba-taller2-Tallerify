@@ -9,18 +9,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.rxlifecycle.RxControllerLifecycle;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
+import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.splash.SplashController;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
+import com.u.tallerify.networking.interactor.location.LocationInteractor;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.presenter.base.music_player.MusicPlayerPresenter;
 import com.u.tallerify.utils.CurrentPlay;
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .take(1)
+            .compose(RxLifecycleAndroid.<CurrentPlay>bindView(findViewById(R.id.activity_main_root)))
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {
@@ -74,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         MeInteractor.instance().observeUser()
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
+            .compose(RxLifecycleAndroid.<ReactiveModel<User>>bindView(findViewById(R.id.activity_main_root)))
             .subscribe(new Action1<ReactiveModel<User>>() {
                 @Override
                 public void call(final ReactiveModel<User> rxModel) {
@@ -161,6 +167,10 @@ public class MainActivity extends AppCompatActivity {
             switch (code) {
                 case FACEBOOK_LOGIN:
                     FacebookInteractor.instance().postFacebookResults(requestCode, resultCode, data);
+                    break;
+                case REQUEST_LOCATION_PERMISSION:
+                    LocationInteractor.instance().postPermissionResults(requestCode, resultCode, data);
+                    break;
             }
         }
     }

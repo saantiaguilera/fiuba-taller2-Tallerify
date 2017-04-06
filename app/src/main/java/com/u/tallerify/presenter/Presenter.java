@@ -100,7 +100,9 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
             new Handler(Looper.getMainLooper()).postAtFrontOfQueue(new Runnable() {
                 @Override
                 public void run() {
-                    onViewRequested(viewWeakReference.get());
+                    if (viewWeakReference != null && viewWeakReference.get() != null) {
+                        onViewRequested(viewWeakReference.get());
+                    }
                 }
             });
         }

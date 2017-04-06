@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.u.tallerify.contract.profile.ChatListContract;
 
@@ -36,6 +37,24 @@ public class ChatListView extends RecyclerView
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
                 smoothScrollToPosition(getAdapter().getItemCount() - 1);
+            }
+        });
+
+        addOnLayoutChangeListener(new OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(final View v, final int left, final int top, final int right, final int bottom,
+                    final int oldLeft, final int oldTop, final int oldRight,
+                    final int oldBottom) {
+                if (bottom < oldBottom) {
+                    ChatListView.this.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (getAdapter().getItemCount() > 0) {
+                                smoothScrollToPosition(getAdapter().getItemCount() - 1);
+                            }
+                        }
+                    }, 100);
+                }
             }
         });
 
