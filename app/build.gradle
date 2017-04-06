@@ -59,6 +59,7 @@ dependencies {
     compile rx.bindings
     compile rx.lifecycle
     compile rx.location
+    compile rx.permissions
 
     compile structure.conductor
     compile structure.coordinator

@@ -8,8 +8,7 @@ import javax.annotation.Nullable;
  */
 public enum RequestCodes {
 
-    FACEBOOK_LOGIN(CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()),
-    REQUEST_LOCATION_PERMISSION(1);
+    FACEBOOK_LOGIN(CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode());
 
     private int value;
 

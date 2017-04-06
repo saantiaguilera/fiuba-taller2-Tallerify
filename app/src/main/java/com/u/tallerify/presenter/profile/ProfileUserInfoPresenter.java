@@ -1,14 +1,6 @@
 package com.u.tallerify.presenter.profile;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceFilter;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.u.tallerify.contract.profile.ProfileUserInfoContract;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
@@ -16,9 +8,7 @@ import com.u.tallerify.networking.interactor.location.LocationInteractor;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.presenter.Presenter;
 import javax.annotation.Nullable;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
