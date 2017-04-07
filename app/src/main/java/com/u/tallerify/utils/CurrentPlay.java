@@ -1,5 +1,7 @@
 package com.u.tallerify.utils;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +36,18 @@ public class CurrentPlay {
 
     public static @Nullable CurrentPlay instance() {
         return instance;
+    }
+
+    public static @NonNull CurrentPlay.Builder defaults(@NonNull Context context) {
+        // TODO for a next iteration save settings of the user controls
+        AudioManager audioManager = (AudioManager) context.getApplicationContext()
+            .getSystemService(Context.AUDIO_SERVICE);
+        return new Builder()
+            .currentTime(0)
+            .playState(PlayState.PAUSED)
+            .repeat(RepeatMode.NONE)
+            .shuffle(false)
+            .volume(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
     }
 
     protected CurrentPlay() {
@@ -217,11 +231,9 @@ public class CurrentPlay {
         public boolean buildable() {
             boolean buildable = true;
             buildable &= repeat != null;
-            buildable &= playlist != null;
             buildable &= currentTime != -1;
             buildable &= playState != null;
             buildable &= volume != -1;
-            buildable &= currentSong != null;
             return buildable;
         }
 

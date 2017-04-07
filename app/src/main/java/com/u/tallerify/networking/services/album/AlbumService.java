@@ -1,6 +1,7 @@
 package com.u.tallerify.networking.services.album;
 
 import com.u.tallerify.model.entity.Album;
+import com.u.tallerify.model.entity.Song;
 import java.util.List;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -17,5 +18,8 @@ public interface AlbumService {
 
     @GET("albums/search")
     Observable<List<Album>> queryAlbums(@Query("query") String query);
+
+    @GET("albums/{albumId}/tracks")
+    Observable<List<Song>> songs(@Path("albumId") long albumId);
 
 }

@@ -45,7 +45,7 @@
                 android:layout_gravity="top|right"
                 android:layout_margin="@dimen/view_music_player_expanded_separator_margin"
 
-                android:src="@drawable/ic_star_rate_black_18dp" />
+                android:src="@drawable/ic_favorite_black_36dp" />
 
             <RatingBar
                 android:id="@+id/view_music_player_expanded_rating_bar"

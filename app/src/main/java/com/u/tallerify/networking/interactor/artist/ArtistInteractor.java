@@ -124,6 +124,11 @@ public final class ArtistInteractor {
             });
     }
 
+    public @NonNull Observable<List<Song>> songs(@NonNull Context context, final @NonNull Artist artist) {
+        return RestClient.with(context).create(ArtistService.class)
+            .songs(artist.id());
+    }
+
     public @NonNull Observable<List<Artist>> search(@NonNull Context context, @NonNull String query) {
         if (query.isEmpty()) {
             return Observable.just(null)

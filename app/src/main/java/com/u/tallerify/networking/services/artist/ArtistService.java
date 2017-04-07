@@ -1,6 +1,7 @@
 package com.u.tallerify.networking.services.artist;
 
 import com.u.tallerify.model.entity.Artist;
+import com.u.tallerify.model.entity.Song;
 import java.util.List;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -28,5 +29,8 @@ public interface ArtistService {
 
     @DELETE("me/artists/{artistId}/follow")
     Observable<Void> unfollowArtist(@Path("artistId") long artistId);
+
+    @GET("artists/{artistId}/tracks")
+    Observable<List<Song>> songs(@Path("artistId") long artistId);
 
 }

@@ -79,10 +79,10 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 view.setVolume(currentPlay.volume());
                 switch (currentPlay.playState()) {
                     case PLAYING:
-                        view.setPlaying();
+                        view.setPaused();
                         break;
                     case PAUSED:
-                        view.setPaused();
+                        view.setPlaying();
                         break;
                 }
 
@@ -108,15 +108,15 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                     .subscribe();
 
                 if (favorites.contains(currentPlay.currentSong().id())) {
-                    view.setFavorite(true, true);
+                    view.setFavorite(true);
                 } else {
-                    view.setFavorite(false, true);
+                    view.setFavorite(false);
                 }
 
                 if (rateds.containsKey(currentPlay.currentSong().id())) {
-                    view.setRating(rateds.get(currentPlay.currentSong().id()), true);
+                    view.setRating(rateds.get(currentPlay.currentSong().id()));
                 } else {
-                    view.setRating(0, true);
+                    view.setRating(0);
                 }
             }
         }
@@ -214,6 +214,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 @Override
                 public void call(final Pair<Long, Integer> pair) {
                     rateds.put(pair.first, pair.second);
+                    // TODO is there a backend for the rating ?
                     requestView();
                 }
             });
