@@ -215,27 +215,19 @@ public class MusicPlayerExpandedView extends ScrollView {
         }
     }
 
-    public void setRating(int rating, boolean enabled) {
-        if (enabled) {
-            expandRatingBar.setVisibility(View.VISIBLE);
-            expandRatingBar.setRating(rating);
-        } else {
-            expandRatingBar.setVisibility(View.GONE);
-        }
+    public void setRating(int rating) {
+        expandRatingBar.setVisibility(View.VISIBLE);
+        expandRatingBar.setRating(rating);
     }
 
-    public void setFavorite(boolean favved, boolean enabled) {
+    public void setFavorite(boolean favved) {
         favorited = favved;
-        if (enabled) {
-            expandFavorite.setVisibility(View.VISIBLE);
-            expandFavorite.getDrawable().setColorFilter(favved ?
-                new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
-                    PorterDuff.Mode.SRC_IN) :
-                new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.white, null),
-                    PorterDuff.Mode.SRC_IN) );
-        } else {
-            expandFavorite.setVisibility(View.GONE);
-        }
+        expandFavorite.setVisibility(View.VISIBLE);
+        expandFavorite.getDrawable().setColorFilter(favved ?
+            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
+                PorterDuff.Mode.SRC_IN) :
+            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.white, null),
+                PorterDuff.Mode.SRC_IN) );
     }
 
     private void tintDrawable(@NonNull Drawable drawable) {

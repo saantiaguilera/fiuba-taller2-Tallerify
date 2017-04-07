@@ -14,7 +14,7 @@ public interface MusicPlayerContract {
 
     /**
      * Ideally instead of setData and setUser it should have
-     * setName/setImage/setFavoriteEnabled/etc.. But this is for university...
+     * setName/setImage/setActionEnabled/etc.. But this is for university...
      */
     interface View extends ContractView {
 
@@ -29,8 +29,8 @@ public interface MusicPlayerContract {
         void setVolume(int volume);
         void setShuffleEnabled(boolean enabled);
         void setRepeatMode(CurrentPlay.RepeatMode repeatMode);
-        void setRating(int rating, boolean enabled);
-        void setFavorite(boolean favved, boolean enabled);
+        void setRating(int rating);
+        void setFavorite(boolean favved);
         @NonNull Observable<Void> observeNextSongClicks();
         @NonNull Observable<Void> observePlayStateClicks();
         @NonNull Observable<Void> observePreviousSongClicks();

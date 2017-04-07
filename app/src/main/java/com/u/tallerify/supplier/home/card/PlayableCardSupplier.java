@@ -15,10 +15,12 @@ public class PlayableCardSupplier extends GenericAdapter.ItemSupplier<PlayableCa
     public static final int SONGS_PER_ROW = 2;
 
     private @NonNull Playable palayable;
+    private int status;
 
-    public PlayableCardSupplier(@NonNull Context context, @NonNull Playable palayable) {
+    public PlayableCardSupplier(@NonNull Context context, @NonNull Playable palayable, int status) {
         super(context);
         this.palayable = palayable;
+        this.status = status;
     }
 
     @NonNull
@@ -30,7 +32,7 @@ public class PlayableCardSupplier extends GenericAdapter.ItemSupplier<PlayableCa
     @NonNull
     @Override
     public GenericAdapter.ItemPresenter createPresenter() {
-        return new PlayableCardPresenter(palayable);
+        return new PlayableCardPresenter(palayable, status);
     }
 
     @Override

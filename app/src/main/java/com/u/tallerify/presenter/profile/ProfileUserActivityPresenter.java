@@ -19,6 +19,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.u.tallerify.presenter.base.cards.PlayableCardPresenter.ACTION_DISABLED;
+
 /**
  * Created by saguilera on 3/30/17.
  */
@@ -67,7 +69,7 @@ public class ProfileUserActivityPresenter extends Presenter<ProfileUserActivityC
                 .map(new Func1<Song, PlayableCardSupplier>() {
                     @Override
                     public PlayableCardSupplier call(final Song song) {
-                        return new PlayableCardSupplier(getContext(), song);
+                        return new PlayableCardSupplier(getContext(), song, ACTION_DISABLED);
                     }
                 })
                 .toList()

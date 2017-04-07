@@ -10,7 +10,7 @@ import java.util.List;
 public interface Playable {
 
     long id();
-    @Nullable List<String> urls();
+    @Nullable List<Song> asPlaylist();
     @Nullable List<String> pictures();
     @Nullable String fullName();
 

@@ -24,26 +24,29 @@ public class Artist extends Entity implements Playable {
 
     @Nullable
     @Override
-    public List<String> urls() {
+    public List<Song> asPlaylist() {
         return Observable.from(albums)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .map(new Func1<Album, List<String>>() {
+            .map(new Func1<Album, List<Song>>() {
                 @Override
-                public List<String> call(final Album album) {
-                    return album.urls();
+                public List<Song> call(final Album album) {
+                    List<Song> songs = album.asPlaylist();
+                    return songs == null ? new ArrayList<Song>() : songs;
                 }
-            }).toList()
-            .map(new Func1<List<List<String>>, List<String>>() {
+            })
+            .toList()
+            .map(new Func1<List<List<Song>>, List<Song>>() {
                 @Override
-                public List<String> call(final List<List<String>> lists) {
-                    List<String> strings = new ArrayList<>();
-                    for (List<String> innerStrings : lists) {
-                        strings.addAll(innerStrings);
+                public List<Song> call(final List<List<Song>> lists) {
+                    List<Song> songs = new ArrayList<>();
+                    for (List<Song> innerSongs : lists) {
+                        songs.addAll(innerSongs);
                     }
-                    return strings;
+                    return songs;
                 }
-            }).observeOn(AndroidSchedulers.mainThread())
+            })
+            .observeOn(AndroidSchedulers.mainThread())
             .toBlocking()
             .first();
     }

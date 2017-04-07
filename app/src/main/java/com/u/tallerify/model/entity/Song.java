@@ -1,7 +1,7 @@
 package com.u.tallerify.model.entity;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,10 +81,12 @@ public class Song extends Entity implements Playable {
         return result;
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public List<String> urls() {
-        return Collections.singletonList(href);
+    public List<Song> asPlaylist() {
+        List<Song> list = new ArrayList<>();
+        list.add(this);
+        return list;
     }
 
     @Nullable

@@ -24,19 +24,8 @@ public class Album extends Entity implements Playable {
 
     @Nullable
     @Override
-    public List<String> urls() {
-        return Observable.from(tracks)
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
-            .map(new Func1<Song, String>() {
-                @Override
-                public String call(final Song song) {
-                    return song.url();
-                }
-            }).toList()
-            .observeOn(AndroidSchedulers.mainThread())
-            .toBlocking()
-            .first();
+    public List<Song> asPlaylist() {
+        return tracks;
     }
 
     public @Nullable List<String> pictures() {

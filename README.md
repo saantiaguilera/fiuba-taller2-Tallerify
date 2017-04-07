@@ -123,3 +123,5 @@ How to dance correctly:
 Mismo con `ArtistShort` y con `Playlist` vamos a tener que agregar un campo `images` (que use las imagenes del album asociado a la primer cancion?). Todas por la misma razon.
 5. No hay endpoints para la actividad reciente del usuario. De momento simulo que son las ultimas CANCIONES escuchadas (porque pinto)
 6. UserShort necesito que tenga tambien las imagenes del wachin (de que me sirve solo el nombre...)
+7. Falta endpoint de GET de songs en un album (el de artist y playlist estan tho)
+8. Los endpoints de GET de songs estan mal documentados, no dice que devuelven, deberian devolver Song[]. No SongShort[].

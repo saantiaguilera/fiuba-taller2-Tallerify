@@ -2,6 +2,8 @@ package com.u.tallerify.networking.services.playlist;
 
 import android.support.annotation.NonNull;
 import com.u.tallerify.model.entity.Playlist;
+import com.u.tallerify.model.entity.Song;
+import java.util.List;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
@@ -31,5 +33,8 @@ public interface PlaylistService {
 
     @DELETE("playlists/{playlistId}")
     Observable<Void> delete(@Path("playlistId") long id);
+
+    @GET("playlists/{playlistId}/tracks")
+    Observable<List<Song>> songs(@Path("playlistId") long playlistId);
 
 }

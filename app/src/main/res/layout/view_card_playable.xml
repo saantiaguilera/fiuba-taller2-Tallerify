@@ -35,4 +35,68 @@
         android:gravity="center_vertical|left"
         android:layout_gravity="bottom" />
 
+    <RelativeLayout
+        android:id="@+id/view_card_playable_overlay"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:visibility="gone"
+
+        android:background="@color/black" >
+
+        <LinearLayout
+            android:orientation="vertical"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/view_card_playable_playlist"
+
+                android:scaleType="fitCenter"
+                android:padding="20dp"
+
+                android:src="@drawable/ic_playlist_add_black_36dp"
+                android:tint="@color/white"
+
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.4"
+                android:background="@color/white" />
+
+            <ImageView
+                android:id="@+id/view_card_playable_play"
+
+                android:scaleType="fitCenter"
+                android:padding="20dp"
+
+                android:src="@drawable/ic_play_arrow_black_36dp"
+                android:tint="@color/white"
+
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/view_card_playable_favorite"
+
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+
+            android:layout_centerInParent="true"
+
+            android:visibility="gone"
+
+            android:tint="@color/white"/>
+
+    </RelativeLayout>
+
 </merge>
