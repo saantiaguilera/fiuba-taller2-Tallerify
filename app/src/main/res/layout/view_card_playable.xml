@@ -95,7 +95,7 @@
 
             android:visibility="gone"
 
-            android:tint="@color/white"/>
+            android:tint="@color/colorPrimary"/>
 
     </RelativeLayout>
 
