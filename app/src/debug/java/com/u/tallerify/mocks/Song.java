@@ -21,7 +21,7 @@ public class Song {
         name: '{{firstName()}}',
         images: [
           '{{repeat(3)}}',
-          'http://placehold.it/32x32'
+          'https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg'
         ]
       }
     ],
@@ -30,7 +30,7 @@ public class Song {
       name: '{{firstName()}}',
       images: [
         '{{repeat(3)}}',
-        'http://placehold.it/320x320'
+        'https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg'
       ]
     }
   }
@@ -47,45 +47,45 @@ public class Song {
         "        \"id\": 0,\n" +
         "        \"name\": \"Cummings\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 1,\n" +
         "        \"name\": \"Carmen\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 2,\n" +
         "        \"name\": \"Estrada\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 3,\n" +
         "        \"name\": \"Lowery\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 4,\n" +
         "        \"name\": \"Carr\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      }\n" +
         "    ],\n" +
@@ -93,9 +93,9 @@ public class Song {
         "      \"id\": 0,\n" +
         "      \"name\": \"Cortez\",\n" +
         "      \"images\": [\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\"\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "      ]\n" +
         "    }\n" +
         "  }";
@@ -111,45 +111,45 @@ public class Song {
         "        \"id\": 0,\n" +
         "        \"name\": \"Cummings\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 1,\n" +
         "        \"name\": \"Carmen\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 2,\n" +
         "        \"name\": \"Estrada\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 3,\n" +
         "        \"name\": \"Lowery\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 4,\n" +
         "        \"name\": \"Carr\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      }\n" +
         "    ],\n" +
@@ -157,9 +157,9 @@ public class Song {
         "      \"id\": 0,\n" +
         "      \"name\": \"Cortez\",\n" +
         "      \"images\": [\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\"\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "      ]\n" +
         "    }\n" +
         "  },\n" +
@@ -173,45 +173,45 @@ public class Song {
         "        \"id\": 0,\n" +
         "        \"name\": \"Pugh\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 1,\n" +
         "        \"name\": \"Prince\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 2,\n" +
         "        \"name\": \"Sybil\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 3,\n" +
         "        \"name\": \"Rebecca\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 4,\n" +
         "        \"name\": \"Castro\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      }\n" +
         "    ],\n" +
@@ -219,9 +219,9 @@ public class Song {
         "      \"id\": 1,\n" +
         "      \"name\": \"Vaughan\",\n" +
         "      \"images\": [\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\"\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "      ]\n" +
         "    }\n" +
         "  },\n" +
@@ -235,45 +235,45 @@ public class Song {
         "        \"id\": 0,\n" +
         "        \"name\": \"Darcy\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 1,\n" +
         "        \"name\": \"Ramsey\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 2,\n" +
         "        \"name\": \"Delgado\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 3,\n" +
         "        \"name\": \"Ruthie\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 4,\n" +
         "        \"name\": \"Kay\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      }\n" +
         "    ],\n" +
@@ -281,9 +281,9 @@ public class Song {
         "      \"id\": 2,\n" +
         "      \"name\": \"Savage\",\n" +
         "      \"images\": [\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\"\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "      ]\n" +
         "    }\n" +
         "  },\n" +
@@ -297,45 +297,45 @@ public class Song {
         "        \"id\": 0,\n" +
         "        \"name\": \"Luisa\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 1,\n" +
         "        \"name\": \"Alisha\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 2,\n" +
         "        \"name\": \"Rios\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 3,\n" +
         "        \"name\": \"Summer\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 4,\n" +
         "        \"name\": \"Cecelia\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      }\n" +
         "    ],\n" +
@@ -343,9 +343,9 @@ public class Song {
         "      \"id\": 3,\n" +
         "      \"name\": \"Lenore\",\n" +
         "      \"images\": [\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\"\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "      ]\n" +
         "    }\n" +
         "  },\n" +
@@ -359,45 +359,45 @@ public class Song {
         "        \"id\": 0,\n" +
         "        \"name\": \"Milagros\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 1,\n" +
         "        \"name\": \"Callahan\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 2,\n" +
         "        \"name\": \"Fox\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 3,\n" +
         "        \"name\": \"Jaclyn\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      },\n" +
         "      {\n" +
         "        \"id\": 4,\n" +
         "        \"name\": \"Dana\",\n" +
         "        \"images\": [\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\",\n" +
-        "          \"http://placehold.it/320x320\"\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "          \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "        ]\n" +
         "      }\n" +
         "    ],\n" +
@@ -405,9 +405,9 @@ public class Song {
         "      \"id\": 4,\n" +
         "      \"name\": \"Roslyn\",\n" +
         "      \"images\": [\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\",\n" +
-        "        \"http://placehold.it/320x320\"\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\",\n" +
+        "        \"https://upload.wikimedia.org/wikipedia/en/b/bb/Hate_Crew_Deathroll_%28musical_album%29.jpg\"\n" +
         "      ]\n" +
         "    }\n" +
         "  }\n" +

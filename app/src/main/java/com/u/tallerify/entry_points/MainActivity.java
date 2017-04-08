@@ -1,4 +1,4 @@
-package com.u.tallerify.activity;
+package com.u.tallerify.entry_points;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,11 +63,17 @@ public class MainActivity extends AppCompatActivity {
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {
+                    // Set the bottom nav play bar
                     List<RouterTransaction> backstack =
                         RouterInteractor.instance().mainRouter().getBackstack();
                     if (!backstack.isEmpty()) {
                         ((FlowController) backstack.get(backstack.size() - 1).controller()).renderMediaPlayer(true);
                     }
+
+                    // Start the play service
+                    Intent serviceIntent = new Intent(MainActivity.this, PlayService.class);
+                    serviceIntent.setAction(PlayService.SERVICE_START);
+                    startService(serviceIntent);
                 }
             });
     }
