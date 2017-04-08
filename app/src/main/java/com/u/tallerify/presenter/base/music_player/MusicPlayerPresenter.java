@@ -86,26 +86,28 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                         break;
                 }
 
-                final List<String> names = new ArrayList<>();
-                final List<String> urls = new ArrayList<>();
-                Observable.from(CurrentPlay.instance().playlist())
-                    .take(currentPlay.playlist().size() > 10 ? 10 :
-                        currentPlay.playlist().size())
-                    .doOnNext(new Action1<Song>() {
-                        @Override
-                        public void call(final Song song) {
-                            names.add(song.name() + " - " + song.artistsName());
-                            urls.add(song.pictures().get(0));
-                        }
-                    })
-                    .doOnCompleted(new Action0() {
-                        @Override
-                        public void call() {
-                            view.setQueue(names, urls);
-                        }
-                    })
-                    .toBlocking()
-                    .subscribe();
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYLIST)) {
+                    final List<String> names = new ArrayList<>();
+                    final List<String> urls = new ArrayList<>();
+                    Observable.from(CurrentPlay.instance().playlist())
+                        .take(currentPlay.playlist().size() > 10 ? 10 :
+                            currentPlay.playlist().size())
+                        .doOnNext(new Action1<Song>() {
+                            @Override
+                            public void call(final Song song) {
+                                names.add(song.name() + " - " + song.artistsName());
+                                urls.add(song.pictures().get(0));
+                            }
+                        })
+                        .doOnCompleted(new Action0() {
+                            @Override
+                            public void call() {
+                                view.setQueue(names, urls);
+                            }
+                        })
+                        .toBlocking()
+                        .subscribe();
+                }
 
                 if (favorites.contains(currentPlay.currentSong().id())) {
                     view.setFavorite(true);
