@@ -118,14 +118,7 @@ public class CurrentPlay {
     }
 
     public @NonNull Builder newBuilder() {
-        return new Builder()
-            .currentSong(currentSong)
-            .currentTime(currentTime)
-            .playlist(playlist)
-            .playState(playState)
-            .repeat(repeat)
-            .shuffle(shuffle)
-            .volume(volume);
+        return new Builder(this);
     }
 
     public static @NonNull Observable<CurrentPlay> observeCurrentPlay() {
@@ -259,6 +252,8 @@ public class CurrentPlay {
             buildable &= currentTime != -1;
             buildable &= playState != null;
             buildable &= volume != -1;
+            buildable &= currentSong != null;
+            buildable &= playlist != null;
             return buildable;
         }
 

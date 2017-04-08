@@ -56,6 +56,7 @@ public final class PlayUtils {
             if (CurrentPlay.instance().playlist().isEmpty()) {
                 CurrentPlay.instance().newBuilder()
                     .playState(CurrentPlay.PlayState.PAUSED)
+                    .currentTime(0)
                     .build();
                 return;
             }
@@ -74,6 +75,7 @@ public final class PlayUtils {
 
             CurrentPlay.instance().newBuilder()
                 .currentSong(nextSong)
+                .currentTime(0)
                 .playlist(playlist)
                 .build();
         }
@@ -92,6 +94,7 @@ public final class PlayUtils {
 
             CurrentPlay.instance().newBuilder()
                 .currentSong(nextSong)
+                .currentTime(0)
                 .playlist(playlist)
                 .build();
         }
@@ -155,6 +158,7 @@ public final class PlayUtils {
 
             CurrentPlay.instance().newBuilder()
                 .currentSong(nextSong)
+                .currentTime(0)
                 .playlist(newList)
                 .build();
         }

@@ -174,7 +174,9 @@ public class MusicPlayerExpandedView extends ScrollView {
     }
 
     public void setTrackBarProgress(int progress) {
-        expandTrackBar.setProgress(progress);
+        if (!expandTrackArtist.isFocused()) {
+            expandTrackBar.setProgress(progress);
+        }
     }
 
     @SuppressLint("DefaultLocale")
