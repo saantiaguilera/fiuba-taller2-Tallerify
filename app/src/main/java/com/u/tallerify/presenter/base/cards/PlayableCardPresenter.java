@@ -50,8 +50,8 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
         render(view);
 
         view.observeActionClicks()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Void>bindToLifecycle())
             .subscribe(new Action1<Void>() {
                 @Override
@@ -61,8 +61,8 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
             });
 
         view.observePlayClicks()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Void>bindToLifecycle())
             .subscribe(new Action1<Void>() {
                 @Override
@@ -130,8 +130,8 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
         }
 
         if (observable != null) {
-            observable.observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
+            observable.observeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.computation())
                 .compose(PlayableCardPresenter.this.<List<Song>>bindToLifecycle())
                 .subscribe(new Action1<List<Song>>() {
                     @Override
@@ -188,8 +188,8 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
         }
 
         if (observable != null) {
-            observable.observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
+            observable.observeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.computation())
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(final Object o) {

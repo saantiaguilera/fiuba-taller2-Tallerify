@@ -84,7 +84,7 @@ public class PlayableCardView extends CardView
 
                     Observable.timer(4, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
+                        .subscribeOn(Schedulers.computation())
                         .subscribe(new Action1<Long>() {
                             @Override
                             public void call(final Long aLong) {

@@ -26,8 +26,8 @@ public class Artist extends Entity implements Playable {
     @Override
     public List<Song> asPlaylist() {
         return Observable.from(albums)
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .map(new Func1<Album, List<Song>>() {
                 @Override
                 public List<Song> call(final Album album) {

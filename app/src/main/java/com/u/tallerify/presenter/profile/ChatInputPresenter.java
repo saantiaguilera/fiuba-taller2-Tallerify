@@ -28,8 +28,8 @@ public class ChatInputPresenter extends Presenter<ChatInputContract.View>
     @Override
     protected void onAttach(@NonNull final ChatInputContract.View view) {
         view.observeUserMessages()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<String>bindToLifecycle())
             .subscribe(new Action1<String>() {
                 @Override

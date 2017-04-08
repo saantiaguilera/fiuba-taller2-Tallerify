@@ -66,24 +66,41 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     }
 
     private void render(@NonNull final MusicPlayerContract.View view) {
-        if (CurrentPlay.instance() != null) {
             if (CurrentPlay.instance() != null) {
                 CurrentPlay currentPlay = CurrentPlay.instance();
-                view.setShuffleEnabled(currentPlay.shuffle());
-                view.setImage(currentPlay.currentSong().pictures().get(0));
-                view.setName(currentPlay.currentSong().name(), currentPlay.currentSong().artistsName());
-                view.setRepeatMode(currentPlay.repeat());
-                view.setTime((int) currentPlay.currentTime(), (int) currentPlay.currentSong().duration());
-                view.setTrackBarMax((int) currentPlay.currentSong().duration());
-                view.setTrackBarProgress((int) currentPlay.currentTime());
-                view.setVolume(currentPlay.volume());
-                switch (currentPlay.playState()) {
-                    case PLAYING:
-                        view.setPaused();
-                        break;
-                    case PAUSED:
-                        view.setPlaying();
-                        break;
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_SHUFFLE)) {
+                    view.setShuffleEnabled(currentPlay.shuffle());
+                }
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
+                    view.setImage(currentPlay.currentSong().pictures().get(0));
+                    view.setName(currentPlay.currentSong().name(), currentPlay.currentSong().artistsName());
+                    view.setTrackBarMax((int) currentPlay.currentSong().duration());
+                }
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_REPEAT)) {
+                    view.setRepeatMode(currentPlay.repeat());
+                }
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_TIME)) {
+                    view.setTime((int) currentPlay.currentTime(), (int) currentPlay.currentSong().duration());
+                    view.setTrackBarProgress((int) currentPlay.currentTime());
+                }
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_VOLUME)) {
+                    view.setVolume(currentPlay.volume());
+                }
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYSTATE)) {
+                    switch (currentPlay.playState()) {
+                        case PLAYING:
+                            view.setPaused();
+                            break;
+                        case PAUSED:
+                            view.setPlaying();
+                            break;
+                    }
                 }
 
                 if (currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYLIST)) {
@@ -121,14 +138,13 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                     view.setRating(0);
                 }
             }
-        }
     }
 
     private void observeProducers() {
         // Observe for changes in the current play, we want to always request a render pass whenever our model changes
         CurrentPlay.observeCurrentPlay()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<CurrentPlay>bindToLifecycle())
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
@@ -138,8 +154,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
             });
 
         CredentialsInteractor.instance().observeToken()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override
@@ -150,8 +166,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
             });
 
         MeInteractor.instance().observeSongs()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
@@ -191,8 +207,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         RxPlayerHelper.observeVolumeSeeks((Application) getContext().getApplicationContext(), view);
 
         RxPlayerHelper.observeFavoriteClicks((Application) getContext().getApplicationContext(), view)
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Song>bindToView((View) view))
             .subscribe(new Action1<Song>() {
                 @Override
@@ -209,8 +225,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
         // We need the result because this comunicates with a backend
         RxPlayerHelper.observeRatingSeeks(view)
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Pair<Long, Integer>>bindToView((View) view))
             .subscribe(new Action1<Pair<Long, Integer>>() {
                 @Override

@@ -95,8 +95,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
      */
     private void observeRepositories() {
         MeInteractor.instance().observeArtists()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
@@ -109,8 +109,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         MeInteractor.instance().observeSongs()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
@@ -123,8 +123,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         MeInteractor.instance().observePlaylists()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Playlist>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Playlist>>>() {
@@ -137,8 +137,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         SongInteractor.instance().observeTrendingSongs()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
@@ -151,8 +151,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         ArtistInteractor.instance().observeTrendingArtists()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
@@ -165,8 +165,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         CredentialsInteractor.instance().observeToken()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
@@ -193,8 +193,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 notifierTrendingSongs,
                 notifierLogin
             )
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Void>bindToLifecycle())
             .debounce(500, TimeUnit.MILLISECONDS) // To avoid drawing all the time if repositories are active
             .map(new Func1<Void, List<GenericAdapter.ItemSupplier>>() {

@@ -49,8 +49,8 @@ public class HomeController extends FlowController {
         BussinessUtils.requestTrendings(getApplicationContext());
 
         CredentialsInteractor.instance().observeToken()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override

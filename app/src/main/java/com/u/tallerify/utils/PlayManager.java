@@ -50,21 +50,26 @@ public final class PlayManager {
             subscription.unsubscribe();
         }
 
-        subscription = Observable.timer(mediaPlayer.getDuration() - CurrentPlay.instance().currentTime(), TimeUnit.SECONDS)
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
-            .doOnSubscribe(new Action0() {
-                @Override
-                public void call() {
-                    mediaPlayer.start();
-                }
-            })
+        subscription = Observable.interval(1, TimeUnit.SECONDS)
+            .take((int) ((mediaPlayer.getDuration() / 1000) - CurrentPlay.instance().currentTime()))
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .subscribe(new Action1<Long>() {
                 @Override
                 public void call(final Long aLong) {
                     CurrentPlay.instance().newBuilder()
                         .currentTime(mediaPlayer.getCurrentPosition() / 1000)
                         .build();
+                }
+            });
+
+        Observable.just(null)
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
+            .subscribe(new Action1<Object>() {
+                @Override
+                public void call(final Object o) {
+                    mediaPlayer.start();
                 }
             });
     }
@@ -106,7 +111,10 @@ public final class PlayManager {
      * @param newTime in seconds
      */
     public void seek(long newTime) {
-        mediaPlayer.seekTo((int) (newTime * 1000));
+        // To avoid auto lagging ourselves we use a threshold of 2 seconds at least for seeks
+        if (newTime - (mediaPlayer.getCurrentPosition() / 1000) > 2) {
+            mediaPlayer.seekTo((int) (newTime * 1000));
+        }
     }
 
 }
