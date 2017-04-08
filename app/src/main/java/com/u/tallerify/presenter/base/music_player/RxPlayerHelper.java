@@ -65,7 +65,7 @@ final class RxPlayerHelper {
 
     static void observePlayStateClicks(final View view) {
         view.observePlayStateClicks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Void>bindView((android.view.View) view))
             .subscribe(new Action1<Void>() {
                 @Override
@@ -77,7 +77,7 @@ final class RxPlayerHelper {
     
     static void observePlaylistSkips(final View view) {
         view.observePlaylistSkipClicks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Integer>bindView((android.view.View) view))
             .subscribe(new Action1<Integer>() {
                 @Override
@@ -89,7 +89,7 @@ final class RxPlayerHelper {
     
     static void observeTimeSeeks(final View view) {
         view.observeSongSeeks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Integer>bindView((android.view.View) view))
             .subscribe(new Action1<Integer>() {
                 @Override
@@ -101,7 +101,7 @@ final class RxPlayerHelper {
     
     static void observeShuffleClicks(final View view) {
         view.observeShuffleClicks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Void>bindView((android.view.View) view))
             .subscribe(new Action1<Void>() {
                 @Override
@@ -113,7 +113,7 @@ final class RxPlayerHelper {
     
     static void observeRepeatClicks(final View view) {
         view.observeRepeatClicks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Void>bindView((android.view.View) view))
             .subscribe(new Action1<Void>() {
                 @Override
@@ -125,7 +125,7 @@ final class RxPlayerHelper {
     
     static void observeVolumeSeeks(final Application context, final View view) {
         view.observeVolumeSeeks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Integer>bindView((android.view.View) view))
             .subscribe(new Action1<Integer>() {
                 @Override
@@ -148,7 +148,7 @@ final class RxPlayerHelper {
     
     static void observeForwardClicks(final View view) {
         view.observeNextSongClicks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Void>bindView((android.view.View) view))
             .subscribe(new Action1<Void>() {
                 @Override
@@ -162,7 +162,7 @@ final class RxPlayerHelper {
     static Observable<Pair<Long, Integer>> observeRatingSeeks(@NonNull final View view) {
         final BehaviorSubject<Pair<Long, Integer>> subject = BehaviorSubject.create();
         view.observeRatingSeeks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Integer>bindView((android.view.View) view))
             .subscribe(new Action1<Integer>() {
                 @Override
@@ -179,7 +179,7 @@ final class RxPlayerHelper {
             @NonNull final View view) {
         final BehaviorSubject<Song> subject = BehaviorSubject.create();
         view.observeFavoriteClicks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Boolean>bindView((android.view.View) view))
             .subscribe(new Action1<Boolean>() {
                 @Override
@@ -221,7 +221,7 @@ final class RxPlayerHelper {
     
     static void observeBackwardClicks(final View view) {
         view.observePreviousSongClicks()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Void>bindView((android.view.View) view))
             .subscribe(new Action1<Void>() {
                 @Override

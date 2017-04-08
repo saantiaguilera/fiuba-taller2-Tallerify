@@ -44,8 +44,8 @@ public class LoginDialogController extends AlertDialogController {
 
         // Interact with app tokens
         FacebookInteractor.instance().observeFacebookLogins()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<LoginResult>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<LoginResult>>() {
                 @Override

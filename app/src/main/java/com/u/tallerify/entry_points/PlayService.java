@@ -71,8 +71,8 @@ public class PlayService extends Service {
         }
 
         subscription = CurrentPlay.instance().observeCurrentPlay()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {

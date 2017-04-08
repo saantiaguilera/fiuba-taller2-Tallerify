@@ -28,8 +28,8 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
 
     public ProfileUserContactsPresenter() {
         MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<User>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<User>>() {
                 @Override
@@ -46,7 +46,7 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
     protected void onAttach(@NonNull final ProfileUserContactsContract.View view) {
         view.observeContactClicks()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Integer>bindToLifecycle())
             .subscribe(new Action1<Integer>() {
                 @Override

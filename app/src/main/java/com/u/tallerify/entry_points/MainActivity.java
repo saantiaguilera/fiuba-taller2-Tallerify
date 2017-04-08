@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private void observeCurrentPlay() {
         // Show music player when current play exists
         CurrentPlay.observeCurrentPlay()
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .take(1)
             .compose(RxLifecycleAndroid.<CurrentPlay>bindView(findViewById(R.id.activity_main_root)))
@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void observeLogins() {
         MeInteractor.instance().observeUser()
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<ReactiveModel<User>>bindView(findViewById(R.id.activity_main_root)))
             .subscribe(new Action1<ReactiveModel<User>>() {
                 @Override

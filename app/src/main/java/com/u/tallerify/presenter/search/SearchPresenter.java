@@ -54,8 +54,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         observeRepositories();
 
         MeInteractor.instance().observeSongs()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
@@ -67,8 +67,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
             });
 
         MeInteractor.instance().observeArtists()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
                 @Override
@@ -97,8 +97,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
     }
 
     private void observeNotifier() {
-        notifier.observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+        notifier.observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Void>bindToLifecycle())
             .debounce(500, TimeUnit.MILLISECONDS) // To avoid drawing all the time if repositories are active
             .map(new Func1<Void, List<GenericAdapter.ItemSupplier>>() {
@@ -118,8 +118,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
 
     private void observeRepositories() {
         SongInteractor.instance().observeSearches()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
@@ -134,8 +134,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                 }
             });
         ArtistInteractor.instance().observeSearches()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
                 @Override
@@ -150,8 +150,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                 }
             });
         AlbumInteractor.instance().observeSearches()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Album>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Album>>>() {
                 @Override
