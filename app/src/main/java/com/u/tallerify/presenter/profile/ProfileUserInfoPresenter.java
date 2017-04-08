@@ -32,7 +32,7 @@ public class ProfileUserInfoPresenter extends Presenter<ProfileUserInfoContract.
                         me = rxModel.model();
 
                         if (isAttached()) {
-                            requestView();
+                            requestRender();
                         }
                     }
                 }
@@ -47,24 +47,14 @@ public class ProfileUserInfoPresenter extends Presenter<ProfileUserInfoContract.
                     location = s;
 
                     if (isAttached()) {
-                        requestView();
+                        requestRender();
                     }
                 }
             });
     }
 
     @Override
-    protected void onAttach(@NonNull final ProfileUserInfoContract.View view) {
-        render(view);
-    }
-
-    @Override
-    protected void onViewRequested(@NonNull final ProfileUserInfoContract.View view) {
-        super.onViewRequested(view);
-        render(view);
-    }
-
-    private void render(@NonNull ProfileUserInfoContract.View view) {
+    protected void onRender(@NonNull ProfileUserInfoContract.View view) {
         if (me != null) {
             view.setUserName(me.name());
             view.setUserImage(me.pictures().get(0));

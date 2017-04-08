@@ -46,7 +46,7 @@ public class ProfileUserActivityPresenter extends Presenter<ProfileUserActivityC
                                 @Override
                                 public void call(final List<Song> songs) {
                                     activity = songs;
-                                    requestView();
+                                    requestRender();
                                 }
                             }, Interactors.ACTION_ERROR);
                     }
@@ -55,14 +55,7 @@ public class ProfileUserActivityPresenter extends Presenter<ProfileUserActivityC
     }
 
     @Override
-    protected void onAttach(@NonNull final ProfileUserActivityContract.View view) {
-        onViewRequested(view);
-    }
-
-    @Override
-    protected void onViewRequested(@NonNull final ProfileUserActivityContract.View view) {
-        super.onViewRequested(view);
-
+    protected void onRender(@NonNull final ProfileUserActivityContract.View view) {
         if (activity != null) {
             List<GenericAdapter.ItemSupplier> songCards = new ArrayList<>();
             songCards.addAll(Observable.from(activity)

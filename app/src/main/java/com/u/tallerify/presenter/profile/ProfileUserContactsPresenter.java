@@ -29,14 +29,14 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
     public ProfileUserContactsPresenter() {
         MeInteractor.instance().observeUser()
             .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<User>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<User>>() {
                 @Override
                 public void call(final ReactiveModel<User> userReactiveModel) {
                     if (userReactiveModel.model() != null && !userReactiveModel.hasError()) {
                         users = userReactiveModel.model().contacts();
-                        requestView();
+                        requestRender();
                     }
                 }
             });
@@ -46,7 +46,7 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
     protected void onAttach(@NonNull final ProfileUserContactsContract.View view) {
         view.observeContactClicks()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.io())
             .compose(this.<Integer>bindToLifecycle())
             .subscribe(new Action1<Integer>() {
                 @Override
@@ -61,16 +61,10 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
                         .pushChangeHandler(new FadeChangeHandler()));
                 }
             });
-
-        if (users != null) {
-            onViewRequested(view);
-        }
     }
 
     @Override
-    protected void onViewRequested(@NonNull final ProfileUserContactsContract.View view) {
-        super.onViewRequested(view);
-
+    protected void onRender(@NonNull final ProfileUserContactsContract.View view) {
         if (users != null) {
             List<String> names = Observable.from(users)
                 .map(new Func1<User, String>() {

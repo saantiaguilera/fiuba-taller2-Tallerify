@@ -75,15 +75,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
     }
 
     @Override
-    protected void onViewRequested(@NonNull final GenericGridContract.View view) {
-        super.onViewRequested(view);
-        consumeSnapshot(view);
-    }
-
-    /**
-     * Consume a snapshot of data and draw the view with it
-     */
-    private void consumeSnapshot(@NonNull final GenericGridContract.View view) {
+    protected void onRender(@NonNull final GenericGridContract.View view) {
         if (dataSnapshot != null) {
             view.setData(dataSnapshot);
             dataSnapshot = null;
@@ -207,7 +199,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 @Override
                 public void call(final List<GenericAdapter.ItemSupplier> itemSuppliers) {
                     dataSnapshot = itemSuppliers;
-                    requestView();
+                    requestRender();
                 }
             });
     }

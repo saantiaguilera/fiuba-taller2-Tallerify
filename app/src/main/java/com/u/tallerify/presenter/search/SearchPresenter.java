@@ -13,7 +13,6 @@ import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.presenter.Presenter;
-import com.u.tallerify.presenter.base.cards.PlayableCardPresenter;
 import com.u.tallerify.supplier.home.card.HeaderCardSupplier;
 import com.u.tallerify.supplier.home.card.HorizontalCardSupplier;
 import com.u.tallerify.supplier.home.card.PlayableCardSupplier;
@@ -80,16 +79,11 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
             });
     }
 
-    @Override
-    protected void onViewRequested(@NonNull final GenericGridContract.View view) {
-        super.onViewRequested(view);
-        consumeSnapshot(view);
-    }
-
     /**
      * Consume a snapshot of data and draw the view with it
      */
-    private void consumeSnapshot(@NonNull final GenericGridContract.View view) {
+    @Override
+    protected void onRender(@NonNull final GenericGridContract.View view) {
         if (dataSnapshot != null) {
             view.setData(dataSnapshot);
             dataSnapshot = null;
@@ -111,7 +105,7 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                 @Override
                 public void call(final List<GenericAdapter.ItemSupplier> itemSuppliers) {
                     dataSnapshot = itemSuppliers;
-                    requestView();
+                    requestRender();
                 }
             });
     }
