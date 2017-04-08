@@ -44,8 +44,6 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
     @Override
     protected void onAttach(@NonNull final MusicPlayerContract.View view) {
-        render(view);
-
         observeProducers();
         observeView(view);
     }
@@ -59,13 +57,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         }
     }
 
-    @Override
-    protected void onViewRequested(@NonNull final MusicPlayerContract.View view) {
-        super.onViewRequested(view);
-        render(view);
-    }
-
-    private void render(@NonNull final MusicPlayerContract.View view) {
+    protected void onRender(@NonNull final MusicPlayerContract.View view) {
             if (CurrentPlay.instance() != null) {
                 CurrentPlay currentPlay = CurrentPlay.instance();
 
@@ -142,7 +134,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     }
 
     private void observeProducers() {
-        // Observe for changes in the current play, we want to always request a render pass whenever our model changes
+        // Observe for changes in the current play, we want to always request a onRender pass whenever our model changes
         CurrentPlay.observeCurrentPlay()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
@@ -150,7 +142,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {
-                    requestView();
+                    requestRender();
                 }
             });
 
@@ -162,7 +154,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 @Override
                 public void call(final ReactiveModel<AccessToken> reactiveModel) {
                     logged = reactiveModel.model() != null && !reactiveModel.hasError();
-                    requestView();
+                    requestRender();
                 }
             });
 
@@ -188,7 +180,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                         .toBlocking()
                         .first();
 
-                    requestView();
+                    requestRender();
                 }
             });
 
@@ -220,7 +212,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                         favorites.add(song.id());
                     }
 
-                    requestView();
+                    requestRender();
                 }
             });
 
@@ -234,7 +226,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 public void call(final Pair<Long, Integer> pair) {
                     rateds.put(pair.first, pair.second);
                     // TODO is there a backend for the rating ?
-                    requestView();
+                    requestRender();
                 }
             });
     }

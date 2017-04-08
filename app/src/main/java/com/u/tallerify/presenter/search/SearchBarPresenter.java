@@ -36,6 +36,9 @@ public class SearchBarPresenter extends Presenter<SearchBarContract.View>
             });
     }
 
+    @Override
+    protected void onRender(@NonNull final SearchBarContract.View view) {}
+
     void dispatch(Observable<?> observable) {
         observable.observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())

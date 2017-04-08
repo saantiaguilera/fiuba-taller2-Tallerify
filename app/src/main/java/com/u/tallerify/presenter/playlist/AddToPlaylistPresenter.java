@@ -11,9 +11,8 @@ import com.u.tallerify.presenter.Presenter;
 public class AddToPlaylistPresenter extends Presenter<AddToPlaylistContract.View>
         implements AddToPlaylistContract.Presenter {
 
-
     @Override
-    protected void onAttach(@NonNull final AddToPlaylistContract.View view) {
+    protected void onRender(@NonNull final AddToPlaylistContract.View view) {
 
     }
 

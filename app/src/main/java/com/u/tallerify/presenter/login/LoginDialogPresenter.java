@@ -27,6 +27,9 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
         observeInteractors(view);
     }
 
+    @Override
+    protected void onRender(@NonNull final LoginContract.View view) {}
+
     private void observeView(final LoginContract.View view) {
         view.observeFacebookLoginClicks()
             .observeOn(Schedulers.newThread())

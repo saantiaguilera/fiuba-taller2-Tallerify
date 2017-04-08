@@ -27,4 +27,7 @@ public class NoAccountCardPresenter extends GenericAdapter.ItemPresenter<NoAccou
             });
     }
 
+    @Override
+    protected void onRender(@NonNull final NoAccountCardContract.View view) {}
+
 }

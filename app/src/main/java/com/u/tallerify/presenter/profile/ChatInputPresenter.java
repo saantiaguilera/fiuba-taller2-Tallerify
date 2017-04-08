@@ -47,7 +47,10 @@ public class ChatInputPresenter extends Presenter<ChatInputContract.View>
                     }
                 }
             });
+    }
 
+    @Override
+    protected void onRender(@NonNull final ChatInputContract.View view) {
         view.focus();
     }
 

@@ -45,8 +45,6 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
 
     @Override
     protected void onAttach(@NonNull final PlayableCardContract.View view) {
-        render(view);
-
         view.observeActionClicks()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
@@ -72,13 +70,7 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
         // TODO el add a una playlist
     }
 
-    @Override
-    protected void onViewRequested(@NonNull final PlayableCardContract.View view) {
-        super.onViewRequested(view);
-        render(view);
-    }
-
-    void render(PlayableCardContract.View view) {
+    protected void onRender(PlayableCardContract.View view) {
         view.setImage(playable.pictures() == null ? null : playable.pictures().get(0));
         view.setName(playable.fullName());
 
@@ -172,7 +164,7 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
 
             if (status != ACTION_TRUE_BLOCKED) {
                 status = ~status;
-                requestView();
+                requestRender();
             }
         }
 
@@ -187,7 +179,7 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
 
             if (status != ACTION_TRUE_BLOCKED) {
                 status = ~status;
-                requestView();
+                requestRender();
             }
         }
 

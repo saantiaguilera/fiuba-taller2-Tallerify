@@ -84,6 +84,7 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
         lifecycleSubject.onNext(PresenterEvent.ATTACH);
         viewWeakReference = new WeakReference<>((VIEW) view);
         onAttach((VIEW) view);
+        requestRender();
     }
 
     @Override
@@ -95,21 +96,21 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
         onDetach((VIEW) view);
     }
 
-    protected final void requestView() {
+    protected final void requestRender() {
         if (viewWeakReference != null && viewWeakReference.get() != null) {
             new Handler(Looper.getMainLooper()).postAtFrontOfQueue(new Runnable() {
                 @Override
                 public void run() {
                     if (viewWeakReference != null && viewWeakReference.get() != null) {
-                        onViewRequested(viewWeakReference.get());
+                        onRender(viewWeakReference.get());
                     }
                 }
             });
         }
     }
 
-    protected abstract void onAttach(final @NonNull VIEW view);
-    protected void onViewRequested(final @NonNull VIEW view) {}
+    protected void onAttach(final @NonNull VIEW view) {}
+    protected abstract void onRender(final @NonNull VIEW view);
     protected void onDetach(final @NonNull VIEW view) {}
 
     private static final Func1<PresenterEvent, PresenterEvent> CONTROLLER_LIFECYCLE =

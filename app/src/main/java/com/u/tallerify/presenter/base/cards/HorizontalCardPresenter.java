@@ -18,7 +18,7 @@ public class HorizontalCardPresenter extends GenericAdapter.ItemPresenter<Horizo
     }
 
     @Override
-    protected void onAttach(@NonNull final HorizontalCardContract.View view) {
+    protected void onRender(@NonNull final HorizontalCardContract.View view) {
         view.setData(suppliers);
     }
 

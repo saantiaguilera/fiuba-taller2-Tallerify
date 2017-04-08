@@ -27,7 +27,7 @@ public class BaseDialogPresenter extends Presenter<BaseDialogContract.View> impl
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void onAttach(@NonNull final BaseDialogContract.View view) {
+    protected void onRender(@NonNull final BaseDialogContract.View view) {
         view.setSeverityTitle(title);
 
         if (content != null) {

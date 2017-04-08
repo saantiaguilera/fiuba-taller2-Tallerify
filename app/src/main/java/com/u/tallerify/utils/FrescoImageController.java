@@ -530,7 +530,7 @@ public class FrescoImageController {
          * When having multiple uris that reference a single image but with different dimensions,
          * you can set a media variations for all the variants that if you have already cached
          * a different sized image (of the same variant), when loading a new one instead of downloading
-         * it, it will just retrieve the other and render it for the new size.
+         * it, it will just retrieve the other and onRender it for the new size.
          *
          * @return Builder
          */

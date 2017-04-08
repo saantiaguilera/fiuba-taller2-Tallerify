@@ -36,7 +36,7 @@ public class ChatListPresenter extends Presenter<ChatListContract.View>
     }
 
     @Override
-    protected void onAttach(@NonNull final ChatListContract.View view) {
+    protected void onRender(@NonNull final ChatListContract.View view) {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Message, MessageViewHolder>( // TODO, this should be a separate class with the VH
             Message.class,
