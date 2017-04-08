@@ -33,7 +33,7 @@ public final class PlayUtils {
 
     public static void incrementTime() {
         if (CurrentPlay.instance() != null) {
-            if (CurrentPlay.instance().currentTime() + 1 == CurrentPlay.instance().currentSong().duration()) {
+            if (CurrentPlay.instance().currentTime() + 1 == CurrentPlay.instance().duration()) {
                 forward();
             } else {
                 CurrentPlay.instance().newBuilder()

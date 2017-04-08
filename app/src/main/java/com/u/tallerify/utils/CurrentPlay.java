@@ -26,6 +26,7 @@ public class CurrentPlay {
     public static final int KEY_TIME = 4;
     public static final int KEY_PLAYSTATE = 5;
     public static final int KEY_VOLUME = 6;
+    public static final int KEY_DURATION = 7;
 
     private @NonNull Bundle changedValuesBundle;
 
@@ -36,6 +37,7 @@ public class CurrentPlay {
     private @NonNull Song currentSong;
 
     private long currentTime;
+    private long duration;
 
     private @NonNull PlayState playState;
 
@@ -78,6 +80,7 @@ public class CurrentPlay {
         playState = builder.playState;
         volume = builder.volume;
         currentSong = builder.currentSong;
+        duration = builder.duration;
         changedValuesBundle = builder.changedBundle;
 
         if (currentPlayBehaviorSubject != null) {
@@ -107,6 +110,10 @@ public class CurrentPlay {
 
     public @NonNull PlayState playState() {
         return playState;
+    }
+
+    public long duration() {
+        return duration;
     }
 
     public int volume() {
@@ -156,6 +163,9 @@ public class CurrentPlay {
         if (!currentSong.equals(that.currentSong)) {
             return false;
         }
+        if (duration != that.duration) {
+            return false;
+        }
         return playState == that.playState;
     }
 
@@ -168,6 +178,7 @@ public class CurrentPlay {
         result = 31 * result + (int) (currentTime ^ (currentTime >>> 32));
         result = 31 * result + playState.hashCode();
         result = 31 * result + volume;
+        result = 31 * result + (int) (duration ^ (duration >>> 32));
         return result;
     }
 
@@ -181,6 +192,7 @@ public class CurrentPlay {
         @Nullable PlayState playState;
         int volume = -1;
         @Nullable Song currentSong;
+        long duration = 0;
 
         @NonNull Bundle changedBundle = new Bundle();
 
@@ -196,6 +208,13 @@ public class CurrentPlay {
             playState = play.playState();
             volume = play.volume();
             currentSong = play.currentSong();
+            duration = play.duration();
+        }
+
+        public final @NonNull Builder duration(long duration) {
+            this.duration = duration;
+            changedBundle.putBoolean(String.valueOf(KEY_DURATION), true);
+            return this;
         }
 
         public final @NonNull Builder shuffle(final boolean shuffle) {

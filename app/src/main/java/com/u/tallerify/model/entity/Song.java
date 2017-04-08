@@ -15,7 +15,6 @@ public class Song extends Entity implements Playable {
     private @Nullable String name;
     private @Nullable Album album;
     private @Nullable List<Artist> artists;
-    private long duration;
 
     protected Song() {
         super();
@@ -37,10 +36,6 @@ public class Song extends Entity implements Playable {
         return artists;
     }
 
-    public long duration() {
-        return duration;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -55,9 +50,6 @@ public class Song extends Entity implements Playable {
 
         final Song song = (Song) o;
 
-        if (duration != song.duration) {
-            return false;
-        }
         if (href != null ? !href.equals(song.href) : song.href != null) {
             return false;
         }
@@ -77,7 +69,6 @@ public class Song extends Entity implements Playable {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (album != null ? album.hashCode() : 0);
         result = 31 * result + (artists != null ? artists.hashCode() : 0);
-        result = 31 * result + (int) (duration ^ (duration >>> 32));
         return result;
     }
 
