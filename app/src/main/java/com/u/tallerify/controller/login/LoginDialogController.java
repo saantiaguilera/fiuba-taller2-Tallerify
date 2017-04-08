@@ -52,8 +52,8 @@ public class LoginDialogController extends AlertDialogController {
                 @SuppressWarnings("ConstantConditions")
                 public void call(final ReactiveModel<LoginResult> reactiveModel) {
                     if (reactiveModel.model() != null &&
-                        reactiveModel.action() == ReactiveModel.NO_ACTION) {
-                        nativeLogin(reactiveModel.model());
+                            reactiveModel.action() == ReactiveModel.NO_ACTION) {
+                        facebookLogin(reactiveModel.model());
                     } // We only care about the ok result, bad results will probably be managed by some presenter for showing in the ui
                 }
             });
@@ -61,7 +61,7 @@ public class LoginDialogController extends AlertDialogController {
         return super.onCreateDialog(context);
     }
 
-    void nativeLogin(@NonNull LoginResult result) {
+    void facebookLogin(@NonNull LoginResult result) {
         CredentialsInteractor.instance().createWithProvider(getApplicationContext(),
                 new CredentialsService.CreateCredentialForm(
                     result.getAccessToken().getToken(),
