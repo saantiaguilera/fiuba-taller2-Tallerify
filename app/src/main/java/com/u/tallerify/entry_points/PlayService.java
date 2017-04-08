@@ -21,6 +21,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.u.tallerify.R;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.utils.CurrentPlay;
+import com.u.tallerify.utils.PlayManager;
 import com.u.tallerify.utils.PlayUtils;
 import java.util.concurrent.Executors;
 import rx.Observable;
@@ -42,7 +43,7 @@ public class PlayService extends Service {
 
     private @Nullable Subscription subscription;
 
-    @Nullable CurrentPlay play;
+    @Nullable Song song;
 
     @Override
     public void onCreate() {
@@ -75,33 +76,50 @@ public class PlayService extends Service {
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    // TODO should be called when init, so play the music ?
+                    notifyManager(CurrentPlay.instance());
                 }
             })
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {
-                    if (play == null ||
-                            play.currentSong() != currentPlay.currentSong() ||
-                            play.playState() != currentPlay.playState()) {
+                    if (currentPlay.hasValueChanged(CurrentPlay.KEY_SONG) ||
+                            currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYSTATE)) {
                         showNotification();
                     }
-                    // TODO check changes in time or playstate and change it ?
+
+                    notifyManager(currentPlay);
                 }
             });
     }
+
+    void notifyManager(@NonNull CurrentPlay newPlay) {
+        if (newPlay.hasValueChanged(CurrentPlay.KEY_PLAYSTATE)) {
+            switch (newPlay.playState()) {
+                case PLAYING:
+                    PlayManager.instance().resume();
+                    break;
+                case PAUSED:
+                    PlayManager.instance().pause();
+                    break;
+            }
+        } else if (newPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
+            PlayManager.instance().start();
+        } else if (newPlay.hasValueChanged(CurrentPlay.KEY_TIME)) {
+            PlayManager.instance().seek(newPlay.currentTime());
+        }
+    }
  
     void showNotification() {
-        play = CurrentPlay.instance();
+        song = CurrentPlay.instance().currentSong();
 
         Fresco.getImagePipeline().fetchDecodedImage(
-                ImageRequest.fromUri(Uri.parse(play.currentSong().pictures().get(0))), this
+                ImageRequest.fromUri(Uri.parse(song.pictures().get(0))), this
             )
             .subscribe(new BaseBitmapDataSubscriber() {
                 @Override
                 protected void onNewResultImpl(@javax.annotation.Nullable final Bitmap bitmap) {
                     Song thisSong = CurrentPlay.instance().currentSong();
-                    if (play == null || thisSong != play.currentSong()) return;
+                    if (thisSong != song) return;
 
                     RemoteViews compactView = new RemoteViews(getPackageName(),
                         R.layout.notification_compact);

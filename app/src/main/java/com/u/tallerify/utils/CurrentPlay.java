@@ -2,6 +2,7 @@ package com.u.tallerify.utils;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,16 @@ import rx.subjects.BehaviorSubject;
 @Keep
 @SuppressWarnings("unchecked")
 public class CurrentPlay {
+
+    public static final int KEY_SHUFFLE = 0;
+    public static final int KEY_REPEAT = 1;
+    public static final int KEY_PLAYLIST = 2;
+    public static final int KEY_SONG = 3;
+    public static final int KEY_TIME = 4;
+    public static final int KEY_PLAYSTATE = 5;
+    public static final int KEY_VOLUME = 6;
+
+    private @NonNull Bundle changedValuesBundle;
 
     private boolean shuffle;
     private @NonNull RepeatMode repeat;
@@ -67,6 +78,7 @@ public class CurrentPlay {
         playState = builder.playState;
         volume = builder.volume;
         currentSong = builder.currentSong;
+        changedValuesBundle = builder.changedBundle;
 
         if (currentPlayBehaviorSubject != null) {
             currentPlayBehaviorSubject.onNext(this);
@@ -99,6 +111,10 @@ public class CurrentPlay {
 
     public int volume() {
         return volume;
+    }
+
+    public boolean hasValueChanged(int key) {
+        return changedValuesBundle.getBoolean(String.valueOf(key), false);
     }
 
     public @NonNull Builder newBuilder() {
@@ -173,52 +189,61 @@ public class CurrentPlay {
         int volume = -1;
         @Nullable Song currentSong;
 
+        @NonNull Bundle changedBundle = new Bundle();
+
         public Builder() {
             super();
         }
 
         public Builder(@NonNull CurrentPlay play) {
-            shuffle(play.shuffle());
-            repeat(play.repeat());
-            playlist(play.playlist());
-            currentTime(play.currentTime());
-            playState(play.playState());
-            volume(play.volume());
-            currentSong(play.currentSong());
+            shuffle = play.shuffle();
+            repeat = play.repeat();
+            playlist = play.playlist();
+            currentTime = play.currentTime();
+            playState = play.playState();
+            volume = play.volume();
+            currentSong = play.currentSong();
         }
 
         public final @NonNull Builder shuffle(final boolean shuffle) {
             this.shuffle = shuffle;
+            changedBundle.putBoolean(String.valueOf(KEY_SHUFFLE), true);
             return this;
         }
 
         public final @NonNull Builder repeat(@NonNull final RepeatMode repeat) {
             this.repeat = repeat;
+            changedBundle.putBoolean(String.valueOf(KEY_REPEAT), true);
             return this;
         }
 
         public final @NonNull Builder currentSong(@NonNull final Song currentSong) {
             this.currentSong = currentSong;
+            changedBundle.putBoolean(String.valueOf(KEY_SONG), true);
             return this;
         }
 
         public final @NonNull Builder playlist(@NonNull final List<Song> playlist) {
             this.playlist = playlist;
+            changedBundle.putBoolean(String.valueOf(KEY_PLAYLIST), true);
             return this;
         }
 
         public final @NonNull Builder currentTime(@NonNull final long currentTime) {
             this.currentTime = currentTime;
+            changedBundle.putBoolean(String.valueOf(KEY_TIME), true);
             return this;
         }
 
         public final @NonNull Builder playState(@NonNull final PlayState playState) {
             this.playState = playState;
+            changedBundle.putBoolean(String.valueOf(KEY_PLAYSTATE), true);
             return this;
         }
 
         public final @NonNull Builder volume(@NonNull final int volume) {
             this.volume = volume;
+            changedBundle.putBoolean(String.valueOf(KEY_VOLUME), true);
             return this;
         }
 
