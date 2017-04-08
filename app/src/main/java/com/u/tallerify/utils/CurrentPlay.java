@@ -34,9 +34,9 @@ public class CurrentPlay {
     private @NonNull RepeatMode repeat;
 
     private @NonNull List<Song> playlist;
-    private @NonNull Song currentSong;
+    private @NonNull Song song;
 
-    private long currentTime;
+    private long time;
     private long duration;
 
     private @NonNull PlayState playState;
@@ -56,11 +56,12 @@ public class CurrentPlay {
         AudioManager audioManager = (AudioManager) context.getApplicationContext()
             .getSystemService(Context.AUDIO_SERVICE);
         return new Builder()
-            .currentTime(0)
+            .time(0)
             .playState(PlayState.PAUSED)
             .repeat(RepeatMode.NONE)
             .shuffle(false)
-            .volume(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+            .volume(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) * 100
+                / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
     }
 
     protected CurrentPlay() {
@@ -76,10 +77,10 @@ public class CurrentPlay {
         shuffle = builder.shuffle;
         repeat = builder.repeat;
         playlist = builder.playlist;
-        currentTime = builder.currentTime;
+        time = builder.time;
         playState = builder.playState;
         volume = builder.volume;
-        currentSong = builder.currentSong;
+        song = builder.song;
         duration = builder.duration;
         changedValuesBundle = builder.changedBundle;
 
@@ -88,8 +89,8 @@ public class CurrentPlay {
         }
     }
 
-    public @NonNull Song currentSong() {
-        return currentSong;
+    public @NonNull Song song() {
+        return song;
     }
 
     public boolean shuffle() {
@@ -104,8 +105,8 @@ public class CurrentPlay {
         return playlist;
     }
 
-    public long currentTime() {
-        return currentTime;
+    public long time() {
+        return time;
     }
 
     public @NonNull PlayState playState() {
@@ -148,7 +149,7 @@ public class CurrentPlay {
         if (shuffle != that.shuffle) {
             return false;
         }
-        if (currentTime != that.currentTime) {
+        if (time != that.time) {
             return false;
         }
         if (volume != that.volume) {
@@ -160,7 +161,7 @@ public class CurrentPlay {
         if (!playlist.equals(that.playlist)) {
             return false;
         }
-        if (!currentSong.equals(that.currentSong)) {
+        if (!song.equals(that.song)) {
             return false;
         }
         if (duration != that.duration) {
@@ -174,8 +175,8 @@ public class CurrentPlay {
         int result = (shuffle ? 1 : 0);
         result = 31 * result + repeat.hashCode();
         result = 31 * result + playlist.hashCode();
-        result = 31 * result + currentSong.hashCode();
-        result = 31 * result + (int) (currentTime ^ (currentTime >>> 32));
+        result = 31 * result + song.hashCode();
+        result = 31 * result + (int) (time ^ (time >>> 32));
         result = 31 * result + playState.hashCode();
         result = 31 * result + volume;
         result = 31 * result + (int) (duration ^ (duration >>> 32));
@@ -188,10 +189,10 @@ public class CurrentPlay {
         boolean shuffle;
         @Nullable RepeatMode repeat;
         @Nullable List<Song> playlist;
-        long currentTime = -1;
+        long time = -1;
         @Nullable PlayState playState;
         int volume = -1;
-        @Nullable Song currentSong;
+        @Nullable Song song;
         long duration = 0;
 
         @NonNull Bundle changedBundle = new Bundle();
@@ -204,10 +205,10 @@ public class CurrentPlay {
             shuffle = play.shuffle();
             repeat = play.repeat();
             playlist = play.playlist();
-            currentTime = play.currentTime();
+            time = play.time();
             playState = play.playState();
             volume = play.volume();
-            currentSong = play.currentSong();
+            song = play.song();
             duration = play.duration();
         }
 
@@ -229,8 +230,8 @@ public class CurrentPlay {
             return this;
         }
 
-        public final @NonNull Builder currentSong(@NonNull final Song currentSong) {
-            this.currentSong = currentSong;
+        public final @NonNull Builder song(@NonNull final Song song) {
+            this.song = song;
             changedBundle.putBoolean(String.valueOf(KEY_SONG), true);
             return this;
         }
@@ -241,8 +242,8 @@ public class CurrentPlay {
             return this;
         }
 
-        public final @NonNull Builder currentTime(@NonNull final long currentTime) {
-            this.currentTime = currentTime;
+        public final @NonNull Builder time(@NonNull final long time) {
+            this.time = time;
             changedBundle.putBoolean(String.valueOf(KEY_TIME), true);
             return this;
         }
@@ -268,10 +269,10 @@ public class CurrentPlay {
         public boolean buildable() {
             boolean buildable = true;
             buildable &= repeat != null;
-            buildable &= currentTime != -1;
+            buildable &= time != -1;
             buildable &= playState != null;
             buildable &= volume != -1;
-            buildable &= currentSong != null;
+            buildable &= song != null;
             buildable &= playlist != null;
             return buildable;
         }

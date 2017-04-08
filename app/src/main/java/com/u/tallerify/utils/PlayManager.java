@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import rx.Observable;
 import rx.Subscription;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -50,7 +49,7 @@ public final class PlayManager {
             subscription.unsubscribe();
         }
 
-        int count = (int) (CurrentPlay.instance().duration() - CurrentPlay.instance().currentTime());
+        int count = (int) (CurrentPlay.instance().duration() - CurrentPlay.instance().time());
         subscription = Observable.interval(1, TimeUnit.SECONDS)
             .take(count > 0 ? count : 1)
             .observeOn(Schedulers.computation())
@@ -59,7 +58,7 @@ public final class PlayManager {
                 @Override
                 public void call(final Long aLong) {
                     CurrentPlay.instance().newBuilder()
-                        .currentTime(mediaPlayer.getCurrentPosition() / 1000)
+                        .time(mediaPlayer.getCurrentPosition() / 1000)
                         .build();
                 }
             });
@@ -81,7 +80,7 @@ public final class PlayManager {
                 mediaPlayer.stop();
             }
             mediaPlayer.reset();
-            SongInteractor.instance().resolve(context, CurrentPlay.instance().currentSong())
+            SongInteractor.instance().resolve(context, CurrentPlay.instance().song())
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<ResolvedUri>() {

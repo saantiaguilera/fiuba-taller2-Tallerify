@@ -33,11 +33,11 @@ public final class PlayUtils {
 
     public static void incrementTime() {
         if (CurrentPlay.instance() != null) {
-            if (CurrentPlay.instance().currentTime() + 1 == CurrentPlay.instance().duration()) {
+            if (CurrentPlay.instance().time() + 1 == CurrentPlay.instance().duration()) {
                 forward();
             } else {
                 CurrentPlay.instance().newBuilder()
-                    .currentTime(CurrentPlay.instance().currentTime() + 1)
+                    .time(CurrentPlay.instance().time() + 1)
                     .build();
             }
         }
@@ -46,7 +46,7 @@ public final class PlayUtils {
     public static void time(int time) {
         if (CurrentPlay.instance() != null) {
             CurrentPlay.instance().newBuilder()
-                .currentTime(time)
+                .time(time)
                 .build();
         }
     }
@@ -56,7 +56,7 @@ public final class PlayUtils {
             if (CurrentPlay.instance().playlist().isEmpty()) {
                 CurrentPlay.instance().newBuilder()
                     .playState(CurrentPlay.PlayState.PAUSED)
-                    .currentTime(0)
+                    .time(0)
                     .build();
                 return;
             }
@@ -65,7 +65,7 @@ public final class PlayUtils {
 
             if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
                     playlist.isEmpty()) {
-                playlist.add(CurrentPlay.instance().currentSong());
+                playlist.add(CurrentPlay.instance().song());
             }
 
             Song nextSong = playlist.isEmpty() ?
@@ -76,8 +76,8 @@ public final class PlayUtils {
                 playlist.remove(0);
 
                 CurrentPlay.instance().newBuilder()
-                    .currentSong(nextSong)
-                    .currentTime(0)
+                    .song(nextSong)
+                    .time(0)
                     .playlist(playlist)
                     .build();
             }
@@ -87,9 +87,9 @@ public final class PlayUtils {
     public static void backwards() {
         if (CurrentPlay.instance() != null) {
             // Magic number. If more than 3 seconds passed, reset the current song only
-            if (CurrentPlay.instance().currentTime() > 3) {
+            if (CurrentPlay.instance().time() > 3) {
                 CurrentPlay.instance().newBuilder()
-                    .currentTime(0)
+                    .time(0)
                     .build();
                 return;
             }
@@ -101,11 +101,11 @@ public final class PlayUtils {
 
             if (nextSong != null) {
                 playlist.remove(playlist.size() - 1);
-                playlist.add(0, CurrentPlay.instance().currentSong());
+                playlist.add(0, CurrentPlay.instance().song());
 
                 CurrentPlay.instance().newBuilder()
-                    .currentSong(nextSong)
-                    .currentTime(0)
+                    .song(nextSong)
+                    .time(0)
                     .playlist(playlist)
                     .build();
             }
@@ -149,7 +149,7 @@ public final class PlayUtils {
                     public void call() {
                         if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
                                 newList.isEmpty()) {
-                            newList.add(CurrentPlay.instance().currentSong());
+                            newList.add(CurrentPlay.instance().song());
                             for (int i = 0; i < integer; ++i) {
                                 newList.add(playlist.get(i));
                             }
@@ -163,8 +163,8 @@ public final class PlayUtils {
             newList.remove(0);
 
             CurrentPlay.instance().newBuilder()
-                .currentSong(nextSong)
-                .currentTime(0)
+                .song(nextSong)
+                .time(0)
                 .playlist(newList)
                 .build();
         }
