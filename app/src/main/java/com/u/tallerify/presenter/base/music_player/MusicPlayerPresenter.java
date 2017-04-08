@@ -76,16 +76,17 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 if (currentPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
                     view.setImage(currentPlay.currentSong().pictures().get(0));
                     view.setName(currentPlay.currentSong().name(), currentPlay.currentSong().artistsName());
-                    view.setTrackBarMax((int) currentPlay.currentSong().duration());
                 }
 
                 if (currentPlay.hasValueChanged(CurrentPlay.KEY_REPEAT)) {
                     view.setRepeatMode(currentPlay.repeat());
                 }
 
-                if (currentPlay.hasValueChanged(CurrentPlay.KEY_TIME)) {
-                    view.setTime((int) currentPlay.currentTime(), (int) currentPlay.currentSong().duration());
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_TIME) ||
+                        currentPlay.hasValueChanged(CurrentPlay.KEY_DURATION)) {
+                    view.setTime((int) currentPlay.currentTime(), (int) currentPlay.duration());
                     view.setTrackBarProgress((int) currentPlay.currentTime());
+                    view.setTrackBarMax((int) currentPlay.duration());
                 }
 
                 if (currentPlay.hasValueChanged(CurrentPlay.KEY_VOLUME)) {

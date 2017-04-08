@@ -12,7 +12,6 @@ public class Song {
   {
     id: '{{index()}}',
     name: '{{firstName()}}',
-    duration: '{{integer(30, 600)}}',
     href: 'http://some_href.com/href',
     artists: [
       '{{repeat(5)}}',
@@ -40,7 +39,6 @@ public class Song {
     public static final String RESPONSE_SONG = "{\n" +
         "    \"id\": 0,\n" +
         "    \"name\": \"Berger\",\n" +
-        "    \"duration\": 171,\n" +
         "    \"href\": \"http://some_href.com/href\",\n" +
         "    \"artists\": [\n" +
         "      {\n" +
@@ -104,7 +102,6 @@ public class Song {
         "  {\n" +
         "    \"id\": 0,\n" +
         "    \"name\": \"Berger\",\n" +
-        "    \"duration\": 171,\n" +
         "    \"href\": \"http://some_href.com/href\",\n" +
         "    \"artists\": [\n" +
         "      {\n" +
@@ -166,7 +163,6 @@ public class Song {
         "  {\n" +
         "    \"id\": 1,\n" +
         "    \"name\": \"Snow\",\n" +
-        "    \"duration\": 490,\n" +
         "    \"href\": \"http://some_href.com/href\",\n" +
         "    \"artists\": [\n" +
         "      {\n" +
@@ -228,7 +224,6 @@ public class Song {
         "  {\n" +
         "    \"id\": 2,\n" +
         "    \"name\": \"Vanessa\",\n" +
-        "    \"duration\": 431,\n" +
         "    \"href\": \"http://some_href.com/href\",\n" +
         "    \"artists\": [\n" +
         "      {\n" +
@@ -290,7 +285,6 @@ public class Song {
         "  {\n" +
         "    \"id\": 3,\n" +
         "    \"name\": \"Bryant\",\n" +
-        "    \"duration\": 419,\n" +
         "    \"href\": \"http://some_href.com/href\",\n" +
         "    \"artists\": [\n" +
         "      {\n" +
@@ -352,7 +346,6 @@ public class Song {
         "  {\n" +
         "    \"id\": 4,\n" +
         "    \"name\": \"Amie\",\n" +
-        "    \"duration\": 542,\n" +
         "    \"href\": \"http://some_href.com/href\",\n" +
         "    \"artists\": [\n" +
         "      {\n" +

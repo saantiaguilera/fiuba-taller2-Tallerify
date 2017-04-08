@@ -50,7 +50,7 @@ public final class PlayManager {
             subscription.unsubscribe();
         }
 
-        int count = (int) ((mediaPlayer.getDuration() / 1000) - CurrentPlay.instance().currentTime());
+        int count = (int) (CurrentPlay.instance().duration() - CurrentPlay.instance().currentTime());
         subscription = Observable.interval(1, TimeUnit.SECONDS)
             .take(count > 0 ? count : 1)
             .observeOn(Schedulers.computation())
@@ -92,6 +92,10 @@ public final class PlayManager {
                             mediaPlayer.setDataSource(uri.url());
                             mediaPlayer.prepare();
                             preparing = false;
+
+                            CurrentPlay.instance().newBuilder()
+                                .duration(mediaPlayer.getDuration() / 1000)
+                                .build();
 
                             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                 @Override
