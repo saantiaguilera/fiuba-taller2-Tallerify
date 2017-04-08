@@ -262,7 +262,6 @@ public class CurrentPlay {
     @Keep
     public enum RepeatMode {
         NONE,
-        SINGLE,
         ALL
     }
 

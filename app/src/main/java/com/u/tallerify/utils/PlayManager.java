@@ -50,8 +50,9 @@ public final class PlayManager {
             subscription.unsubscribe();
         }
 
+        int count = (int) ((mediaPlayer.getDuration() / 1000) - CurrentPlay.instance().currentTime());
         subscription = Observable.interval(1, TimeUnit.SECONDS)
-            .take((int) ((mediaPlayer.getDuration() / 1000) - CurrentPlay.instance().currentTime()))
+            .take(count > 0 ? count : 1)
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
             .subscribe(new Action1<Long>() {
@@ -76,6 +77,10 @@ public final class PlayManager {
 
     public void start(@NonNull Context context) {
         if (!preparing) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.reset();
             SongInteractor.instance().resolve(context, CurrentPlay.instance().currentSong())
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())

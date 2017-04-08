@@ -138,8 +138,14 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
                     public void call(final List<Song> songs) {
                         Song currentSong = songs.get(0);
                         songs.remove(0);
-                        CurrentPlay.defaults(getContext())
-                            .playlist(songs)
+
+                        CurrentPlay.Builder builder;
+                        if (CurrentPlay.instance() == null) {
+                            builder = CurrentPlay.defaults(getContext());
+                        } else {
+                            builder = CurrentPlay.instance().newBuilder();
+                        }
+                        builder.playlist(songs)
                             .currentSong(currentSong)
                             .currentTime(0)
                             .playState(CurrentPlay.PlayState.PLAYING)

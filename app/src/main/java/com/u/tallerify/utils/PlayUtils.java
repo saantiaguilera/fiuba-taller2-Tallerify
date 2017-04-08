@@ -62,41 +62,53 @@ public final class PlayUtils {
             }
 
             List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
-            Song nextSong = playlist.size() > 1 ?
-                playlist.get(1) :
-                playlist.get(0);
 
             if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
-                playlist.size() == 1) {
-                playlist.add(playlist.get(0));
+                    playlist.isEmpty()) {
+                playlist.add(CurrentPlay.instance().currentSong());
             }
 
-            playlist.remove(0);
+            Song nextSong = playlist.isEmpty() ?
+                null :
+                playlist.get(0);
 
-            CurrentPlay.instance().newBuilder()
-                .currentSong(nextSong)
-                .currentTime(0)
-                .playlist(playlist)
-                .build();
+            if (nextSong != null) {
+                playlist.remove(0);
+
+                CurrentPlay.instance().newBuilder()
+                    .currentSong(nextSong)
+                    .currentTime(0)
+                    .playlist(playlist)
+                    .build();
+            }
         }
     }
 
     public static void backwards() {
         if (CurrentPlay.instance() != null) {
+            // Magic number. If more than 3 seconds passed, reset the current song only
+            if (CurrentPlay.instance().currentTime() > 3) {
+                CurrentPlay.instance().newBuilder()
+                    .currentTime(0)
+                    .build();
+                return;
+            }
+
             List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
-            Song nextSong = playlist.size() > 1 ?
-                playlist.get(playlist.size() - 1) :
-                playlist.get(0);
+            Song nextSong = playlist.isEmpty() ?
+                null :
+                playlist.get(playlist.size() - 1);
 
-            playlist.add(0, nextSong);
+            if (nextSong != null) {
+                playlist.remove(playlist.size() - 1);
+                playlist.add(0, CurrentPlay.instance().currentSong());
 
-            playlist.remove(playlist.size() - 1);
-
-            CurrentPlay.instance().newBuilder()
-                .currentSong(nextSong)
-                .currentTime(0)
-                .playlist(playlist)
-                .build();
+                CurrentPlay.instance().newBuilder()
+                    .currentSong(nextSong)
+                    .currentTime(0)
+                    .playlist(playlist)
+                    .build();
+            }
         }
     }
 
@@ -105,9 +117,6 @@ public final class PlayUtils {
             CurrentPlay.RepeatMode repeatMode;
             switch (CurrentPlay.instance().repeat()) {
                 case NONE:
-                    repeatMode = CurrentPlay.RepeatMode.SINGLE;
-                    break;
-                case SINGLE:
                     repeatMode = CurrentPlay.RepeatMode.ALL;
                     break;
                 case ALL:
@@ -139,7 +148,8 @@ public final class PlayUtils {
                     @Override
                     public void call() {
                         if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
-                            newList.isEmpty()) {
+                                newList.isEmpty()) {
+                            newList.add(CurrentPlay.instance().currentSong());
                             for (int i = 0; i < integer; ++i) {
                                 newList.add(playlist.get(i));
                             }
@@ -151,10 +161,6 @@ public final class PlayUtils {
 
             Song nextSong = newList.get(0);
             newList.remove(0);
-
-            if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL) {
-                newList.add(nextSong);
-            }
 
             CurrentPlay.instance().newBuilder()
                 .currentSong(nextSong)

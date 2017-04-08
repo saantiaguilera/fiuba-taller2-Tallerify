@@ -42,17 +42,15 @@ public final class RxView {
         final PublishSubject<Integer> subject = PublishSubject.create();
         view.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(final SeekBar seekBar, final int progress, final boolean fromUser) {
-                if (fromUser) {
-                    subject.onNext(progress);
-                }
-            }
+            public void onProgressChanged(final SeekBar seekBar, final int progress, final boolean fromUser) {}
 
             @Override
             public void onStartTrackingTouch(final SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(final SeekBar seekBar) {}
+            public void onStopTrackingTouch(final SeekBar seekBar) {
+                subject.onNext(seekBar.getProgress());
+            }
         });
         return subject;
     }
