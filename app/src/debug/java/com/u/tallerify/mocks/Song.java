@@ -415,7 +415,7 @@ public class Song {
 
     public static final String RESPONSE_RESOLVED_URI = "{" +
         "\"songId\": 1,\n" +
-        "\"url\": \"http://k004.kiwi6.com/hotlink/e69wkffb5o/Strange_Life.mp3\"" +
+        "\"url\": \"https://drive.google.com/uc?export=download&id=0B9zXdKK-F_EKTW13YmpjUUo1MGM\"" +
         "}";
 
 

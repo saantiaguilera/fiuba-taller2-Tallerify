@@ -88,6 +88,11 @@ public class MusicPlayerExpandedView extends ScrollView {
         expandRatingBar = (RatingBar) findViewById(R.id.view_music_player_expanded_rating_bar);
         expandPlaylistContainer = (FixedSimpleListView) findViewById(R.id.view_music_player_expanded_playlist);
 
+        // We dont let the user seek positions because Media Player has the seekbar broken
+        // in android sdk. Check issues in google repository for information.
+        // Still, this feature was developed and did work with the exception of the android bugs
+        expandTrackBar.setEnabled(false);
+
         tintDrawable(expandTrackBar.getProgressDrawable());
         tintDrawable(expandVolumeBar.getProgressDrawable());
         tintDrawable(expandTrackBar.getThumb());
@@ -174,9 +179,7 @@ public class MusicPlayerExpandedView extends ScrollView {
     }
 
     public void setTrackBarProgress(int progress) {
-        if (!expandTrackArtist.isFocused()) {
-            expandTrackBar.setProgress(progress);
-        }
+        expandTrackBar.setProgress(progress);
     }
 
     @SuppressLint("DefaultLocale")
@@ -206,10 +209,6 @@ public class MusicPlayerExpandedView extends ScrollView {
             case NONE:
                 expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
                 expandRepeat.getDrawable().setColorFilter(null);
-                break;
-            case SINGLE:
-                expandRepeat.setImageResource(R.drawable.ic_repeat_one_black_36dp);
-                tintDrawable(expandRepeat.getDrawable());
                 break;
             case ALL:
                 expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
