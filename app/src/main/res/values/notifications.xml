@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="notification_compact_track_text_size">16sp</dimen>
+    <dimen name="notification_compact_vertical_padding">8dp</dimen>
+    <dimen name="notification_compact_horizontal_padding">4dp</dimen>
+    <dimen name="notification_expanded_button_height">64dp</dimen>
+    <dimen name="notification_expanded_track_text_size">22sp</dimen>
+    <dimen name="notification_expanded_artist_text_size">16sp</dimen>
+
+</resources>

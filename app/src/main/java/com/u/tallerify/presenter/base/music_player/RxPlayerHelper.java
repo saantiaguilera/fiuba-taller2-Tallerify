@@ -15,10 +15,10 @@ import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.utils.CurrentPlay;
+import com.u.tallerify.utils.PlayUtils;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
@@ -70,13 +70,7 @@ final class RxPlayerHelper {
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        CurrentPlay.instance().newBuilder()
-                            .playState(CurrentPlay.instance().playState() == CurrentPlay.PlayState.PLAYING ?
-                                CurrentPlay.PlayState.PAUSED :
-                                CurrentPlay.PlayState.PLAYING)
-                            .build();
-                    }
+                    PlayUtils.playState();
                 }
             });        
     }
@@ -88,45 +82,7 @@ final class RxPlayerHelper {
             .subscribe(new Action1<Integer>() {
                 @Override
                 public void call(final Integer integer) {
-                    if (CurrentPlay.instance() != null) {
-                        final List<Song> newList = new ArrayList<>();
-                        final List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
-
-                        Observable.range(0, playlist.size())
-                            .doOnNext(new Action1<Integer>() {
-                                @Override
-                                public void call(final Integer position) {
-                                    if (position >= integer) {
-                                        newList.add(playlist.get(position));
-                                    }
-                                }
-                            })
-                            .doOnCompleted(new Action0() {
-                                @Override
-                                public void call() {
-                                    if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
-                                        newList.isEmpty()) {
-                                        for (int i = 0 ; i < integer ; ++i) {
-                                            newList.add(playlist.get(i));
-                                        }
-                                    }
-                                }
-                            })
-                            .toBlocking()
-                            .subscribe();
-
-                        Song nextSong = newList.get(0);
-                        newList.remove(0);
-
-                        if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL) {
-                            newList.add(nextSong);
-                        }
-
-                        CurrentPlay.instance().newBuilder()
-                            .currentSong(nextSong)
-                            .playlist(newList)
-                            .build();
-                    }
+                    PlayUtils.playlistBy(integer);
                 }
             });
     }
@@ -138,11 +94,7 @@ final class RxPlayerHelper {
             .subscribe(new Action1<Integer>() {
                 @Override
                 public void call(final Integer integer) {
-                    if (CurrentPlay.instance() != null) {
-                        CurrentPlay.instance().newBuilder()
-                            .currentTime(integer)
-                            .build();
-                    }
+                    PlayUtils.time(integer);
                 }
             });
     }
@@ -154,11 +106,7 @@ final class RxPlayerHelper {
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        CurrentPlay.instance().newBuilder()
-                            .shuffle(!CurrentPlay.instance().shuffle())
-                            .build();
-                    }
+                    PlayUtils.shuffle();
                 }
             });
     }
@@ -170,24 +118,7 @@ final class RxPlayerHelper {
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        CurrentPlay.RepeatMode repeatMode;
-                        switch (CurrentPlay.instance().repeat()) {
-                            case NONE:
-                                repeatMode = CurrentPlay.RepeatMode.SINGLE;
-                                break;
-                            case SINGLE:
-                                repeatMode = CurrentPlay.RepeatMode.ALL;
-                                break;
-                            case ALL:
-                            default:
-                                repeatMode = CurrentPlay.RepeatMode.NONE;
-                        }
-
-                        CurrentPlay.instance().newBuilder()
-                            .repeat(repeatMode)
-                            .build();
-                    }
+                    PlayUtils.repeat();
                 }
             });
     }
@@ -222,31 +153,7 @@ final class RxPlayerHelper {
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        if (CurrentPlay.instance().playlist().isEmpty()) {
-                            CurrentPlay.instance().newBuilder()
-                                .playState(CurrentPlay.PlayState.PAUSED)
-                                .build();
-                            return;
-                        }
-
-                        List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
-                        Song nextSong = playlist.size() > 1 ?
-                            playlist.get(1) :
-                            playlist.get(0);
-
-                        if (CurrentPlay.instance().repeat() == CurrentPlay.RepeatMode.ALL ||
-                            playlist.size() == 1) {
-                            playlist.add(playlist.get(0));
-                        }
-
-                        playlist.remove(0);
-
-                        CurrentPlay.instance().newBuilder()
-                            .currentSong(nextSong)
-                            .playlist(playlist)
-                            .build();
-                    }
+                PlayUtils.forward();
                 }
             });
     }
@@ -319,21 +226,7 @@ final class RxPlayerHelper {
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void integer) {
-                    if (CurrentPlay.instance() != null) {
-                        List<Song> playlist = new ArrayList<>(CurrentPlay.instance().playlist());
-                        Song nextSong = playlist.size() > 1 ?
-                            playlist.get(playlist.size() - 1) :
-                            playlist.get(0);
-
-                        playlist.add(0, nextSong);
-
-                        playlist.remove(playlist.size() - 1);
-
-                        CurrentPlay.instance().newBuilder()
-                            .currentSong(nextSong)
-                            .playlist(playlist)
-                            .build();
-                    }
+                    PlayUtils.backwards();
                 }
             });
     }

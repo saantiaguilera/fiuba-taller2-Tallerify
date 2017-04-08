@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/notification_expanded_album_art"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:id="@+id/notification_expanded_buttons"
+
+        android:orientation="horizontal"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center_vertical"
+
+        android:background="@color/dialog_shadow"
+
+        android:layout_alignParentBottom="true" >
+
+        <ImageButton
+            android:id="@+id/notification_expanded_play"
+
+            android:background="?android:selectableItemBackground"
+
+            android:padding="@dimen/notification_compact_vertical_padding"
+
+            android:layout_width="0dp"
+            android:layout_height="@dimen/notification_expanded_button_height"
+            android:layout_weight="1"
+
+            android:tint="@color/white"
+
+            android:scaleType="fitCenter" />
+
+        <ImageButton
+            android:id="@+id/notification_expanded_next"
+
+            android:background="?android:selectableItemBackground"
+
+            android:padding="@dimen/notification_compact_vertical_padding"
+
+            android:layout_width="0dp"
+            android:layout_height="@dimen/notification_expanded_button_height"
+            android:layout_weight="1"
+
+            android:tint="@color/white"
+            android:src="@drawable/ic_fast_forward_black_36dp"
+
+            android:scaleType="fitCenter" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+
+        android:orientation="vertical"
+
+        android:background="@color/dialog_shadow"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingLeft="@dimen/notification_compact_vertical_padding"
+        android:paddingRight="@dimen/notification_compact_vertical_padding"
+
+        android:layout_above="@+id/notification_expanded_buttons" >
+
+        <TextView
+            android:id="@+id/notification_expanded_track_name"
+
+            android:ellipsize="marquee"
+
+            android:focusable="true"
+
+            android:textColor="@color/white"
+            android:textSize="@dimen/notification_expanded_track_text_size"
+
+            android:fadingEdge="horizontal"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/notification_expanded_artist_name"
+
+            android:ellipsize="marquee"
+
+            android:fadingEdge="horizontal"
+
+            android:textColor="@color/white"
+            android:textSize="@dimen/notification_expanded_artist_text_size"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:maxLines="1"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
