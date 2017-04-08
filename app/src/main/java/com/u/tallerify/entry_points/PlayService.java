@@ -73,12 +73,6 @@ public class PlayService extends Service {
         subscription = CurrentPlay.instance().observeCurrentPlay()
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .doOnSubscribe(new Action0() {
-                @Override
-                public void call() {
-                    notifyManager(CurrentPlay.instance());
-                }
-            })
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {
@@ -93,7 +87,8 @@ public class PlayService extends Service {
     }
 
     void notifyManager(@NonNull CurrentPlay newPlay) {
-        if (newPlay.hasValueChanged(CurrentPlay.KEY_PLAYSTATE)) {
+        if (newPlay.hasValueChanged(CurrentPlay.KEY_PLAYSTATE) &&
+                !newPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
             switch (newPlay.playState()) {
                 case PLAYING:
                     PlayManager.instance().resume();
@@ -102,9 +97,14 @@ public class PlayService extends Service {
                     PlayManager.instance().pause();
                     break;
             }
-        } else if (newPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
-            PlayManager.instance().start();
-        } else if (newPlay.hasValueChanged(CurrentPlay.KEY_TIME)) {
+        }
+
+        if (newPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
+            PlayManager.instance().start(this);
+        }
+
+        if (newPlay.hasValueChanged(CurrentPlay.KEY_TIME) &&
+                !newPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
             PlayManager.instance().seek(newPlay.currentTime());
         }
     }

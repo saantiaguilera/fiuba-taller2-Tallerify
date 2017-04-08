@@ -1,5 +1,6 @@
 package com.u.tallerify.networking.services.songs;
 
+import com.u.tallerify.model.ResolvedUri;
 import com.u.tallerify.model.entity.Song;
 import java.util.List;
 import retrofit2.http.DELETE;
@@ -32,5 +33,8 @@ public interface SongService {
 
     @POST("tracks/{trackId}/popularity")
     Observable<Integer> rateSong(@Path("trackId") long songId, @Field("rate") int rate);
+
+    @GET("resolve/{trackId}")
+    Observable<ResolvedUri> resolve(@Path("trackId") long songId);
 
 }

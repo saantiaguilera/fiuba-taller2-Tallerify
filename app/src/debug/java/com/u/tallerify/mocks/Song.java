@@ -413,4 +413,10 @@ public class Song {
         "  }\n" +
         "]";
 
+    public static final String RESPONSE_RESOLVED_URI = "{" +
+        "\"songId\": 1,\n" +
+        "\"url\": \"http://k004.kiwi6.com/hotlink/e69wkffb5o/Strange_Life.mp3\"" +
+        "}";
+
+
 }
