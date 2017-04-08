@@ -74,8 +74,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 }
 
                 if (currentPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
-                    view.setImage(currentPlay.currentSong().pictures().get(0));
-                    view.setName(currentPlay.currentSong().name(), currentPlay.currentSong().artistsName());
+                    view.setImage(currentPlay.song().pictures().get(0));
+                    view.setName(currentPlay.song().name(), currentPlay.song().artistsName());
                 }
 
                 if (currentPlay.hasValueChanged(CurrentPlay.KEY_REPEAT)) {
@@ -84,8 +84,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
                 if (currentPlay.hasValueChanged(CurrentPlay.KEY_TIME) ||
                         currentPlay.hasValueChanged(CurrentPlay.KEY_DURATION)) {
-                    view.setTime((int) currentPlay.currentTime(), (int) currentPlay.duration());
-                    view.setTrackBarProgress((int) currentPlay.currentTime());
+                    view.setTime((int) currentPlay.time(), (int) currentPlay.duration());
+                    view.setTrackBarProgress((int) currentPlay.time());
                     view.setTrackBarMax((int) currentPlay.duration());
                 }
 
@@ -127,14 +127,14 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                         .subscribe();
                 }
 
-                if (favorites.contains(currentPlay.currentSong().id())) {
+                if (favorites.contains(currentPlay.song().id())) {
                     view.setFavorite(true);
                 } else {
                     view.setFavorite(false);
                 }
 
-                if (rateds.containsKey(currentPlay.currentSong().id())) {
-                    view.setRating(rateds.get(currentPlay.currentSong().id()));
+                if (rateds.containsKey(currentPlay.song().id())) {
+                    view.setRating(rateds.get(currentPlay.song().id()));
                 } else {
                     view.setRating(0);
                 }

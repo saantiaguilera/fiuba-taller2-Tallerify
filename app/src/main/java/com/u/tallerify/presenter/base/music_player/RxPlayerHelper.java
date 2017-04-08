@@ -16,8 +16,6 @@ import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.PlayUtils;
-import java.util.ArrayList;
-import java.util.List;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -168,7 +166,7 @@ final class RxPlayerHelper {
                 @Override
                 public void call(final Integer integer) {
                     // TODO this doesnt have any endpoint.
-                    subject.onNext(new Pair<>(CurrentPlay.instance().currentSong().id(), integer));
+                    subject.onNext(new Pair<>(CurrentPlay.instance().song().id(), integer));
                 }
             });
         return subject;
@@ -184,7 +182,7 @@ final class RxPlayerHelper {
             .subscribe(new Action1<Boolean>() {
                 @Override
                 public void call(final Boolean bool) {
-                    final Song song = CurrentPlay.instance().currentSong();
+                    final Song song = CurrentPlay.instance().song();
                     Observable<Song> observable;
 
                     // Make it favorite for ux

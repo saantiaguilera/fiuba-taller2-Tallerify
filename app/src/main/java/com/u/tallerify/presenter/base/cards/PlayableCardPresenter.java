@@ -16,11 +16,9 @@ import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.utils.BussinessUtils;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.adapter.GenericAdapter;
-import java.util.Collections;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -146,8 +144,8 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
                             builder = CurrentPlay.instance().newBuilder();
                         }
                         builder.playlist(songs)
-                            .currentSong(currentSong)
-                            .currentTime(0)
+                            .song(currentSong)
+                            .time(0)
                             .playState(CurrentPlay.PlayState.PLAYING)
                             .build();
                     }

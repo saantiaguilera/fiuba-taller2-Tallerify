@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -27,11 +26,8 @@ import java.util.concurrent.Executors;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-
-import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
 public class PlayService extends Service {
 
@@ -105,12 +101,12 @@ public class PlayService extends Service {
 
         if (newPlay.hasValueChanged(CurrentPlay.KEY_TIME) &&
                 !newPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
-            PlayManager.instance().seek(newPlay.currentTime());
+            PlayManager.instance().seek(newPlay.time());
         }
     }
  
     void showNotification() {
-        song = CurrentPlay.instance().currentSong();
+        song = CurrentPlay.instance().song();
 
         Fresco.getImagePipeline().fetchDecodedImage(
                 ImageRequest.fromUri(Uri.parse(song.pictures().get(0))), this
@@ -118,7 +114,7 @@ public class PlayService extends Service {
             .subscribe(new BaseBitmapDataSubscriber() {
                 @Override
                 protected void onNewResultImpl(@javax.annotation.Nullable final Bitmap bitmap) {
-                    Song thisSong = CurrentPlay.instance().currentSong();
+                    Song thisSong = CurrentPlay.instance().song();
                     if (thisSong != song) return;
 
                     RemoteViews compactView = new RemoteViews(getPackageName(),
