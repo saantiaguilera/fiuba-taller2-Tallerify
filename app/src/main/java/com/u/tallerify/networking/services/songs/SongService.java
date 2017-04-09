@@ -37,7 +37,7 @@ public interface SongService {
     @POST("tracks/{trackId}/popularity")
     Observable<Rating> rateSong(@Path("trackId") long songId, @Field("rate") int rate);
 
-    @GET("tracks/{trackId/popularity")
+    @GET("tracks/{trackId}/popularity")
     Observable<Rating> rateSong(@Path("trackId") long songId);
 
     @GET("resolve/{trackId}")
