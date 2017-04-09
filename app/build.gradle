@@ -51,6 +51,7 @@ dependencies {
     compile firebase.ui
     compile firebase.location
     compile firebase.places
+    compile firebase.crashlytics
 
     compile misc.gif
     compile misc.fresco
