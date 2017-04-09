@@ -32,7 +32,7 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
     private final @NonNull BehaviorSubject<PresenterEvent> lifecycleSubject;
 
     public Presenter() {
-        lifecycleSubject = BehaviorSubject.create();
+        lifecycleSubject = BehaviorSubject.create(PresenterEvent.ATTACH);
     }
 
     protected @Nullable Context getContext() {
@@ -51,11 +51,16 @@ public abstract class Presenter<VIEW extends ContractView> extends Coordinator {
      * Display the dialog, withProvider a transaction and pushing the controller.
      * @param tag The tag for this controller
      */
-    public void showDialog(@NonNull AlertDialogController controller, @Nullable String tag) {
-        getAuxiliaryRouter().pushController(RouterTransaction.with(controller)
-            .pushChangeHandler(new FadeChangeHandler(false))
-            .popChangeHandler(new FadeChangeHandler())
-            .tag(tag));
+    public void showDialog(@NonNull final AlertDialogController controller, @Nullable final String tag) {
+        new Handler(Looper.getMainLooper()).postAtFrontOfQueue(new Runnable() {
+            @Override
+            public void run() {
+                getAuxiliaryRouter().pushController(RouterTransaction.with(controller)
+                    .pushChangeHandler(new FadeChangeHandler(false))
+                    .popChangeHandler(new FadeChangeHandler())
+                    .tag(tag));
+            }
+        });
     }
 
     /**

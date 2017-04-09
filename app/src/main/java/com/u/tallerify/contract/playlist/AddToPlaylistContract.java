@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
+import com.u.tallerify.model.entity.Playlist;
 import java.util.List;
 import rx.Observable;
 
@@ -18,10 +19,15 @@ public interface AddToPlaylistContract {
         void setPlaylists(@NonNull List<String> names);
         @NonNull Observable<Integer> observePlaylistPositionClicks();
         @NonNull Observable<String> observePlaylistCreations();
+        void setEditable(boolean editable);
 
     }
 
     interface Presenter extends ContractPresenter {
+
+        @NonNull Observable<Playlist> observePlaylistSelection();
+        void setInputEnabled(boolean enabled);
+
     }
 
 }

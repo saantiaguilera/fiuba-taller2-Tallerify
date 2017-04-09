@@ -3,17 +3,19 @@ package com.u.tallerify.view.playlist;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
+import com.u.tallerify.R;
 import com.u.tallerify.contract.playlist.AddToPlaylistContract;
+import com.u.tallerify.utils.MetricsUtils;
+import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
 import rx.Subscription;
@@ -32,12 +34,43 @@ public class AddToPlaylistView extends RecyclerView
     public AddToPlaylistView(final Context context) {
         super(context);
 
+        int width = MetricsUtils.getScreenPixelBounds(context).x;
+        width -= (width / 5);
+
+        setLayoutParams(new ViewGroup.LayoutParams(width,
+            ViewGroup.LayoutParams.WRAP_CONTENT));
         setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        setAdapter(adapter = new Adapter(new ArrayList<String>()));
     }
 
     @Override
     public void setPlaylists(@NonNull final List<String> names) {
-        setAdapter(adapter = new Adapter(names));
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return adapter.names.size() + 1;
+            }
+
+            @Override
+            public int getNewListSize() {
+                return names.size() + 1;
+            }
+
+            @Override
+            public boolean areItemsTheSame(final int oldItemPosition, final int newItemPosition) {
+                return true;
+            }
+
+            @Override
+            public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
+                return (oldItemPosition == 0 || newItemPosition == 0) ||
+                    adapter.names.get(oldItemPosition - 1).equals(names.get(newItemPosition - 1));
+            }
+        });
+
+        adapter.names(names);
+
+        diffResult.dispatchUpdatesTo(adapter);
     }
 
     @NonNull
@@ -52,17 +85,25 @@ public class AddToPlaylistView extends RecyclerView
         return adapter.observeCreationClicks();
     }
 
+    @Override
+    public void setEditable(final boolean editable) {
+        adapter.editable(editable);
+        adapter.notifyItemChanged(0);
+    }
+
     static class Adapter extends RecyclerView.Adapter<AddToPlaylistView.ViewHolder> {
 
         private static final int TYPE_NEW = 0;
         private static final int TYPE_EXISTENT = 1;
 
-        private @NonNull List<String> names;
+        @NonNull List<String> names;
 
         private @Nullable Subscription subscription;
 
         @Nullable PublishSubject<Integer> positionClicks;
         @Nullable PublishSubject<String> newCreations;
+
+        private boolean editable = true;
 
         Adapter(@NonNull List<String> names) {
             this.names = names;
@@ -74,7 +115,14 @@ public class AddToPlaylistView extends RecyclerView
                 case TYPE_NEW:
                     return new ViewHolder(new AddToPlaylistInputView(parent.getContext()));
                 case TYPE_EXISTENT:
-                    return new ViewHolder(new TextView(parent.getContext()));
+                    TextView view = new TextView(parent.getContext());
+                    view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        parent.getContext().getResources().getDimensionPixelSize(R.dimen.view_playlist_add_item_height)));
+                    view.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+                    view.setMaxLines(1);
+                    view.setTextSize(16);
+                    view.setEllipsize(TextUtils.TruncateAt.END);
+                    return new ViewHolder(view);
             }
             return null;
         }
@@ -98,6 +146,7 @@ public class AddToPlaylistView extends RecyclerView
                                }
                             }
                         });
+                    ((AddToPlaylistInputView) holder.itemView).setEditable(editable);
                     break;
                 case TYPE_EXISTENT:
                     ((TextView) holder.itemView).setText(names.get(position - 1));
@@ -111,6 +160,14 @@ public class AddToPlaylistView extends RecyclerView
                         }
                     });
             }
+        }
+
+        void editable(boolean editable) {
+            this.editable = editable;
+        }
+
+        void names(@NonNull List<String> names) {
+            this.names = names;
         }
 
         @Override

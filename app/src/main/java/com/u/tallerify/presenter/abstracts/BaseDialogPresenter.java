@@ -1,5 +1,6 @@
 package com.u.tallerify.presenter.abstracts;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -36,12 +37,13 @@ public class BaseDialogPresenter extends Presenter<BaseDialogContract.View> impl
 
         switch (severity) {
             case ERROR:
+                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.drawable.ic_cancel_black_36dp));
+                break;
             case WARNING:
-                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.drawable.ic_severity_warning));
+                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.drawable.ic_warning_black_36dp));
                 break;
             case INFO:
-                //TODO
-                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.drawable.ic_info_outline_black_36dp));
         }
     }
 
