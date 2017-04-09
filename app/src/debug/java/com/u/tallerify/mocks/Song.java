@@ -36,6 +36,10 @@ public class Song {
 ]
      */
 
+    public static final String RESPONSE_RATING = "{\n" +
+        "\"rate\": 5\n" +
+        "}";
+
     public static final String RESPONSE_SONG = "{\n" +
         "    \"id\": 0,\n" +
         "    \"name\": \"Berger\",\n" +

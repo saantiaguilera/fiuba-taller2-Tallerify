@@ -2,6 +2,7 @@ package com.u.tallerify.networking.interactor.song;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import com.u.tallerify.model.Rating;
 import com.u.tallerify.model.ResolvedUri;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
@@ -182,13 +183,28 @@ public final class SongInteractor {
             });
     }
 
-    public @NonNull Observable<Song> rate(@NonNull Context context, @NonNull final Song song, int rate) {
+    public @NonNull Observable<Rating> rate(@NonNull Context context, @NonNull final Song song, int rate) {
         return RestClient.with(context).create(SongService.class)
             .rateSong(song.id(), rate)
-            .map(new Func1<Integer, Song>() {
+            .map(new Func1<Rating, Rating>() {
                 @Override
-                public Song call(final Integer integer) {
-                    return song;
+                public Rating call(final Rating rating) {
+                    return rating.newBuilder()
+                        .song(song)
+                        .build();
+                }
+            });
+    }
+
+    public @NonNull Observable<Rating> rate(@NonNull Context context, @NonNull final Song song) {
+        return RestClient.with(context).create(SongService.class)
+            .rateSong(song.id())
+            .map(new Func1<Rating, Rating>() {
+                @Override
+                public Rating call(final Rating rating) {
+                    return rating.newBuilder()
+                        .song(song)
+                        .build();
                 }
             });
     }

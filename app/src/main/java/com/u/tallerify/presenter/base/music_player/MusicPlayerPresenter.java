@@ -8,10 +8,12 @@ import android.support.v4.util.Pair;
 import android.view.View;
 import com.u.tallerify.contract.base.music_player.MusicPlayerContract;
 import com.u.tallerify.model.AccessToken;
+import com.u.tallerify.model.Rating;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
+import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.utils.CurrentPlay;
 import java.util.ArrayList;
@@ -34,14 +36,13 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     private @Nullable ContentObserver contentObserver;
 
     @NonNull List<Long> favorites;
-    @NonNull Map<Long, Integer> rateds;
+    @Nullable Rating rating;
     boolean logged;
 
     boolean justAttached;
 
     public MusicPlayerPresenter() {
         favorites = new ArrayList<>();
-        rateds = new HashMap<>();
     }
 
     @Override
@@ -128,10 +129,11 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 view.setFavorite(false);
             }
 
-            if (rateds.containsKey(currentPlay.song().id())) {
-                view.setRating(rateds.get(currentPlay.song().id()));
+            if (rating != null && rating.song().id() == currentPlay.song().id()) {
+                view.setRating(rating.rating());
             } else {
                 view.setRating(0);
+                requestRatingFor(currentPlay.song());
             }
 
             justAttached = false;
@@ -194,6 +196,20 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         contentObserver = RxPlayerHelper.bindAudioSystem((Application) getContext().getApplicationContext());
     }
 
+    void requestRatingFor(@NonNull Song song) {
+        SongInteractor.instance().rate(getContext(), song)
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .compose(this.<Rating>bindToLifecycle())
+            .subscribe(new Action1<Rating>() {
+                @Override
+                public void call(final Rating response) {
+                    rating = response;
+                    requestRender();
+                }
+            });
+    }
+
     private void observeView(@NonNull MusicPlayerContract.View view) {
         RxPlayerHelper.observePlayStateClicks(view);
         RxPlayerHelper.observeBackwardClicks(view);
@@ -204,7 +220,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         RxPlayerHelper.observeTimeSeeks(view);
         RxPlayerHelper.observeVolumeSeeks((Application) getContext().getApplicationContext(), view);
 
-        RxPlayerHelper.observeFavoriteClicks((Application) getContext().getApplicationContext(), view)
+        RxPlayerHelper.observeFavoriteClicks(getContext(), view)
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
             .compose(this.<Song>bindToView((View) view))
@@ -222,15 +238,16 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
             });
 
         // We need the result because this comunicates with a backend
-        RxPlayerHelper.observeRatingSeeks(view)
+        RxPlayerHelper.observeRatingSeeks(getContext(), view)
             .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
-            .compose(this.<Pair<Long, Integer>>bindToView((View) view))
-            .subscribe(new Action1<Pair<Long, Integer>>() {
+            .compose(this.<Pair<Song, Integer>>bindToView((View) view))
+            .subscribe(new Action1<Pair<Song, Integer>>() {
                 @Override
-                public void call(final Pair<Long, Integer> pair) {
-                    rateds.put(pair.first, pair.second);
-                    // TODO is there a backend for the rating ?
+                public void call(final Pair<Song, Integer> pair) {
+                    rating = new Rating.Builder()
+                        .rating(pair.second)
+                        .song(pair.first)
+                        .build();
                     requestRender();
                 }
             });

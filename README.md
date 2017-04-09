@@ -116,7 +116,7 @@ How to dance correctly:
 
 ## Cambios talves necesarios
 
-1. No hay endpoints para los trendings artists / songs (artists/trending y songs/trending ?)
+1. No hay endpoints para los trendings artists / songs (artists/trending y songs/trending ?). Los hice sin auth necesario. Un usuario que no tiene cuenta puede ver los trendings.
 2. No hay endpoints para las playlists de un user (me/playlists ?)
 3. No hay endpoints para "seguir" o tener contactos entre usuarios (users/{id}/follow POST/DELETE ?)
 4. `AlbumShort` que conserve el campo de `images`, sino la song no tengo con que imagen mostrarla. (y no voy a hacer n*endpoints para averiguar todas)
