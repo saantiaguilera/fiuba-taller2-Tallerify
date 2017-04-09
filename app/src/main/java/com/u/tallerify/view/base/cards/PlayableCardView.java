@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding.view.RxView;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.base.cards.PlayableCardContract;
 import com.u.tallerify.supplier.home.card.PlayableCardSupplier;

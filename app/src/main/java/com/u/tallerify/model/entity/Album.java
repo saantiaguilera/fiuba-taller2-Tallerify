@@ -2,10 +2,6 @@ package com.u.tallerify.model.entity;
 
 import android.support.annotation.Nullable;
 import java.util.List;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/12/17.
