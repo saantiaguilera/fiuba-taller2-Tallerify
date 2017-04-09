@@ -26,10 +26,6 @@ How to dance correctly:
 
 (〜￣▽￣)〜
 
-(￣▽￣〜)
-
-(〜￣▽￣)〜
-
 〜(￣▽￣〜)
 
 (〜￣▽￣)〜
@@ -113,6 +109,16 @@ How to dance correctly:
 〜(￣▽￣〜)
 
 (〜￣▽￣)〜
+
+〜(￣▽￣〜)
+
+(〜￣▽￣)〜
+
+## Run
+
+Dependencies should download automatically. Please ensure you are running with the latest android and google repository versions and you have gradle 3.4 / android 2.3
+
+For building a release apk please run `./gradlew assembleRelease -PFirebaseServiceAccountFilePath=path`
 
 ## Cambios talves necesarios
 
