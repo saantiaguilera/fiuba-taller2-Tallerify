@@ -196,6 +196,8 @@ public class PlayService extends Service {
             subscription.unsubscribe();
             subscription = null;
         }
+
+        PlayManager.instance().release();
     }
 
     @Override
