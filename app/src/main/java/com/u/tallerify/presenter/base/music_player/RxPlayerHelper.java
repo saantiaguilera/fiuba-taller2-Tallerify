@@ -17,7 +17,9 @@ import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.PlayUtils;
 import rx.Observable;
+import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
@@ -157,23 +159,30 @@ final class RxPlayerHelper {
     }
 
     @CheckResult
-    static Observable<Pair<Long, Integer>> observeRatingSeeks(@NonNull final View view) {
-        final BehaviorSubject<Pair<Long, Integer>> subject = BehaviorSubject.create();
-        view.observeRatingSeeks()
+    static Observable<Pair<Song, Integer>> observeRatingSeeks(@NonNull final Context context,
+            @NonNull final View view) {
+        return view.observeRatingSeeks()
             .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<Integer>bindView((android.view.View) view))
-            .subscribe(new Action1<Integer>() {
+            .map(new Func1<Integer, Pair<Song, Integer>>() {
                 @Override
-                public void call(final Integer integer) {
-                    // TODO this doesnt have any endpoint.
-                    subject.onNext(new Pair<>(CurrentPlay.instance().song().id(), integer));
+                public Pair<Song, Integer> call(final Integer integer) {
+                    return new Pair<>(CurrentPlay.instance().song(), integer);
+                }
+            })
+            .doOnNext(new Action1<Pair<Song, Integer>>() {
+                @Override
+                public void call(final Pair<Song, Integer> pair) {
+                    SongInteractor.instance().rate(context.getApplicationContext(), pair.first, pair.second)
+                        .observeOn(Schedulers.io())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(Interactors.ACTION_NEXT, Interactors.ACTION_ERROR);
                 }
             });
-        return subject;
     }
 
     @CheckResult
-    static Observable<Song> observeFavoriteClicks(@NonNull final Application application,
+    static Observable<Song> observeFavoriteClicks(@NonNull final Context context,
             @NonNull final View view) {
         final BehaviorSubject<Song> subject = BehaviorSubject.create();
         view.observeFavoriteClicks()
@@ -189,9 +198,9 @@ final class RxPlayerHelper {
                     subject.onNext(song);
 
                     if (bool) {
-                        observable = SongInteractor.instance().dislike(application, song);
+                        observable = SongInteractor.instance().dislike(context.getApplicationContext(), song);
                     } else {
-                        observable = SongInteractor.instance().like(application, song);
+                        observable = SongInteractor.instance().like(context.getApplicationContext(), song);
                     }
 
                     observable.observeOn(Schedulers.io())
@@ -199,7 +208,7 @@ final class RxPlayerHelper {
                             @Override
                             public void call(final Song song) {
                                 // Api is bad, and gives us a song, request the favorites again for syncronizing
-                                MeInteractor.instance().songs(application)
+                                MeInteractor.instance().songs(context.getApplicationContext())
                                     .observeOn(Schedulers.io())
                                     .subscribeOn(Schedulers.io())
                                     // Not composed, this method can last whatever he wants. It has timeout also
