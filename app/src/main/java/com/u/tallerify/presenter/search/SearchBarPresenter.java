@@ -22,8 +22,8 @@ public class SearchBarPresenter extends Presenter<SearchBarContract.View>
     @Override
     protected void onAttach(@NonNull final SearchBarContract.View view) {
         view.observeInputs()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<String>bindToLifecycle())
             .debounce(500, TimeUnit.MILLISECONDS) // To avoid backpressure on the api
             .subscribe(new Action1<String>() {
@@ -35,6 +35,9 @@ public class SearchBarPresenter extends Presenter<SearchBarContract.View>
                 }
             });
     }
+
+    @Override
+    protected void onRender(@NonNull final SearchBarContract.View view) {}
 
     void dispatch(Observable<?> observable) {
         observable.observeOn(Schedulers.io())

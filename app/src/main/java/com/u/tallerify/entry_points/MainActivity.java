@@ -1,4 +1,4 @@
-package com.u.tallerify.activity;
+package com.u.tallerify.entry_points;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,26 +56,32 @@ public class MainActivity extends AppCompatActivity {
     private void observeCurrentPlay() {
         // Show music player when current play exists
         CurrentPlay.observeCurrentPlay()
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .take(1)
             .compose(RxLifecycleAndroid.<CurrentPlay>bindView(findViewById(R.id.activity_main_root)))
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {
+                    // Set the bottom nav play bar
                     List<RouterTransaction> backstack =
                         RouterInteractor.instance().mainRouter().getBackstack();
                     if (!backstack.isEmpty()) {
                         ((FlowController) backstack.get(backstack.size() - 1).controller()).renderMediaPlayer(true);
                     }
+
+                    // Start the play service
+                    Intent serviceIntent = new Intent(MainActivity.this, PlayService.class);
+                    serviceIntent.setAction(PlayService.SERVICE_START);
+                    startService(serviceIntent);
                 }
             });
     }
 
     private void observeLogins() {
         MeInteractor.instance().observeUser()
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
+            .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<ReactiveModel<User>>bindView(findViewById(R.id.activity_main_root)))
             .subscribe(new Action1<ReactiveModel<User>>() {
                 @Override

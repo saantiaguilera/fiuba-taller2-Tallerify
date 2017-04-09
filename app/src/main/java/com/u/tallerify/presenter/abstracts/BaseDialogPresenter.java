@@ -27,7 +27,7 @@ public class BaseDialogPresenter extends Presenter<BaseDialogContract.View> impl
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void onAttach(@NonNull final BaseDialogContract.View view) {
+    protected void onRender(@NonNull final BaseDialogContract.View view) {
         view.setSeverityTitle(title);
 
         if (content != null) {
@@ -36,12 +36,13 @@ public class BaseDialogPresenter extends Presenter<BaseDialogContract.View> impl
 
         switch (severity) {
             case ERROR:
+                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.drawable.ic_cancel_black_36dp));
+                break;
             case WARNING:
-                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.drawable.ic_severity_warning));
+                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.drawable.ic_warning_black_36dp));
                 break;
             case INFO:
-                //TODO
-                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                view.setSeverityImage(ContextCompat.getDrawable(getContext(), R.drawable.ic_info_outline_black_36dp));
         }
     }
 

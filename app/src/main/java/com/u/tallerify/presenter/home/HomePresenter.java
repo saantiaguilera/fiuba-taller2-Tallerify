@@ -1,5 +1,6 @@
 package com.u.tallerify.presenter.home;
 
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.u.tallerify.contract.abstracts.GenericGridContract;
@@ -19,6 +20,8 @@ import com.u.tallerify.supplier.home.card.HorizontalCardSupplier;
 import com.u.tallerify.supplier.home.card.NoAccountCardSupplier;
 import com.u.tallerify.supplier.home.card.PlayableCardSupplier;
 import com.u.tallerify.utils.adapter.GenericAdapter;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -28,11 +31,20 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
+import static com.u.tallerify.presenter.base.cards.PlayableCardPresenter.ACTION_BLOCKED;
+import static com.u.tallerify.presenter.base.cards.PlayableCardPresenter.ACTION_DISABLED;
+import static com.u.tallerify.presenter.base.cards.PlayableCardPresenter.ACTION_FALSE;
+import static com.u.tallerify.presenter.base.cards.PlayableCardPresenter.ACTION_TRUE;
+
 /**
  * Created by saguilera on 3/12/17.
  */
 public class HomePresenter extends Presenter<GenericGridContract.View>
         implements GenericGridContract.Presenter {
+
+    private static final int DEFAULT = 0;
+    private static final int DELETABLE = 1;
+    private static final int UNFAVABLE = 2;
 
     @Nullable List<Artist> userArtists;
     @Nullable List<Song> userSongs;
@@ -63,15 +75,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
     }
 
     @Override
-    protected void onViewRequested(@NonNull final GenericGridContract.View view) {
-        super.onViewRequested(view);
-        consumeSnapshot(view);
-    }
-
-    /**
-     * Consume a snapshot of data and draw the view with it
-     */
-    private void consumeSnapshot(@NonNull final GenericGridContract.View view) {
+    protected void onRender(@NonNull final GenericGridContract.View view) {
         if (dataSnapshot != null) {
             view.setData(dataSnapshot);
             dataSnapshot = null;
@@ -83,8 +87,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
      */
     private void observeRepositories() {
         MeInteractor.instance().observeArtists()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
@@ -97,8 +101,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         MeInteractor.instance().observeSongs()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
@@ -111,8 +115,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         MeInteractor.instance().observePlaylists()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Playlist>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Playlist>>>() {
@@ -125,8 +129,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         SongInteractor.instance().observeTrendingSongs()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
@@ -139,8 +143,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         ArtistInteractor.instance().observeTrendingArtists()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
@@ -153,8 +157,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 }
             });
         CredentialsInteractor.instance().observeToken()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
@@ -181,8 +185,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 notifierTrendingSongs,
                 notifierLogin
             )
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Void>bindToLifecycle())
             .debounce(500, TimeUnit.MILLISECONDS) // To avoid drawing all the time if repositories are active
             .map(new Func1<Void, List<GenericAdapter.ItemSupplier>>() {
@@ -195,7 +199,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
                 @Override
                 public void call(final List<GenericAdapter.ItemSupplier> itemSuppliers) {
                     dataSnapshot = itemSuppliers;
-                    requestView();
+                    requestRender();
                 }
             });
     }
@@ -208,14 +212,14 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
         List<GenericAdapter.ItemSupplier> data = new ArrayList<>();
 
         //TODO remove hardcodes
-        data.addAll(inflate("Especialmente para ti", trendingArtists));
-        data.addAll(inflate("Pensamos en vos", trendingSongs));
-        data.addAll(inflate("Tus playlists cerca tuyo", userPlaylists));
-        data.addAll(inflate("Tus artistas favoritos", userArtists));
-        data.addAll(inflate("Tus canciones preferidas", userSongs));
+        data.addAll(inflate("Especialmente para ti", trendingArtists, DEFAULT));
+        data.addAll(inflate("Pensamos en vos", trendingSongs, DEFAULT));
+        data.addAll(inflate("Tus playlists cerca tuyo", userPlaylists, DELETABLE));
+        data.addAll(inflate("Tus artistas favoritos", userArtists, UNFAVABLE));
+        data.addAll(inflate("Tus canciones preferidas", userSongs, UNFAVABLE));
 
         if (!loggedIn) {
-            data.add(new HeaderCardSupplier(getContext(), "Maeame no es lo mismo sin vos!"));
+            data.add(new HeaderCardSupplier(getContext(), "Queres manejar un Rolls Royce?"));
             data.add(new NoAccountCardSupplier(getContext()));
         }
 
@@ -225,7 +229,8 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
     /**
      * Inflates for a given header and a list of playable objects a list of item suppliers for a recycler view
      */
-    @NonNull List<GenericAdapter.ItemSupplier> inflate(@NonNull String header, @Nullable List<? extends Playable> list) {
+    @NonNull List<GenericAdapter.ItemSupplier> inflate(@NonNull String header, @Nullable List<? extends Playable> list,
+            @Modifiers int modifiers) {
         List<GenericAdapter.ItemSupplier> aux = new ArrayList<>();
 
         if (list != null) {
@@ -233,12 +238,64 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
 
             List<GenericAdapter.ItemSupplier> inners = new ArrayList<>();
             for (Playable playable : list) {
-                inners.add(new PlayableCardSupplier(getContext(), playable));
+                int flags;
+
+                switch(modifiers) {
+                    case UNFAVABLE:
+                    case DELETABLE:
+                        flags = ACTION_TRUE|ACTION_BLOCKED;
+                        break;
+                    case DEFAULT:
+                        if (loggedIn)
+                            flags = existsInUserRepository(playable) ? ACTION_TRUE : ACTION_FALSE;
+                        else
+                            flags = ACTION_DISABLED;
+                        break;
+                    default:
+                        flags = ACTION_DISABLED;
+                }
+
+                inners.add(new PlayableCardSupplier(getContext(), playable, flags));
             }
             aux.add(new HorizontalCardSupplier(getContext(), inners));
         }
 
         return aux;
     }
+
+    boolean existsInUserRepository(@NonNull Playable playable) {
+        if (!loggedIn)
+            return false;
+
+        if (userArtists != null) {
+            for (Playable obj : userArtists) {
+                if (obj.equals(playable)) {
+                    return true;
+                }
+            }
+        }
+
+        if (userSongs != null) {
+            for (Playable obj : userSongs) {
+                if (obj.equals(playable)) {
+                    return true;
+                }
+            }
+        }
+
+        if (userPlaylists != null) {
+            for (Playable obj : userPlaylists) {
+                if (obj.equals(playable)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({DEFAULT, DELETABLE, UNFAVABLE})
+    private @interface Modifiers {}
 
 }

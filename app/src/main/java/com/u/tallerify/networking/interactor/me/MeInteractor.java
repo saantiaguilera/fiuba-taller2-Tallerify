@@ -147,14 +147,14 @@ public final class MeInteractor {
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    playlistSubject.onNext(new ReactiveModel.Builder<Playlist>()
+                    playlistSubject.onNext(new ReactiveModel.Builder<List<Playlist>>()
                         .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    playlistSubject.onNext(new ReactiveModel.Builder<Playlist>()
+                    playlistSubject.onNext(new ReactiveModel.Builder<List<Playlist>>()
                         .error(throwable)
                         .build());
                 }

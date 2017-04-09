@@ -17,7 +17,7 @@ public class HeaderCardPresenter extends GenericAdapter.ItemPresenter<HeaderCard
     }
 
     @Override
-    protected void onAttach(@NonNull final HeaderCardContract.View view) {
+    protected void onRender(@NonNull final HeaderCardContract.View view) {
         view.setTitle(title);
     }
 

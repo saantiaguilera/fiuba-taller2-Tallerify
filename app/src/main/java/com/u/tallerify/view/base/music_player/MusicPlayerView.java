@@ -212,13 +212,13 @@ public class MusicPlayerView extends FrameLayout
     }
 
     @Override
-    public void setRating(final int rating, final boolean enabled) {
-        expandView.setRating(rating, enabled);
+    public void setRating(final int rating) {
+        expandView.setRating(rating);
     }
 
     @Override
-    public void setFavorite(final boolean favved, final boolean enabled) {
-        expandView.setFavorite(favved, enabled);
+    public void setFavorite(final boolean favved) {
+        expandView.setFavorite(favved);
     }
 
     @NonNull

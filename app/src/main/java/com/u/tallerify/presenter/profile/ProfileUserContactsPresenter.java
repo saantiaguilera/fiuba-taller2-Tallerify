@@ -28,7 +28,7 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
 
     public ProfileUserContactsPresenter() {
         MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.io())
             .compose(this.<ReactiveModel<User>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<User>>() {
@@ -36,7 +36,7 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
                 public void call(final ReactiveModel<User> userReactiveModel) {
                     if (userReactiveModel.model() != null && !userReactiveModel.hasError()) {
                         users = userReactiveModel.model().contacts();
-                        requestView();
+                        requestRender();
                     }
                 }
             });
@@ -61,16 +61,10 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
                         .pushChangeHandler(new FadeChangeHandler()));
                 }
             });
-
-        if (users != null) {
-            onViewRequested(view);
-        }
     }
 
     @Override
-    protected void onViewRequested(@NonNull final ProfileUserContactsContract.View view) {
-        super.onViewRequested(view);
-
+    protected void onRender(@NonNull final ProfileUserContactsContract.View view) {
         if (users != null) {
             List<String> names = Observable.from(users)
                 .map(new Func1<User, String>() {

@@ -27,6 +27,9 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
         observeInteractors(view);
     }
 
+    @Override
+    protected void onRender(@NonNull final LoginContract.View view) {}
+
     private void observeView(final LoginContract.View view) {
         view.observeFacebookLoginClicks()
             .observeOn(Schedulers.newThread())
@@ -57,7 +60,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
     private void observeInteractors(final LoginContract.View view) {
         FacebookInteractor.instance().observeFacebookLogins()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<LoginResult>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<LoginResult>>() {
                 @Override
@@ -72,7 +75,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
 
         CredentialsInteractor.instance().observeToken()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override

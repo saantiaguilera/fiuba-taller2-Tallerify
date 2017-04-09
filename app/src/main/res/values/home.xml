@@ -13,6 +13,8 @@
     <dimen name="view_card_song_text_height">24dp</dimen>
     <dimen name="view_card_song_text_size">14sp</dimen>
     <dimen name="view_card_song_padding">8dp</dimen>
+    <dimen name="view_card_playable_favorite">30dp</dimen>
+    <dimen name="view_card_playable_overlay_icon_padding">20dp</dimen>
 
     <!-- view_card_no_account -->
     <dimen name="view_card_no_account_height">120dp</dimen>
@@ -21,7 +23,7 @@
     <dimen name="view_card_no_account_title_text_size">18sp</dimen>
     <dimen name="view_card_no_account_description_text_size">14sp</dimen>
     <dimen name="view_card_no_account_title_margin_bottom">12dp</dimen>
-    <string name="view_card_no_account_title_text">Queres manejar un Rolls Royce?</string>
-    <string name="view_card_no_account_description_text">Haz click aqui y no esperes mas!</string>
+    <string name="view_card_no_account_title_text">Estas a un paso!</string>
+    <string name="view_card_no_account_description_text">Create una cuenta y no esperes mas!</string>
 
 </resources>

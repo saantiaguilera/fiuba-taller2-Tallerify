@@ -75,6 +75,11 @@ public final class AlbumInteractor {
                 }});
     }
 
+    public @NonNull Observable<List<Song>> songs(@NonNull Context context, @NonNull Album album) {
+        return RestClient.with(context).create(AlbumService.class)
+            .songs(album.id());
+    }
+
     public @NonNull Observable<List<Album>> search(@NonNull Context context, @NonNull String query) {
         if (query.isEmpty()) {
             return Observable.just(null)

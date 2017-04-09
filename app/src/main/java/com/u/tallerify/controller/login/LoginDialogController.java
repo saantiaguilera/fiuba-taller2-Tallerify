@@ -44,16 +44,16 @@ public class LoginDialogController extends AlertDialogController {
 
         // Interact with app tokens
         FacebookInteractor.instance().observeFacebookLogins()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<LoginResult>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<LoginResult>>() {
                 @Override
                 @SuppressWarnings("ConstantConditions")
                 public void call(final ReactiveModel<LoginResult> reactiveModel) {
                     if (reactiveModel.model() != null &&
-                        reactiveModel.action() == ReactiveModel.NO_ACTION) {
-                        nativeLogin(reactiveModel.model());
+                            reactiveModel.action() == ReactiveModel.NO_ACTION) {
+                        facebookLogin(reactiveModel.model());
                     } // We only care about the ok result, bad results will probably be managed by some presenter for showing in the ui
                 }
             });
@@ -61,7 +61,7 @@ public class LoginDialogController extends AlertDialogController {
         return super.onCreateDialog(context);
     }
 
-    void nativeLogin(@NonNull LoginResult result) {
+    void facebookLogin(@NonNull LoginResult result) {
         CredentialsInteractor.instance().createWithProvider(getApplicationContext(),
                 new CredentialsService.CreateCredentialForm(
                     result.getAccessToken().getToken(),
@@ -76,8 +76,7 @@ public class LoginDialogController extends AlertDialogController {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
                         BussinessUtils.requestTrendings(getApplicationContext());
 
-                        if (getDialog() != null)
-                            getDialog().dismiss();
+                        dismissDialog();
                     }
                 }
             }, Interactors.ACTION_ERROR);

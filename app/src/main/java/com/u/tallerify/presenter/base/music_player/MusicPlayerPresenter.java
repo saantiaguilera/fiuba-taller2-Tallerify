@@ -44,8 +44,6 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
 
     @Override
     protected void onAttach(@NonNull final MusicPlayerContract.View view) {
-        render(view);
-
         observeProducers();
         observeView(view);
     }
@@ -59,97 +57,110 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         }
     }
 
-    @Override
-    protected void onViewRequested(@NonNull final MusicPlayerContract.View view) {
-        super.onViewRequested(view);
-        render(view);
-    }
-
-    private void render(@NonNull final MusicPlayerContract.View view) {
-        if (CurrentPlay.instance() != null) {
+    protected void onRender(@NonNull final MusicPlayerContract.View view) {
             if (CurrentPlay.instance() != null) {
                 CurrentPlay currentPlay = CurrentPlay.instance();
-                view.setShuffleEnabled(currentPlay.shuffle());
-                view.setImage(currentPlay.currentSong().pictures().get(0));
-                view.setName(currentPlay.currentSong().name(), currentPlay.currentSong().artistsName());
-                view.setRepeatMode(currentPlay.repeat());
-                view.setTime((int) currentPlay.currentTime(), (int) currentPlay.currentSong().duration());
-                view.setTrackBarMax((int) currentPlay.currentSong().duration());
-                view.setTrackBarProgress((int) currentPlay.currentTime());
-                view.setVolume(currentPlay.volume());
-                switch (currentPlay.playState()) {
-                    case PLAYING:
-                        view.setPlaying();
-                        break;
-                    case PAUSED:
-                        view.setPaused();
-                        break;
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_SHUFFLE)) {
+                    view.setShuffleEnabled(currentPlay.shuffle());
                 }
 
-                final List<String> names = new ArrayList<>();
-                final List<String> urls = new ArrayList<>();
-                Observable.from(CurrentPlay.instance().playlist())
-                    .take(currentPlay.playlist().size() > 10 ? 10 :
-                        currentPlay.playlist().size())
-                    .doOnNext(new Action1<Song>() {
-                        @Override
-                        public void call(final Song song) {
-                            names.add(song.name() + " - " + song.artistsName());
-                            urls.add(song.pictures().get(0));
-                        }
-                    })
-                    .doOnCompleted(new Action0() {
-                        @Override
-                        public void call() {
-                            view.setQueue(names, urls);
-                        }
-                    })
-                    .toBlocking()
-                    .subscribe();
-
-                if (favorites.contains(currentPlay.currentSong().id())) {
-                    view.setFavorite(true, true);
-                } else {
-                    view.setFavorite(false, true);
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
+                    view.setImage(currentPlay.song().pictures().get(0));
+                    view.setName(currentPlay.song().name(), currentPlay.song().artistsName());
                 }
 
-                if (rateds.containsKey(currentPlay.currentSong().id())) {
-                    view.setRating(rateds.get(currentPlay.currentSong().id()), true);
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_REPEAT)) {
+                    view.setRepeatMode(currentPlay.repeat());
+                }
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_TIME) ||
+                        currentPlay.hasValueChanged(CurrentPlay.KEY_DURATION)) {
+                    view.setTime((int) currentPlay.time(), (int) currentPlay.duration());
+                    view.setTrackBarProgress((int) currentPlay.time());
+                    view.setTrackBarMax((int) currentPlay.duration());
+                }
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_VOLUME)) {
+                    view.setVolume(currentPlay.volume());
+                }
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYSTATE)) {
+                    switch (currentPlay.playState()) {
+                        case PLAYING:
+                            view.setPaused();
+                            break;
+                        case PAUSED:
+                            view.setPlaying();
+                            break;
+                    }
+                }
+
+                if (currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYLIST)) {
+                    final List<String> names = new ArrayList<>();
+                    final List<String> urls = new ArrayList<>();
+                    Observable.from(CurrentPlay.instance().playlist())
+                        .take(currentPlay.playlist().size() > 10 ? 10 :
+                            currentPlay.playlist().size())
+                        .doOnNext(new Action1<Song>() {
+                            @Override
+                            public void call(final Song song) {
+                                names.add(song.name() + " - " + song.artistsName());
+                                urls.add(song.pictures().get(0));
+                            }
+                        })
+                        .doOnCompleted(new Action0() {
+                            @Override
+                            public void call() {
+                                view.setQueue(names, urls);
+                            }
+                        })
+                        .toBlocking()
+                        .subscribe();
+                }
+
+                if (favorites.contains(currentPlay.song().id())) {
+                    view.setFavorite(true);
                 } else {
-                    view.setRating(0, true);
+                    view.setFavorite(false);
+                }
+
+                if (rateds.containsKey(currentPlay.song().id())) {
+                    view.setRating(rateds.get(currentPlay.song().id()));
+                } else {
+                    view.setRating(0);
                 }
             }
-        }
     }
 
     private void observeProducers() {
-        // Observe for changes in the current play, we want to always request a render pass whenever our model changes
+        // Observe for changes in the current play, we want to always request a onRender pass whenever our model changes
         CurrentPlay.observeCurrentPlay()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<CurrentPlay>bindToLifecycle())
             .subscribe(new Action1<CurrentPlay>() {
                 @Override
                 public void call(final CurrentPlay currentPlay) {
-                    requestView();
+                    requestRender();
                 }
             });
 
         CredentialsInteractor.instance().observeToken()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override
                 public void call(final ReactiveModel<AccessToken> reactiveModel) {
                     logged = reactiveModel.model() != null && !reactiveModel.hasError();
-                    requestView();
+                    requestRender();
                 }
             });
 
         MeInteractor.instance().observeSongs()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
@@ -169,7 +180,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                         .toBlocking()
                         .first();
 
-                    requestView();
+                    requestRender();
                 }
             });
 
@@ -189,8 +200,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         RxPlayerHelper.observeVolumeSeeks((Application) getContext().getApplicationContext(), view);
 
         RxPlayerHelper.observeFavoriteClicks((Application) getContext().getApplicationContext(), view)
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Song>bindToView((View) view))
             .subscribe(new Action1<Song>() {
                 @Override
@@ -201,20 +212,21 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                         favorites.add(song.id());
                     }
 
-                    requestView();
+                    requestRender();
                 }
             });
 
         // We need the result because this comunicates with a backend
         RxPlayerHelper.observeRatingSeeks(view)
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Pair<Long, Integer>>bindToView((View) view))
             .subscribe(new Action1<Pair<Long, Integer>>() {
                 @Override
                 public void call(final Pair<Long, Integer> pair) {
                     rateds.put(pair.first, pair.second);
-                    requestView();
+                    // TODO is there a backend for the rating ?
+                    requestRender();
                 }
             });
     }

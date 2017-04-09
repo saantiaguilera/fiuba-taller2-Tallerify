@@ -88,6 +88,11 @@ public class MusicPlayerExpandedView extends ScrollView {
         expandRatingBar = (RatingBar) findViewById(R.id.view_music_player_expanded_rating_bar);
         expandPlaylistContainer = (FixedSimpleListView) findViewById(R.id.view_music_player_expanded_playlist);
 
+        // We dont let the user seek positions because Media Player has the seekbar broken
+        // in android sdk. Check issues in google repository for information.
+        // Still, this feature was developed and did work with the exception of the android bugs
+        expandTrackBar.setEnabled(false);
+
         tintDrawable(expandTrackBar.getProgressDrawable());
         tintDrawable(expandVolumeBar.getProgressDrawable());
         tintDrawable(expandTrackBar.getThumb());
@@ -205,37 +210,25 @@ public class MusicPlayerExpandedView extends ScrollView {
                 expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
                 expandRepeat.getDrawable().setColorFilter(null);
                 break;
-            case SINGLE:
-                expandRepeat.setImageResource(R.drawable.ic_repeat_one_black_36dp);
-                tintDrawable(expandRepeat.getDrawable());
-                break;
             case ALL:
                 expandRepeat.setImageResource(R.drawable.ic_repeat_black_36dp);
                 tintDrawable(expandRepeat.getDrawable());
         }
     }
 
-    public void setRating(int rating, boolean enabled) {
-        if (enabled) {
-            expandRatingBar.setVisibility(View.VISIBLE);
-            expandRatingBar.setRating(rating);
-        } else {
-            expandRatingBar.setVisibility(View.GONE);
-        }
+    public void setRating(int rating) {
+        expandRatingBar.setVisibility(View.VISIBLE);
+        expandRatingBar.setRating(rating);
     }
 
-    public void setFavorite(boolean favved, boolean enabled) {
+    public void setFavorite(boolean favved) {
         favorited = favved;
-        if (enabled) {
-            expandFavorite.setVisibility(View.VISIBLE);
-            expandFavorite.getDrawable().setColorFilter(favved ?
-                new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
-                    PorterDuff.Mode.SRC_IN) :
-                new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.white, null),
-                    PorterDuff.Mode.SRC_IN) );
-        } else {
-            expandFavorite.setVisibility(View.GONE);
-        }
+        expandFavorite.setVisibility(View.VISIBLE);
+        expandFavorite.getDrawable().setColorFilter(favved ?
+            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null),
+                PorterDuff.Mode.SRC_IN) :
+            new PorterDuffColorFilter(ResourcesCompat.getColor(getResources(), R.color.white, null),
+                PorterDuff.Mode.SRC_IN) );
     }
 
     private void tintDrawable(@NonNull Drawable drawable) {

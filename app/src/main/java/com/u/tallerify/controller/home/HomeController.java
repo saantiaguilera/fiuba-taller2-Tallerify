@@ -46,16 +46,17 @@ public class HomeController extends FlowController {
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
 
+        BussinessUtils.requestTrendings(getApplicationContext());
+
         CredentialsInteractor.instance().observeToken()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<AccessToken>>() {
                 @Override
                 public void call(final ReactiveModel<AccessToken> accessTokenReactiveModel) {
                     if (!accessTokenReactiveModel.hasError() && accessTokenReactiveModel.model() != null) {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
-                        BussinessUtils.requestTrendings(getApplicationContext());
 
                         hasProfileIcon = true;
                     } else {

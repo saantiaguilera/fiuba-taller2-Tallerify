@@ -2,6 +2,7 @@ package com.u.tallerify.networking.interactor.song;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import com.u.tallerify.model.ResolvedUri;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
@@ -190,6 +191,11 @@ public final class SongInteractor {
                     return song;
                 }
             });
+    }
+
+    public @NonNull Observable<ResolvedUri> resolve(@NonNull Context context, @NonNull final Song song) {
+        return RestClient.with(context).create(SongService.class)
+            .resolve(song.id());
     }
 
 }

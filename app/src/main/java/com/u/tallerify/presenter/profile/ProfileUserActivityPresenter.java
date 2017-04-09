@@ -19,6 +19,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.u.tallerify.presenter.base.cards.PlayableCardPresenter.ACTION_DISABLED;
+
 /**
  * Created by saguilera on 3/30/17.
  */
@@ -29,8 +31,8 @@ public class ProfileUserActivityPresenter extends Presenter<ProfileUserActivityC
 
     public ProfileUserActivityPresenter() {
         MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<User>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<User>>() {
                 @Override
@@ -44,7 +46,7 @@ public class ProfileUserActivityPresenter extends Presenter<ProfileUserActivityC
                                 @Override
                                 public void call(final List<Song> songs) {
                                     activity = songs;
-                                    requestView();
+                                    requestRender();
                                 }
                             }, Interactors.ACTION_ERROR);
                     }
@@ -53,21 +55,14 @@ public class ProfileUserActivityPresenter extends Presenter<ProfileUserActivityC
     }
 
     @Override
-    protected void onAttach(@NonNull final ProfileUserActivityContract.View view) {
-        onViewRequested(view);
-    }
-
-    @Override
-    protected void onViewRequested(@NonNull final ProfileUserActivityContract.View view) {
-        super.onViewRequested(view);
-
+    protected void onRender(@NonNull final ProfileUserActivityContract.View view) {
         if (activity != null) {
             List<GenericAdapter.ItemSupplier> songCards = new ArrayList<>();
             songCards.addAll(Observable.from(activity)
                 .map(new Func1<Song, PlayableCardSupplier>() {
                     @Override
                     public PlayableCardSupplier call(final Song song) {
-                        return new PlayableCardSupplier(getContext(), song);
+                        return new PlayableCardSupplier(getContext(), song, ACTION_DISABLED);
                     }
                 })
                 .toList()

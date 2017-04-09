@@ -2,10 +2,6 @@ package com.u.tallerify.model.entity;
 
 import android.support.annotation.Nullable;
 import java.util.List;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/12/17.
@@ -24,19 +20,8 @@ public class Album extends Entity implements Playable {
 
     @Nullable
     @Override
-    public List<String> urls() {
-        return Observable.from(tracks)
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
-            .map(new Func1<Song, String>() {
-                @Override
-                public String call(final Song song) {
-                    return song.url();
-                }
-            }).toList()
-            .observeOn(AndroidSchedulers.mainThread())
-            .toBlocking()
-            .first();
+    public List<Song> asPlaylist() {
+        return tracks;
     }
 
     public @Nullable List<String> pictures() {

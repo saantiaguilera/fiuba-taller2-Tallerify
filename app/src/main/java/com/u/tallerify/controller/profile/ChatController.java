@@ -35,8 +35,8 @@ public class ChatController extends FlowController {
 
     public ChatController() {
         MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<User>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<User>>() {
                 @Override

@@ -10,6 +10,7 @@ import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.album.AlbumInteractor;
 import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
+import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.supplier.home.card.HeaderCardSupplier;
@@ -24,11 +25,18 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
+import static com.u.tallerify.presenter.base.cards.PlayableCardPresenter.ACTION_DISABLED;
+import static com.u.tallerify.presenter.base.cards.PlayableCardPresenter.ACTION_FALSE;
+import static com.u.tallerify.presenter.base.cards.PlayableCardPresenter.ACTION_TRUE;
+
 /**
  * Created by saguilera on 3/26/17.
  */
 public class SearchPresenter extends Presenter<GenericGridContract.View>
         implements GenericGridContract.Presenter {
+
+    @Nullable List<Song> userSongs;
+    @Nullable List<Artist> userArtists;
 
     @Nullable List<Song> songs;
     @Nullable List<Album> albums;
@@ -43,18 +51,39 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         notifier = BehaviorSubject.create((Void) null);
         observeNotifier();
         observeRepositories();
-    }
 
-    @Override
-    protected void onViewRequested(@NonNull final GenericGridContract.View view) {
-        super.onViewRequested(view);
-        consumeSnapshot(view);
+        MeInteractor.instance().observeSongs()
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
+            .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<List<Song>>>() {
+                @Override
+                public void call(final ReactiveModel<List<Song>> listReactiveModel) {
+                    if (!listReactiveModel.hasError() && listReactiveModel.model() != null) {
+                        userSongs = listReactiveModel.model();
+                    }
+                }
+            });
+
+        MeInteractor.instance().observeArtists()
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
+            .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
+                @Override
+                public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
+                    if (!listReactiveModel.hasError() && listReactiveModel.model() != null) {
+                        userArtists = listReactiveModel.model();
+                    }
+                }
+            });
     }
 
     /**
      * Consume a snapshot of data and draw the view with it
      */
-    private void consumeSnapshot(@NonNull final GenericGridContract.View view) {
+    @Override
+    protected void onRender(@NonNull final GenericGridContract.View view) {
         if (dataSnapshot != null) {
             view.setData(dataSnapshot);
             dataSnapshot = null;
@@ -62,8 +91,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
     }
 
     private void observeNotifier() {
-        notifier.observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+        notifier.observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Void>bindToLifecycle())
             .debounce(500, TimeUnit.MILLISECONDS) // To avoid drawing all the time if repositories are active
             .map(new Func1<Void, List<GenericAdapter.ItemSupplier>>() {
@@ -76,15 +105,15 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                 @Override
                 public void call(final List<GenericAdapter.ItemSupplier> itemSuppliers) {
                     dataSnapshot = itemSuppliers;
-                    requestView();
+                    requestRender();
                 }
             });
     }
 
     private void observeRepositories() {
         SongInteractor.instance().observeSearches()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
@@ -99,8 +128,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                 }
             });
         ArtistInteractor.instance().observeSearches()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
                 @Override
@@ -115,8 +144,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
                 }
             });
         AlbumInteractor.instance().observeSearches()
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Album>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Album>>>() {
                 @Override
@@ -140,9 +169,9 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         List<GenericAdapter.ItemSupplier> data = new ArrayList<>();
 
         //TODO remove hardcodes
-        data.addAll(inflate("Artistas", artists));
-        data.addAll(inflate("Albums", albums));
-        data.addAll(inflate("Canciones", songs));
+        data.addAll(inflate("Artistas", artists, userArtists));
+        data.addAll(inflate("Albums", albums, null));
+        data.addAll(inflate("Canciones", songs, userSongs));
 
         if (data.isEmpty()) {
             data.add(new HeaderCardSupplier(getContext(), "Un placeholder para que no este tan vacio"));
@@ -154,7 +183,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
     /**
      * Inflates for a given header and a list of playable objects a list of item suppliers for a recycler view
      */
-    @NonNull List<GenericAdapter.ItemSupplier> inflate(@NonNull String header, @Nullable List<? extends Playable> list) {
+    @NonNull List<GenericAdapter.ItemSupplier> inflate(@NonNull String header, @Nullable List<? extends Playable> list,
+            @Nullable List<? extends Playable> favorites) {
         List<GenericAdapter.ItemSupplier> aux = new ArrayList<>();
 
         if (list != null) {
@@ -162,7 +192,13 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
 
             List<GenericAdapter.ItemSupplier> inners = new ArrayList<>();
             for (Playable playable : list) {
-                inners.add(new PlayableCardSupplier(getContext(), playable));
+                int status = ACTION_DISABLED;
+
+                if (favorites != null) {
+                    status = favorites.contains(playable) ? ACTION_TRUE : ACTION_FALSE;
+                }
+
+                inners.add(new PlayableCardSupplier(getContext(), playable, status));
             }
             aux.add(new HorizontalCardSupplier(getContext(), inners));
         }

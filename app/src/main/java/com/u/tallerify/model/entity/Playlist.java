@@ -4,10 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import java.io.Serializable;
 import java.util.List;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/14/17.
@@ -91,18 +87,8 @@ public class Playlist extends Entity implements Serializable, Playable {
 
     @Nullable
     @Override
-    public List<String> urls() {
-        return Observable.from(tracks)
-            .observeOn(Schedulers.io())
-            .map(new Func1<Song, String>() {
-                @Override
-                public String call(final Song song) {
-                    return song.url();
-                }
-            }).toList()
-            .observeOn(AndroidSchedulers.mainThread())
-            .toBlocking()
-            .first();
+    public List<Song> asPlaylist() {
+        return tracks;
     }
 
     @Nullable
@@ -174,10 +160,8 @@ public class Playlist extends Entity implements Serializable, Playable {
         public boolean buildable() {
             boolean buildable = super.buildable();
             buildable &= name != null;
-            buildable &= tracks != null;
             buildable &= owner != null;
             buildable &= description != null;
-            buildable &= pictures != null;
             return buildable;
         }
 
