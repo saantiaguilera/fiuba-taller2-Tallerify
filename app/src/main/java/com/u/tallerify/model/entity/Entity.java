@@ -57,18 +57,18 @@ public abstract class Entity implements Serializable {
         return (int) (id ^ (id >>> 32));
     }
 
-    public static class Builder<T extends Entity> implements Preconditions<T> {
+    public static class Builder<EntityType extends Entity> implements Preconditions<EntityType> {
 
         long id = NO_VALUE;
 
         public Builder() {
         }
 
-        public Builder(@NonNull T t) {
-            id(t.id());
+        public Builder(@NonNull EntityType entityType) {
+            id(entityType.id());
         }
 
-        public final @NonNull Builder<T> id(final long id) {
+        public final @NonNull Builder<EntityType> id(final long id) {
             this.id = id;
             return this;
         }
@@ -79,7 +79,8 @@ public abstract class Entity implements Serializable {
         }
 
         @Override
-        public @NonNull T build() {
+        public @NonNull
+        EntityType build() {
             throw new IllegalStateException("Entity cant be instantiated via Build pattern");
         }
 

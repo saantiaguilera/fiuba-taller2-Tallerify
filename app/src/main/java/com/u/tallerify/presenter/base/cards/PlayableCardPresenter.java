@@ -3,20 +3,28 @@ package com.u.tallerify.presenter.base.cards;
 import android.support.annotation.NonNull;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.base.cards.PlayableCardContract;
+import com.u.tallerify.controller.login.LoginDialogController;
+import com.u.tallerify.controller.playlist.AddToPlaylistController;
 import com.u.tallerify.model.entity.Album;
 import com.u.tallerify.model.entity.Artist;
 import com.u.tallerify.model.entity.Playable;
 import com.u.tallerify.model.entity.Playlist;
 import com.u.tallerify.model.entity.Song;
+import com.u.tallerify.model.entity.User;
+import com.u.tallerify.networking.AccessTokenManager;
+import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.album.AlbumInteractor;
 import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
+import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.playlist.PlaylistInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.utils.BussinessUtils;
 import com.u.tallerify.utils.CurrentPlay;
+import com.u.tallerify.utils.PlayUtils;
 import com.u.tallerify.utils.adapter.GenericAdapter;
 import java.util.List;
+import javax.annotation.Nullable;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -67,7 +75,27 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
                 }
             });
 
-        // TODO el add a una playlist
+        view.observePlaylistClicks()
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
+            .compose(this.<Void>bindToLifecycle())
+            .subscribe(new Action1<Void>() {
+                @Override
+                public void call(final Void aVoid) {
+                    if (AccessTokenManager.instance().snapshot() != null) {
+                        showDialog(
+                            new AddToPlaylistController()
+                                .playable(playable),
+                            AddToPlaylistController.class.getName()
+                        );
+                    } else {
+                        showDialog(
+                            new LoginDialogController(),
+                            LoginDialogController.class.getName()
+                        );
+                    }
+                }
+            });
     }
 
     protected void onRender(PlayableCardContract.View view) {
@@ -98,51 +126,28 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
     }
 
     void onPlayAsync(@NonNull Playable playable) {
-        // TODO this should be refactored but I do it like this because of laziness
-        Observable<List<Song>> observable = null;
-        if (playable instanceof Artist) {
-            observable = ArtistInteractor.instance()
-                .songs(getContext(), (Artist) playable);
-        }
+        PlayUtils.songs(getContext(), playable).observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
+            .compose(PlayableCardPresenter.this.<List<Song>>bindToLifecycle())
+            .subscribe(new Action1<List<Song>>() {
+                @Override
+                public void call(final List<Song> songs) {
+                    Song currentSong = songs.get(0);
+                    songs.remove(0);
 
-        if (playable instanceof Song) {
-            observable = Observable.just(playable.asPlaylist());
-        }
-
-        if (playable instanceof Album) {
-            observable = AlbumInteractor.instance()
-                .songs(getContext(), (Album) playable);
-        }
-
-        if (playable instanceof Playlist) {
-            observable = PlaylistInteractor.instance()
-                .songs(getContext(), (Playlist) playable);
-        }
-
-        if (observable != null) {
-            observable.observeOn(Schedulers.computation())
-                .subscribeOn(Schedulers.computation())
-                .compose(PlayableCardPresenter.this.<List<Song>>bindToLifecycle())
-                .subscribe(new Action1<List<Song>>() {
-                    @Override
-                    public void call(final List<Song> songs) {
-                        Song currentSong = songs.get(0);
-                        songs.remove(0);
-
-                        CurrentPlay.Builder builder;
-                        if (CurrentPlay.instance() == null) {
-                            builder = CurrentPlay.defaults(getContext());
-                        } else {
-                            builder = CurrentPlay.instance().newBuilder();
-                        }
-                        builder.playlist(songs)
-                            .song(currentSong)
-                            .time(0)
-                            .playState(CurrentPlay.PlayState.PLAYING)
-                            .build();
+                    CurrentPlay.Builder builder;
+                    if (CurrentPlay.instance() == null) {
+                        builder = CurrentPlay.defaults(getContext());
+                    } else {
+                        builder = CurrentPlay.instance().newBuilder();
                     }
-                });
-        }
+                    builder.playlist(songs)
+                        .song(currentSong)
+                        .time(0)
+                        .playState(CurrentPlay.PlayState.PLAYING)
+                        .build();
+                }
+            });
     }
 
     void onActionClicked() {
@@ -192,6 +197,9 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
                         BussinessUtils.requestBasicInfo(getContext());
                     }
                 }, Interactors.ACTION_ERROR);
+        } else {
+            throw new IllegalStateException("This was done by someone very lazy who didnt want to do more inheritance. " +
+                "Please add your new class to this method :)");
         }
     }
 

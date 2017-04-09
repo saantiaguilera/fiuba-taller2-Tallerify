@@ -1,6 +1,15 @@
 package com.u.tallerify.utils;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+import com.u.tallerify.model.entity.Album;
+import com.u.tallerify.model.entity.Artist;
+import com.u.tallerify.model.entity.Playable;
+import com.u.tallerify.model.entity.Playlist;
 import com.u.tallerify.model.entity.Song;
+import com.u.tallerify.networking.interactor.album.AlbumInteractor;
+import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
+import com.u.tallerify.networking.interactor.playlist.PlaylistInteractor;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
@@ -168,6 +177,35 @@ public final class PlayUtils {
                 .playlist(newList)
                 .build();
         }
+    }
+
+    public static @NonNull Observable<List<Song>> songs(@NonNull Context context, @NonNull Playable playable) {
+        Observable<List<Song>> observable = null;
+        if (playable instanceof Artist) {
+            observable = ArtistInteractor.instance()
+                .songs(context.getApplicationContext(), (Artist) playable);
+        }
+
+        if (playable instanceof Song) {
+            observable = Observable.just(playable.asPlaylist());
+        }
+
+        if (playable instanceof Album) {
+            observable = AlbumInteractor.instance()
+                .songs(context.getApplicationContext(), (Album) playable);
+        }
+
+        if (playable instanceof Playlist) {
+            observable = PlaylistInteractor.instance()
+                .songs(context.getApplicationContext(), (Playlist) playable);
+        }
+
+        if (observable == null) {
+            throw new IllegalStateException("This is done from a really lazy person who didnt want to do more inherits. " +
+                "Please add your instance to this method :)");
+        }
+
+        return observable;
     }
 
 }

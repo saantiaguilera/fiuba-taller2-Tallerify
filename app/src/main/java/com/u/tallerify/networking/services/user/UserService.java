@@ -6,7 +6,9 @@ import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -22,15 +24,18 @@ public interface UserService {
     @GET("users/{id}")
     Observable<User> user(@Path("id") long id);
 
+    @Multipart
     @POST("users/")
     Observable<User> create(@Body User user, @Field("password") String password);
 
     @GET("users/{id}/activity")
     Observable<List<Song>> activity(@Path("id") long id);
 
+    @FormUrlEncoded
     @POST("users/{id}/follow")
     Observable<User> follow(@Path("id") long myId, @Field("userId") long hisId);
 
+    @FormUrlEncoded
     @DELETE("users/{id}/follow")
     Observable<Void> unfollow(@Path("id") long myId, @Field("userId") long hisId);
 

@@ -4,11 +4,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 /**
  * A controller that displays a dialog window, floating on top of its activity's window.
@@ -21,7 +24,7 @@ public abstract class DialogController extends BaseController {
     private static final String SAVED_DIALOG_STATE_TAG = "android:savedDialogState";
 
     private Dialog dialog;
-    private boolean dismissed;
+    boolean dismissed;
 
     @NonNull
     @Override
@@ -31,7 +34,7 @@ public abstract class DialogController extends BaseController {
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                dismissDialog();
+                dismissDialogInternal();
             }
         });
         return new View(getActivity());//stub view
@@ -59,6 +62,11 @@ public abstract class DialogController extends BaseController {
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
         dialog.show();
+
+        // To fix the lovely bug android has when using edittext inside dialogs
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+            WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     @Override
@@ -78,12 +86,23 @@ public abstract class DialogController extends BaseController {
     /**
      * Dismiss the dialog and pop this controller
      */
-    public void dismissDialog() {
+    void dismissDialogInternal() {
         if (dismissed) {
             return;
         }
-        getRouter().popController(this);
+        getRouter().popController(DialogController.this);
         dismissed = true;
+    }
+
+    public void dismissDialog() {
+        new Handler(Looper.getMainLooper()).postAtFrontOfQueue(new Runnable() {
+            @Override
+            public void run() {
+                if (getDialog() != null) {
+                    getDialog().dismiss();
+                }
+            }
+        });
     }
 
     @Nullable

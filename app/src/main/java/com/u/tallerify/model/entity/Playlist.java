@@ -164,10 +164,8 @@ public class Playlist extends Entity implements Serializable, Playable {
         public boolean buildable() {
             boolean buildable = super.buildable();
             buildable &= name != null;
-            buildable &= tracks != null;
             buildable &= owner != null;
             buildable &= description != null;
-            buildable &= pictures != null;
             return buildable;
         }
 

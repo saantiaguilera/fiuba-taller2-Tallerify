@@ -76,8 +76,7 @@ public class LoginDialogController extends AlertDialogController {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
                         BussinessUtils.requestTrendings(getApplicationContext());
 
-                        if (getDialog() != null)
-                            getDialog().dismiss();
+                        dismissDialog();
                     }
                 }
             }, Interactors.ACTION_ERROR);
