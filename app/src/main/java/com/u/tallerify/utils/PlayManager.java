@@ -114,6 +114,10 @@ public final class PlayManager {
         }
     }
 
+    public void release() {
+        mediaPlayer.release();
+    }
+
     /**
      * Seek to a position
      * @param newTime in seconds

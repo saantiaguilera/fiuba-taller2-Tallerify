@@ -37,6 +37,8 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     @NonNull Map<Long, Integer> rateds;
     boolean logged;
 
+    boolean justAttached;
+
     public MusicPlayerPresenter() {
         favorites = new ArrayList<>();
         rateds = new HashMap<>();
@@ -46,6 +48,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     protected void onAttach(@NonNull final MusicPlayerContract.View view) {
         observeProducers();
         observeView(view);
+        justAttached = true;
     }
 
     @Override
@@ -58,79 +61,81 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
     }
 
     protected void onRender(@NonNull final MusicPlayerContract.View view) {
-            if (CurrentPlay.instance() != null) {
-                CurrentPlay currentPlay = CurrentPlay.instance();
+        if (CurrentPlay.instance() != null) {
+            CurrentPlay currentPlay = CurrentPlay.instance();
 
-                if (currentPlay.hasValueChanged(CurrentPlay.KEY_SHUFFLE)) {
-                    view.setShuffleEnabled(currentPlay.shuffle());
-                }
+            if (justAttached || currentPlay.hasValueChanged(CurrentPlay.KEY_SHUFFLE)) {
+                view.setShuffleEnabled(currentPlay.shuffle());
+            }
 
-                if (currentPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
-                    view.setImage(currentPlay.song().pictures().get(0));
-                    view.setName(currentPlay.song().name(), currentPlay.song().artistsName());
-                }
+            if (justAttached || currentPlay.hasValueChanged(CurrentPlay.KEY_SONG)) {
+                view.setImage(currentPlay.song().pictures().get(0));
+                view.setName(currentPlay.song().name(), currentPlay.song().artistsName());
+            }
 
-                if (currentPlay.hasValueChanged(CurrentPlay.KEY_REPEAT)) {
-                    view.setRepeatMode(currentPlay.repeat());
-                }
+            if (justAttached || currentPlay.hasValueChanged(CurrentPlay.KEY_REPEAT)) {
+                view.setRepeatMode(currentPlay.repeat());
+            }
 
-                if (currentPlay.hasValueChanged(CurrentPlay.KEY_TIME) ||
-                        currentPlay.hasValueChanged(CurrentPlay.KEY_DURATION)) {
-                    view.setTime((int) currentPlay.time(), (int) currentPlay.duration());
-                    view.setTrackBarProgress((int) currentPlay.time());
-                    view.setTrackBarMax((int) currentPlay.duration());
-                }
+            if (justAttached || currentPlay.hasValueChanged(CurrentPlay.KEY_TIME) ||
+                currentPlay.hasValueChanged(CurrentPlay.KEY_DURATION)) {
+                view.setTime((int) currentPlay.time(), (int) currentPlay.duration());
+                view.setTrackBarProgress((int) currentPlay.time());
+                view.setTrackBarMax((int) currentPlay.duration());
+            }
 
-                if (currentPlay.hasValueChanged(CurrentPlay.KEY_VOLUME)) {
-                    view.setVolume(currentPlay.volume());
-                }
+            if (justAttached || currentPlay.hasValueChanged(CurrentPlay.KEY_VOLUME)) {
+                view.setVolume(currentPlay.volume());
+            }
 
-                if (currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYSTATE)) {
-                    switch (currentPlay.playState()) {
-                        case PLAYING:
-                            view.setPaused();
-                            break;
-                        case PAUSED:
-                            view.setPlaying();
-                            break;
-                    }
-                }
-
-                if (currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYLIST)) {
-                    final List<String> names = new ArrayList<>();
-                    final List<String> urls = new ArrayList<>();
-                    Observable.from(CurrentPlay.instance().playlist())
-                        .take(currentPlay.playlist().size() > 10 ? 10 :
-                            currentPlay.playlist().size())
-                        .doOnNext(new Action1<Song>() {
-                            @Override
-                            public void call(final Song song) {
-                                names.add(song.name() + " - " + song.artistsName());
-                                urls.add(song.pictures().get(0));
-                            }
-                        })
-                        .doOnCompleted(new Action0() {
-                            @Override
-                            public void call() {
-                                view.setQueue(names, urls);
-                            }
-                        })
-                        .toBlocking()
-                        .subscribe();
-                }
-
-                if (favorites.contains(currentPlay.song().id())) {
-                    view.setFavorite(true);
-                } else {
-                    view.setFavorite(false);
-                }
-
-                if (rateds.containsKey(currentPlay.song().id())) {
-                    view.setRating(rateds.get(currentPlay.song().id()));
-                } else {
-                    view.setRating(0);
+            if (justAttached || currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYSTATE)) {
+                switch (currentPlay.playState()) {
+                    case PLAYING:
+                        view.setPaused();
+                        break;
+                    case PAUSED:
+                        view.setPlaying();
+                        break;
                 }
             }
+
+            if (justAttached || currentPlay.hasValueChanged(CurrentPlay.KEY_PLAYLIST)) {
+                final List<String> names = new ArrayList<>();
+                final List<String> urls = new ArrayList<>();
+                Observable.from(CurrentPlay.instance().playlist())
+                    .take(currentPlay.playlist().size() > 10 ? 10 :
+                        currentPlay.playlist().size())
+                    .doOnNext(new Action1<Song>() {
+                        @Override
+                        public void call(final Song song) {
+                            names.add(song.name() + " - " + song.artistsName());
+                            urls.add(song.pictures().get(0));
+                        }
+                    })
+                    .doOnCompleted(new Action0() {
+                        @Override
+                        public void call() {
+                            view.setQueue(names, urls);
+                        }
+                    })
+                    .toBlocking()
+                    .subscribe();
+            }
+
+            if (favorites.contains(currentPlay.song().id())) {
+                view.setFavorite(true);
+            } else {
+                view.setFavorite(false);
+            }
+
+            if (rateds.containsKey(currentPlay.song().id())) {
+                view.setRating(rateds.get(currentPlay.song().id()));
+            } else {
+                view.setRating(0);
+            }
+
+            justAttached = false;
+        }
     }
 
     private void observeProducers() {

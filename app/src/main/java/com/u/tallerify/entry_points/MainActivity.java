@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -44,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setViews(savedInstanceState);
-        observeCurrentPlay();
+
+        if (CurrentPlay.instance() == null) {
+            observeCurrentPlay();
+        }
+
         observeLogins();
 
         // Starting flow
@@ -83,6 +88,13 @@ public class MainActivity extends AppCompatActivity {
             .subscribeOn(Schedulers.computation())
             .observeOn(Schedulers.computation())
             .compose(RxLifecycleAndroid.<ReactiveModel<User>>bindView(findViewById(R.id.activity_main_root)))
+            .filter(new Func1<ReactiveModel<User>, Boolean>() {
+                @Override
+                public Boolean call(final ReactiveModel<User> userReactiveModel) {
+                    return userReactiveModel.model() != null && !userReactiveModel.hasError();
+                }
+            })
+            .take(1)
             .subscribe(new Action1<ReactiveModel<User>>() {
                 @Override
                 public void call(final ReactiveModel<User> rxModel) {
