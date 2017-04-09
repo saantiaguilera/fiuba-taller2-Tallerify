@@ -3,27 +3,28 @@ apply plugin: 'com.android.application'
 apply from: 'jacoco.gradle'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion project.sdkVersion.toInteger()
+    buildToolsVersion project.buildToolsVersion
 
     defaultConfig {
         applicationId "com.u.tallerify"
-        minSdkVersion 16
-        targetSdkVersion 25
+        minSdkVersion project.minSdkVersion.toInteger()
+        targetSdkVersion project.sdkVersion.toInteger()
         versionCode project.versionCode.toInteger()
         versionName project.versionName
     }
 
     buildTypes {
         debug {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
             debuggable true
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled true
             shrinkResources true
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -43,6 +44,7 @@ configurations {
 dependencies {
     compile support.design
     compile support.cardView
+    compile support.customtabs // For facebook sdk, no use given here.
 
     compile firebase.database
     compile firebase.auth
