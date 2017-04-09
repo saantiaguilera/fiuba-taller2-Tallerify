@@ -27,7 +27,10 @@ ext {
 
     support = [
         design : "com.android.support:design:$supportVersion",
-        cardView : "com.android.support:cardview-v7:$supportVersion"
+        cardView : "com.android.support:cardview-v7:$supportVersion",
+        customtabs : "com.android.support:customtabs:$supportVersion"
+        // customtabs: Because facebook has the dependency versions hardcoded, so we must add them updated here.
+        // and with this the resolution strategy will give priority to ours (being higher)
     ]
 
     firebase = [
