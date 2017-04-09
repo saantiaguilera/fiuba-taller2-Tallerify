@@ -1,7 +1,6 @@
 package com.u.tallerify.contract.playlist;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
 import com.u.tallerify.model.entity.Playlist;

@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
                     android:host="www.u.com"
-                    android:pathPrefix="/app"
+                    android:pathPrefix="/fortmediaplayer"
                     android:scheme="http"/>
             </intent-filter>
         </activity>

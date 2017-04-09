@@ -8,7 +8,6 @@ import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.networking.services.playlist.PlaylistService;
 import java.util.List;
-import javax.annotation.Nullable;
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
