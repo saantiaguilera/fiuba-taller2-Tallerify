@@ -19,7 +19,7 @@ android {
             minifyEnabled true
             debuggable true
             useProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-debug-rules.pro'
         }
         release {
             minifyEnabled true
@@ -33,12 +33,6 @@ android {
         abortOnError true
         warning "InvalidPackage", "NewApi"
     }
-}
-
-configurations {
-    compile.exclude group: "com.google.firebase", module: "firebase-analytics"
-    // A mi no me vengas a chicanear con tu plugin loco google, anda a injectarle codigo a tu abuela
-    // Aguante ios gil
 }
 
 dependencies {

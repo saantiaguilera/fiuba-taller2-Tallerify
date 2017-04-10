@@ -52,7 +52,6 @@ public class FrescoImageController {
     private @Nullable ImageDecodeOptions decodeOptions;
     private @Nullable Postprocessor postprocessor;
 
-    private boolean rotate;
     private boolean tapToRetry;
     private boolean progressiveRendering;
     private boolean localThumbnailPreview;
@@ -80,7 +79,7 @@ public class FrescoImageController {
         @Nullable Callback callback,
         @Nullable ResizeOptions resizeOpt, @Nullable ImageDecodeOptions decodeOpt,
         @Nullable Postprocessor postprocessor,
-        boolean rotate, boolean ttr, boolean pr, boolean ltp,
+        boolean ttr, boolean pr, boolean ltp,
         boolean noCache, boolean noDiskCache, boolean noMemoryCache,
         boolean autoPlayAnimations,
         @Nullable ImageRequest.CacheChoice cacheChoice, @Nullable Priority priority,
@@ -95,7 +94,6 @@ public class FrescoImageController {
         this.decodeOptions = decodeOpt;
         this.postprocessor = postprocessor;
 
-        this.rotate = rotate;
         this.tapToRetry = ttr;
         this.progressiveRendering = pr;
         this.localThumbnailPreview = ltp;
@@ -109,7 +107,6 @@ public class FrescoImageController {
         frescoCallback = new FrescoControllerListener(callback);
 
         ImageRequestBuilder request = ImageRequestBuilder.newBuilderWithSource(uri)
-            .setAutoRotateEnabled(rotate)
             .setLocalThumbnailPreviewsEnabled(localThumbnailPreview)
             .setProgressiveRenderingEnabled(progressiveRendering);
 
@@ -275,13 +272,6 @@ public class FrescoImageController {
     /**
      * Getter
      */
-    public boolean isAutoRotateEnabled() {
-        return rotate;
-    }
-
-    /**
-     * Getter
-     */
     public boolean isTapToRetryEnabled() {
         return tapToRetry;
     }
@@ -310,7 +300,6 @@ public class FrescoImageController {
     public @NonNull Builder newBuilder() {
         Builder builder = new Builder()
             .load(getUri())
-            .autoRotate(isAutoRotateEnabled())
             .tapToRetry(isTapToRetryEnabled())
             .autoPlayAnimations(isAutoPlayAnimations())
             .progressiveRendering(isProgressiveRenderingEnabled())
@@ -371,11 +360,10 @@ public class FrescoImageController {
         private @Nullable Uri mUri = null;
         private @Nullable Callback listener = null;
         private @Nullable ResizeOptions resizeOptions = null;
-        private @Nullable RotationOptions rotationOptions = null;
+        private @Nullable RotationOptions rotationOptions = RotationOptions.autoRotate();
         private @Nullable ImageRequest.CacheChoice cacheChoice = null;
         private @Nullable Priority priority = null;
         private @Nullable MediaVariations mediaVariations = null;
-        private boolean rotate = true;
         private boolean tapToRetry = false;
         private boolean progressiveRendering = false;
         private boolean localThumbnailPreview = false;
@@ -461,23 +449,6 @@ public class FrescoImageController {
          */
         public @NonNull Builder resize(int width, int height) {
             this.resizeOptions = new ResizeOptions(width, height);
-            return this;
-        }
-
-        /**
-         * Helper that autorotates the image depending on the exif value
-         * Default: True
-         *
-         * Note: Autorotate happens inside the DraweeView. Meaning that the bitmap wont be rotated
-         * and only when rendering it will be for showing. So if using the pipeline or getting the bitmap
-         * by your own means, be careful it will probably wont be rotated. Use an ExifInterface for getting
-         * the rotation.
-         *
-         * @param should auto rotate
-         * @return Builder
-         */
-        public @NonNull Builder autoRotate(boolean should) {
-            this.rotate = should;
             return this;
         }
 
@@ -669,7 +640,7 @@ public class FrescoImageController {
                 listener,
                 resizeOptions, decodeOptions,
                 postprocessor,
-                rotate, tapToRetry, progressiveRendering, localThumbnailPreview,
+                tapToRetry, progressiveRendering, localThumbnailPreview,
                 noCache, noDiskCache, noMemoryCache,
                 autoPlayAnimations,
                 cacheChoice, priority,
