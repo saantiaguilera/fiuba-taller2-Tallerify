@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.firebase.firebase-crash'
 apply from: 'jacoco.gradle'
 
 android {
@@ -19,7 +19,7 @@ android {
             minifyEnabled true
             debuggable true
             useProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-debug-rules.pro'
         }
         release {
             minifyEnabled true
@@ -35,12 +35,6 @@ android {
     }
 }
 
-configurations {
-    compile.exclude group: "com.google.firebase", module: "firebase-analytics"
-    // A mi no me vengas a chicanear con tu plugin loco google, anda a injectarle codigo a tu abuela
-    // Aguante ios gil
-}
-
 dependencies {
     compile support.design
     compile support.cardView
@@ -51,6 +45,7 @@ dependencies {
     compile firebase.ui
     compile firebase.location
     compile firebase.places
+    compile firebase.crashlytics
 
     compile misc.gif
     compile misc.fresco

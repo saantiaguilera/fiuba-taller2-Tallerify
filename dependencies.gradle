@@ -39,7 +39,8 @@ ext {
         auth : "com.google.firebase:firebase-auth:$firebaseVersion",
         ui : "com.firebaseui:firebase-ui-database:$firebaseUIVersion",
         location : "com.google.android.gms:play-services-location:$firebaseVersion",
-        places : "com.google.android.gms:play-services-places:$firebaseVersion"
+        places : "com.google.android.gms:play-services-places:$firebaseVersion",
+        crashlytics : "com.google.firebase:firebase-crash:$firebaseVersion"
     ]
 
     misc = [

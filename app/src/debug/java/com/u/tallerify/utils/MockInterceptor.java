@@ -27,6 +27,8 @@ public class MockInterceptor implements Interceptor {
 
             if (url.contains("token")) {
                 responseString = Login.RESPONSE_LOGIN;
+            } else if (url.contains("popularity")) {
+                responseString = Song.RESPONSE_RATING;
             } else if (url.contains("resolve/")) {
                 responseString = Song.RESPONSE_RESOLVED_URI;
             } else if (url.contains("tracks/trending") || url.contains("me/tracks/favorites")

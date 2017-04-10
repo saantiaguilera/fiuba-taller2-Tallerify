@@ -1,5 +1,6 @@
 package com.u.tallerify.networking.interactor;
 
+import com.google.firebase.crash.FirebaseCrash;
 import rx.functions.Action1;
 
 /**
@@ -23,7 +24,9 @@ public final class Interactors {
 
    public static final Action1<Throwable> ACTION_ERROR = new Action1<Throwable>() {
        @Override
-       public void call(final Throwable throwable) {}
+       public void call(final Throwable throwable) {
+           FirebaseCrash.report(throwable);
+       }
    };
 
 }

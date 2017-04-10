@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import com.u.tallerify.model.ResolvedUri;
+import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
@@ -110,7 +111,7 @@ public final class PlayManager {
                             preparing = false;
                         }
                     }
-                });
+                }, Interactors.ACTION_ERROR);
         }
     }
 
