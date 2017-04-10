@@ -17,7 +17,6 @@ import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.PlayUtils;
 import rx.Observable;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
