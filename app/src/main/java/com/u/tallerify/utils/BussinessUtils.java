@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static com.u.tallerify.networking.interactor.Interactors.ACTION_ERROR;
