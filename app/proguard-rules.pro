@@ -61,8 +61,6 @@
 -keepnames class com.google.firebase.FirebaseApp
 -keepnames class com.firebase.ui.database.FirebaseRecyclerAdapter
 -keepnames class com.google.firebase.database.connection.idl.zz*
--dontwarn com.google.android.gms.internal.**
--dontwarn com.google.android.gms.measurement.**
 -keep class com.google.android.gms.dynamite.DynamiteModule$DynamiteLoaderClassLoader
 -keep class com.google.android.gms.dynamite.descriptors.com.google.android.gms.flags.ModuleDescriptor
 -keep class com.google.android.gms.dynamite.descriptors.com.google.android.gms.firebase_database.ModuleDescriptor

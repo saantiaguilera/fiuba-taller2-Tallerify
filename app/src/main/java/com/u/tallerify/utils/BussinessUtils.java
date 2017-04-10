@@ -21,39 +21,19 @@ public class BussinessUtils {
         MeInteractor.instance().currentUser(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .subscribe(ACTION_NEXT, new Action1<Throwable>() {
-                @Override
-                public void call(final Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            });
+            .subscribe(ACTION_NEXT, ACTION_ERROR);
         MeInteractor.instance().artists(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .subscribe(ACTION_NEXT, new Action1<Throwable>() {
-                @Override
-                public void call(final Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            });
+            .subscribe(ACTION_NEXT, ACTION_ERROR);
         MeInteractor.instance().songs(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .subscribe(ACTION_NEXT, new Action1<Throwable>() {
-                @Override
-                public void call(final Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            });
+            .subscribe(ACTION_NEXT, ACTION_ERROR);
         MeInteractor.instance().playlists(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .subscribe(ACTION_NEXT, new Action1<Throwable>() {
-                @Override
-                public void call(final Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            });
+            .subscribe(ACTION_NEXT, ACTION_ERROR);
     }
 
     public static void requestTrendings(@NonNull Context context) {

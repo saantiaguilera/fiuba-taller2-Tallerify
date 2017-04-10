@@ -11,6 +11,7 @@ import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.model.Rating;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
+import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
@@ -207,7 +208,7 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                     rating = response;
                     requestRender();
                 }
-            });
+            }, Interactors.ACTION_ERROR);
     }
 
     private void observeView(@NonNull MusicPlayerContract.View view) {

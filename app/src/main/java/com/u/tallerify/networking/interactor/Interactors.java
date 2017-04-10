@@ -1,5 +1,7 @@
 package com.u.tallerify.networking.interactor;
 
+import android.os.Handler;
+import android.os.Looper;
 import com.google.firebase.crash.FirebaseCrash;
 import rx.functions.Action1;
 
