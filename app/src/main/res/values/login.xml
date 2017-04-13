@@ -11,5 +11,6 @@
     <integer name="view_dialog_login_error_animation_duration">1000</integer>
     <integer name="view_dialog_login_error_visibility_duration">3000</integer>
     <dimen name="view_dialog_login_padding">12dp</dimen>
+    <dimen name="view_dialog_login_buttons_padding">24dp</dimen>
 
 </resources>

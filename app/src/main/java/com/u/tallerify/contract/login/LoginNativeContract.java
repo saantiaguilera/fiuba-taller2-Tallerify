@@ -6,16 +6,12 @@ import com.u.tallerify.contract.ContractView;
 import rx.Observable;
 
 /**
- * Created by saguilera on 3/12/17.
+ * Created by saguilera on 4/13/17.
  */
 
-public interface LoginContract {
+public interface LoginNativeContract {
 
     interface View extends ContractView {
-
-        @NonNull Observable<Void> observeTermsAndConditionsClicks();
-        @NonNull Observable<Void> observeFacebookLoginClicks();
-        void showError();
 
     }
 

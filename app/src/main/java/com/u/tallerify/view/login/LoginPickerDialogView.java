@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.login.LoginContract;
+import com.u.tallerify.contract.login.LoginPickerContract;
 import com.u.tallerify.utils.TextUtils;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -22,18 +22,19 @@ import rx.subjects.PublishSubject;
 /**
  * Created by saguilera on 3/12/17.
  */
-public class LoginDialogView extends LinearLayout implements LoginContract.View {
+public class LoginPickerDialogView extends LinearLayout implements LoginPickerContract.View {
 
     public static final float ALPHA_START = 1f;
     public static final float ALPHA_END = 0f;
 
     private @NonNull TextView readTCView;
     private @NonNull ImageView facebookButton;
+    private @NonNull ImageView nativeButton;
     @NonNull TextView errorView;
 
     @Nullable PublishSubject<Void> termsAndConditionsListener;
 
-    public LoginDialogView(final Context context) {
+    public LoginPickerDialogView(final Context context) {
         super(context);
 
         inflate(context, R.layout.view_dialog_login, this);
@@ -43,6 +44,7 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
 
         readTCView = (TextView) findViewById(R.id.view_dialog_login_terms_and_conditions);
         facebookButton = (ImageView) findViewById(R.id.view_dialog_login_facebook);
+        nativeButton = (ImageView) findViewById(R.id.view_dialog_login_native);
         errorView = (TextView) findViewById(R.id.view_dialog_login_error);
 
         readTCView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -58,12 +60,12 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
             }), TextView.BufferType.SPANNABLE);
     }
 
-    public LoginDialogView(final Context context, final AttributeSet attrs) {
+    public LoginPickerDialogView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         throw new IllegalStateException("This view doesnt support xml injection. Use is programatical only");
     }
 
-    public LoginDialogView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public LoginPickerDialogView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         throw new IllegalStateException("This view doesnt support xml injection. Use is programatical only");
     }
@@ -82,6 +84,12 @@ public class LoginDialogView extends LinearLayout implements LoginContract.View 
     @Override
     public Observable<Void> observeFacebookLoginClicks() {
         return RxView.clicks(facebookButton);
+    }
+
+    @NonNull
+    @Override
+    public Observable<Void> observeNativeLoginClicks() {
+        return RxView.clicks(nativeButton);
     }
 
     @Override

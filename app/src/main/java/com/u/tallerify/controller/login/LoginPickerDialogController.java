@@ -18,29 +18,33 @@ import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
-import com.u.tallerify.presenter.login.LoginDialogPresenter;
+import com.u.tallerify.presenter.login.LoginPickerDialogPresenter;
 import com.u.tallerify.utils.BussinessUtils;
-import com.u.tallerify.view.login.LoginDialogView;
+import com.u.tallerify.view.login.LoginPickerDialogView;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/12/17.
  */
-public class LoginDialogController extends AlertDialogController {
-
-    private @Nullable View content;
+public class LoginPickerDialogController extends AlertDialogController {
 
     @NonNull
     @Override
     protected Dialog onCreateDialog(@NonNull final Context context) {
-        Coordinators.bind(content(), new CoordinatorProvider() {
-            @Nullable
-            @Override
-            public Coordinator provideCoordinator(final View view) {
-                return new LoginDialogPresenter();
-            }
-        });
+        // If for any reasons we are opened and we get a credential, dismiss this
+        CredentialsInteractor.instance().observeToken()
+            .subscribeOn(Schedulers.computation())
+            .observeOn(Schedulers.computation())
+            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+                @Override
+                public void call(final ReactiveModel<AccessToken> rxModel) {
+                    if (!rxModel.hasError() && rxModel.model() != null) {
+                        dismissDialog();
+                    }
+                }
+            });
 
         // Interact with app tokens
         FacebookInteractor.instance().observeFacebookLogins()
@@ -75,8 +79,6 @@ public class LoginDialogController extends AlertDialogController {
                     if (accessToken != null) {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
                         BussinessUtils.requestTrendings(getApplicationContext());
-
-                        dismissDialog();
                     }
                 }
             }, Interactors.ACTION_ERROR);
@@ -85,11 +87,16 @@ public class LoginDialogController extends AlertDialogController {
     @NonNull
     @Override
     protected View content() {
-        if (content == null) {
-            content = new LoginDialogView(getActivity());
-        }
+        View view = new LoginPickerDialogView(getActivity());
+        Coordinators.bind(view, new CoordinatorProvider() {
+            @Nullable
+            @Override
+            public Coordinator provideCoordinator(final View view) {
+                return new LoginPickerDialogPresenter();
+            }
+        });
 
-        return content;
+        return view;
     }
 
     @NonNull
