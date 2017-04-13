@@ -65,7 +65,14 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
             .subscribe(new Action1<Void>() {
                 @Override
                 public void call(final Void aVoid) {
-                   onPlayAsync(playable);
+                    if (AccessTokenManager.instance().snapshot() == null) {
+                        showDialog(
+                            new LoginPickerDialogController(),
+                            LoginPickerDialogController.class.getName()
+                        );
+                    } else {
+                        onPlayAsync(playable);
+                    }
                 }
             });
 

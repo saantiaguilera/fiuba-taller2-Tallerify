@@ -34,7 +34,7 @@ public class ChatInputPresenter extends Presenter<ChatInputContract.View>
             .subscribe(new Action1<String>() {
                 @Override
                 public void call(final String message) {
-                    if (!message.isEmpty()) {
+                    if (!message.trim().isEmpty()) {
                         Message sendableObject = new Message.Builder()
                             .message(message)
                             .senderId(me.id())
