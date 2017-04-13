@@ -5,7 +5,8 @@ import android.view.View;
 import android.widget.Toast;
 import com.facebook.login.LoginResult;
 import com.u.tallerify.R;
-import com.u.tallerify.contract.login.LoginContract;
+import com.u.tallerify.contract.login.LoginPickerContract;
+import com.u.tallerify.controller.login.LoginNativeDialogController;
 import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
@@ -19,20 +20,20 @@ import rx.schedulers.Schedulers;
 /**
  * Created by saguilera on 3/12/17.
  */
-public class LoginDialogPresenter extends Presenter<LoginContract.View> implements LoginContract.Presenter {
+public class LoginPickerDialogPresenter extends Presenter<LoginPickerContract.View> implements LoginPickerContract.Presenter {
 
     @Override
-    protected void onAttach(@NonNull final LoginContract.View view) {
+    protected void onAttach(@NonNull final LoginPickerContract.View view) {
         observeView(view);
         observeInteractors(view);
     }
 
     @Override
-    protected void onRender(@NonNull final LoginContract.View view) {}
+    protected void onRender(@NonNull final LoginPickerContract.View view) {}
 
-    private void observeView(final LoginContract.View view) {
+    private void observeView(final LoginPickerContract.View view) {
         view.observeFacebookLoginClicks()
-            .observeOn(Schedulers.newThread())
+            .observeOn(Schedulers.computation())
             .subscribeOn(AndroidSchedulers.mainThread())
             .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
@@ -43,9 +44,20 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
                 }
             });
 
+        view.observeNativeLoginClicks()
+            .observeOn(Schedulers.computation())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .compose(this.<Void>bindToView((View) view))
+            .subscribe(new Action1<Void>() {
+                @Override
+                public void call(final Void aVoid) {
+                    showDialog(new LoginNativeDialogController(), LoginNativeDialogController.class.getName());
+                }
+            });
+
         view.observeTermsAndConditionsClicks()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.newThread())
+            .subscribeOn(Schedulers.computation())
             .compose(this.<Void>bindToView((View) view))
             .subscribe(new Action1<Void>() {
                 @Override
@@ -57,7 +69,7 @@ public class LoginDialogPresenter extends Presenter<LoginContract.View> implemen
             });
     }
 
-    private void observeInteractors(final LoginContract.View view) {
+    private void observeInteractors(final LoginPickerContract.View view) {
         FacebookInteractor.instance().observeFacebookLogins()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.computation())

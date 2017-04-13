@@ -3,7 +3,7 @@ package com.u.tallerify.presenter.base.cards;
 import android.support.annotation.NonNull;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.base.cards.PlayableCardContract;
-import com.u.tallerify.controller.login.LoginDialogController;
+import com.u.tallerify.controller.login.LoginPickerDialogController;
 import com.u.tallerify.controller.playlist.AddToPlaylistController;
 import com.u.tallerify.model.entity.Artist;
 import com.u.tallerify.model.entity.Playable;
@@ -84,8 +84,8 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
                         );
                     } else {
                         showDialog(
-                            new LoginDialogController(),
-                            LoginDialogController.class.getName()
+                            new LoginPickerDialogController(),
+                            LoginPickerDialogController.class.getName()
                         );
                     }
                 }

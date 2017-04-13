@@ -8,11 +8,35 @@
         android:layout_height="@dimen/view_dialog_login_button_height"
 
         android:layout_marginBottom="@dimen/dialog_default_separator"
-        android:padding="@dimen/view_dialog_login_padding"
 
-        android:scaleType="centerCrop"
+        android:background="@color/com_facebook_blue"
+
+        android:adjustViewBounds="true"
 
         android:src="@drawable/ic_facebook" />
+
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/black"
+        android:alpha="0.4"
+        android:paddingLeft="@dimen/dialog_default_separator"
+        android:paddingRight="@dimen/dialog_default_separator" />
+
+    <ImageView
+        android:id="@+id/view_dialog_login_native"
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dialog_login_button_height"
+
+        android:layout_marginBottom="@dimen/dialog_default_separator"
+        android:layout_marginTop="@dimen/dialog_default_separator"
+
+        android:background="@color/colorPrimary"
+
+        android:adjustViewBounds="true"
+
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/view_dialog_login_error"
