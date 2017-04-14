@@ -1,5 +1,6 @@
 package com.u.tallerify.presenter.profile;
 
+import android.support.annotation.Keep;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -76,6 +77,7 @@ public class ChatListPresenter extends Presenter<ChatListContract.View>
         view.setAdapter(adapter);
     }
 
+    @Keep // La wacha se saca el public
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
         @LayoutRes int resId;
