@@ -36,7 +36,7 @@
 
         android:adjustViewBounds="true"
 
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/view_dialog_login_error"
