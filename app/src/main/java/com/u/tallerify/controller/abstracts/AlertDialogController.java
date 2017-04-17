@@ -12,11 +12,17 @@ import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.controller.DialogController;
 import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
 import com.u.tallerify.view.abstracts.BaseDialogView;
+import rx.Observable;
+import rx.subjects.PublishSubject;
+import rx.subjects.Subject;
 
 /**
  * Created by saguilera on 3/12/17.
  */
 public abstract class AlertDialogController extends DialogController {
+
+    @NonNull
+    final PublishSubject<Void> imageClicksSubject = PublishSubject.create();
 
     @NonNull
     @Override
@@ -27,10 +33,13 @@ public abstract class AlertDialogController extends DialogController {
             @Nullable
             @Override
             public Coordinator provideCoordinator(final View view) {
+                observeImageClicks(imageClicksSubject); // When binding presenter provide observable
                 return new BaseDialogPresenter.Builder()
                     .severity(severity())
                     .title(title())
                     .content(content())
+                    .imageUrl(imageUrl())
+                    .imageClicksSubject(imageClicksSubject)
                     .build();
             }
         });
@@ -53,5 +62,9 @@ public abstract class AlertDialogController extends DialogController {
     protected abstract @NonNull View content();
     protected abstract @NonNull String title();
     protected abstract @NonNull BaseDialogPresenter.Severity severity();
+    protected @Nullable String imageUrl() {
+        return null;
+    }
+    protected void observeImageClicks(@NonNull Observable<Void> observable) {}
 
 }
