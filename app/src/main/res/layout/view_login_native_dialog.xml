@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:scrollbars="none"
+
+    android:fillViewport="true"
+
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+
+        android:animateLayoutChanges="true"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/view_login_native_dialog_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Usuario..."
+
+            android:textSize="14sp"
+            android:textColor="@color/black"
+
+            android:inputType="textNoSuggestions"
+
+            android:layout_marginBottom="8dp"
+
+            android:maxLines="1"/>
+
+        <EditText
+            android:id="@+id/view_login_native_dialog_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="Contrase;a..."
+
+            android:textSize="14sp"
+            android:textColor="@color/black"
+
+            android:inputType="textPassword"
+
+            android:layout_marginBottom="8dp"
+
+            android:maxLines="1"/>
+
+        <LinearLayout
+            android:id="@+id/view_login_native_dialog_signup_extras_container"
+
+            android:orientation="vertical"
+
+            android:visibility="gone"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/view_login_native_dialog_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="Nombre..."
+
+                android:textSize="14sp"
+                android:textColor="@color/black"
+
+                android:inputType="text"
+
+                android:layout_marginBottom="8dp"
+
+                android:maxLines="1"/>
+
+            <EditText
+                android:id="@+id/view_login_native_dialog_surname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="Apellido..."
+
+                android:textSize="14sp"
+                android:textColor="@color/black"
+
+                android:inputType="text"
+
+                android:layout_marginBottom="8dp"
+
+                android:maxLines="1"/>
+
+            <EditText
+                android:id="@+id/view_login_native_dialog_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="Email..."
+
+                android:textSize="14sp"
+                android:textColor="@color/black"
+
+                android:inputType="text"
+
+                android:layout_marginBottom="8dp"
+
+                android:maxLines="1"/>
+
+            <DatePicker
+                android:id="@+id/view_login_native_dialog_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="Birthday..."
+
+                android:textSize="14sp"
+                android:textColor="@color/black"
+
+                android:layout_marginBottom="8dp"
+
+                android:maxLines="1"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+
+            android:alpha="0.4"/>
+
+        <ImageView
+            android:id="@+id/view_login_native_dialog_action_button"
+
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_dialog_login_button_height"
+
+            android:layout_marginBottom="@dimen/dialog_default_separator"
+            android:layout_marginTop="@dimen/dialog_default_separator"
+
+            android:background="@color/colorPrimary"
+
+            android:adjustViewBounds="true"
+
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/view_login_native_dialog_signup_button"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textColor="@color/black"
+            android:textSize="12sp"
+
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+
+</ScrollView>
