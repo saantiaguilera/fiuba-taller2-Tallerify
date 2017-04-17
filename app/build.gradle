@@ -57,6 +57,7 @@ dependencies {
     compile rx.lifecycle
     compile rx.location
     compile rx.permissions
+    compile rx.paparazzo
 
     compile structure.conductor
     compile structure.coordinator
