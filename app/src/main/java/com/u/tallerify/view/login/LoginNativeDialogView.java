@@ -39,6 +39,7 @@ public class LoginNativeDialogView extends ScrollView
 
     @NonNull PublishSubject<Bundle> signupSubject = PublishSubject.create();
     @NonNull PublishSubject<Bundle> loginSubject = PublishSubject.create();
+    @NonNull PublishSubject<Boolean> signupVisibilitySubject = PublishSubject.create();
 
     public LoginNativeDialogView(final Context context) {
         super(context);
@@ -82,7 +83,8 @@ public class LoginNativeDialogView extends ScrollView
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(year, month, day);
                     Date date = calendar.getTime();
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd"); // TODO change it if needed
+
+                    bundle.putSerializable(LoginNativeContract.KEY_BIRTHDAY, date);
 
                     signupSubject.onNext(bundle);
                 } else {
@@ -102,6 +104,8 @@ public class LoginNativeDialogView extends ScrollView
                     signupVisibilityActionField.setText("Aun no tienes cuenta ? Create una !");
                     signupExtrasContainer.setVisibility(View.VISIBLE);
                 }
+
+                signupVisibilitySubject.onNext(isSignUp());
             }
         });
     }
@@ -137,4 +141,9 @@ public class LoginNativeDialogView extends ScrollView
         return signupSubject;
     }
 
+    @NonNull
+    @Override
+    public Observable<Boolean> observeSignUpVisibilityChanges() {
+        return signupVisibilitySubject;
+    }
 }

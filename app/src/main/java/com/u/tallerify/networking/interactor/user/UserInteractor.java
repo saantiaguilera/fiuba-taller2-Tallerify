@@ -2,11 +2,19 @@ package com.u.tallerify.networking.interactor.user;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.networking.services.user.UserService;
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -31,10 +39,33 @@ public final class UserInteractor {
     }
 
     public @NonNull Observable<User> create(@NonNull Context context, @NonNull User user, @NonNull String password) {
+        final String MULTIPART_FORM_DATA = "multipart/form-data";
+
+        Map<String, RequestBody> params = new HashMap<>();
+        params.put("userName", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), user.name()));
+        params.put("password", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), password));
+        params.put("firstName", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), user.firstName()));
+        params.put("lastName", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), user.lastName()));
+        params.put("country", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), user.country()));
+        params.put("email", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), user.email()));
+
+        DateFormat format = SimpleDateFormat.getDateInstance(); // TODO if theres a custom date format, supply here
+        String date = format.format(user.birthday());
+        params.put("birthday", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), date));
+
+        for (int pos = 0; pos < user.pictures().size(); pos++) {
+            if (!TextUtils.isEmpty(user.pictures().get(pos))) {
+                RequestBody requestBody = RequestBody.create(
+                    MediaType.parse(MULTIPART_FORM_DATA), new File(user.pictures().get(pos)));
+                String key = String.format("%1$s\"; filename=\"%1$s", "photo_" + String.valueOf(pos + 1));
+                params.put(key, requestBody);
+            }
+        }
+
         return RestClient.with(context)
             .noAuth()
             .create(UserService.class)
-            .create(user, password);
+            .create(params);
     }
 
     public @NonNull Observable<List<Song>> activity(@NonNull Context context, long userId) {

@@ -23,6 +23,7 @@ public interface LoginNativeContract {
 
         @NonNull Observable<Bundle> observeLoginClicks();
         @NonNull Observable<Bundle> observeSignUpClicks();
+        @NonNull Observable<Boolean> observeSignUpVisibilityChanges();
 
     }
 

@@ -202,8 +202,6 @@ public class User extends Entity implements Serializable {
             buildable &= name != null;
             buildable &= email != null;
             buildable &= birthday != null;
-            buildable &= images != null;
-            buildable &= contacts != null;
             buildable &= firstName != null;
             buildable &= lastName != null;
             buildable &= country != null;
