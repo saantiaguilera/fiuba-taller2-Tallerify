@@ -18,7 +18,6 @@ public class ProfileUserInfoPresenter extends Presenter<ProfileUserInfoContract.
         implements ProfileUserInfoContract.Presenter {
 
     @Nullable User me;
-    @Nullable String location;
 
     public ProfileUserInfoPresenter() {
         MeInteractor.instance().observeUser()
@@ -37,20 +36,6 @@ public class ProfileUserInfoPresenter extends Presenter<ProfileUserInfoContract.
                     }
                 }
             });
-        LocationInteractor.instance().observeLocations()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
-            .compose(this.<String>bindToLifecycle())
-            .subscribe(new Action1<String>() {
-                @Override
-                public void call(final String s) {
-                    location = s;
-
-                    if (isAttached()) {
-                        requestRender();
-                    }
-                }
-            });
     }
 
     @Override
@@ -58,10 +43,7 @@ public class ProfileUserInfoPresenter extends Presenter<ProfileUserInfoContract.
         if (me != null) {
             view.setUserName(me.name());
             view.setUserImage(me.pictures().get(0));
-        }
-
-        if (location != null) {
-            view.setUserLastLocation(location);
+            view.setUserLastLocation(me.country());
         }
     }
 
