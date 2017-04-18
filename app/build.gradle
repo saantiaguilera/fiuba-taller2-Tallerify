@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.firebase-crash'
 apply from: 'jacoco.gradle'
+apply from: 'utils.gradle'
 
 android {
     compileSdkVersion project.sdkVersion.toInteger()

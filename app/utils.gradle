@@ -1,0 +1,13 @@
+/**
+ * Task for printing all the dependencies with their respective sizes
+ */
+task (dependenciesSize) << {
+    def size = 0;
+    configurations._releaseApk.collect { it.length() / (1024 * 1024) }.each { size += it }
+    println "Total dependencies size: ${Math.round(size * 100) / 100} Mb"
+
+    configurations
+        ._releaseApk
+        .sort { -it.length() }
+        .each { println "${it.name} : ${Math.round(it.length() / (1024) * 100) / 100} kb" }
+}
