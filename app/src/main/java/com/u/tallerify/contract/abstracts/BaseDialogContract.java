@@ -1,6 +1,7 @@
 package com.u.tallerify.contract.abstracts;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.ContractPresenter;
@@ -24,6 +25,8 @@ public interface BaseDialogContract {
     }
 
     interface Presenter extends ContractPresenter {
+
+        void onImageChange(@NonNull String url);
 
     }
 

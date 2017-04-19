@@ -9,6 +9,7 @@ import android.view.View;
 import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
+import com.u.tallerify.contract.abstracts.BaseDialogContract;
 import com.u.tallerify.controller.DialogController;
 import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
 import com.u.tallerify.view.abstracts.BaseDialogView;
@@ -20,6 +21,8 @@ import rx.subjects.Subject;
  * Created by saguilera on 3/12/17.
  */
 public abstract class AlertDialogController extends DialogController {
+
+    BaseDialogContract.Presenter presenter;
 
     @NonNull
     final PublishSubject<Void> imageClicksSubject = PublishSubject.create();
@@ -34,13 +37,13 @@ public abstract class AlertDialogController extends DialogController {
             @Override
             public Coordinator provideCoordinator(final View view) {
                 observeImageClicks(imageClicksSubject); // When binding presenter provide observable
-                return new BaseDialogPresenter.Builder()
+                return (Coordinator) (presenter = new BaseDialogPresenter.Builder()
                     .severity(severity())
                     .title(title())
                     .content(content())
                     .imageUrl(imageUrl())
                     .imageClicksSubject(imageClicksSubject)
-                    .build();
+                    .build());
             }
         });
 
@@ -48,6 +51,12 @@ public abstract class AlertDialogController extends DialogController {
             .setView(view)
             .setCancelable(isCancellable())
             .create();
+    }
+
+    protected void onImageChange() {
+        if (presenter != null) {
+            presenter.onImageChange(imageUrl());
+        }
     }
 
     @Override

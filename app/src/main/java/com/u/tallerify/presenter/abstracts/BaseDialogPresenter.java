@@ -67,6 +67,12 @@ public class BaseDialogPresenter extends Presenter<BaseDialogContract.View> impl
         }
     }
 
+    @Override
+    public void onImageChange(@NonNull final String url) {
+        imageUrl = url;
+        requestRender();
+    }
+
     public enum Severity {
         ERROR,
         WARNING,

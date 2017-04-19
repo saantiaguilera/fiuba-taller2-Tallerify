@@ -12,11 +12,15 @@ import com.u.tallerify.networking.interactor.location.LocationInteractor;
 import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import com.u.tallerify.presenter.Presenter;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by saguilera on 4/13/17.
@@ -27,6 +31,10 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
     @Nullable String country;
 
     @Nullable Bundle params;
+
+    @Nullable String imageUrl;
+
+    @NonNull PublishSubject<Boolean> signupVisibilityChangesSubject = PublishSubject.create();
 
     @Override
     protected void onAttach(@NonNull final LoginNativeContract.View view) {
@@ -39,18 +47,16 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
             .filter(new Func1<Boolean, Boolean>() {
                 @Override
                 public Boolean call(final Boolean signupVisible) {
-                    return signupVisible;
+                    signupVisibilityChangesSubject.onNext(signupVisible);
+                    return signupVisible && country == null;
                 }
             })
-            .take(1)
             .flatMap(new Func1<Boolean, Observable<String>>() {
                 @Override
                 public Observable<String> call(final Boolean aBoolean) {
                     return LocationInteractor.instance().observeLocations();
                 }
             })
-            .compose(this.<String>bindToLifecycle())
-            .take(1)
             .subscribe(new Action1<String>() {
                 @Override
                 public void call(final String s) {
@@ -89,7 +95,7 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
             .filter(new Func1<Bundle, Boolean>() {
                 @Override
                 public Boolean call(final Bundle bundle) {
-                    return params == null;
+                    return params == null && imageUrl != null;
                 }
             })
             .flatMap(new Func1<Bundle, Observable<User>>() {
@@ -106,13 +112,13 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
                                 .email(bundle.getString(LoginNativeContract.KEY_EMAIL))
                                 .birthday((Date) bundle.get(LoginNativeContract.KEY_BIRTHDAY))
                                 .country(country)
+                                .pictures(Collections.singletonList(imageUrl))
                                 .id(0)
                                 .build(),
                             bundle.getString(LoginNativeContract.KEY_PASSWORD)
                         );
                 }
             })
-            .compose(this.<User>bindToLifecycle())
             .doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
@@ -156,5 +162,16 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
 
     @Override
     protected void onRender(@NonNull final LoginNativeContract.View view) {}
+
+    @Override
+    public void setImage(@NonNull final String imageUri) {
+        this.imageUrl = imageUri;
+    }
+
+    @NonNull
+    @Override
+    public Observable<Boolean> observeSignupVisibilityChanges() {
+        return signupVisibilityChangesSubject;
+    }
 
 }

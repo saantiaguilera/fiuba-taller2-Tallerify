@@ -12,6 +12,7 @@ import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.memory.PoolConfig;
 import com.facebook.imagepipeline.memory.PoolFactory;
+import com.miguelbcr.ui.rx_paparazzo.RxPaparazzo;
 import com.squareup.leakcanary.LeakCanary;
 import com.u.tallerify.utils.StethoUtils;
 import okhttp3.Dispatcher;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements Application.Activity
         registerActivityLifecycleCallbacks(this);
         initializeFresco();
         StethoUtils.initialize(this);
+        RxPaparazzo.register(this);
     }
 
     private void initializeFresco() {

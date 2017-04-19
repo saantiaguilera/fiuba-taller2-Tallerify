@@ -224,7 +224,7 @@ public class LoginNativeDialogView extends LinearLayout
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, monthOfYear);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            birthdayField.setText(new SimpleDateFormat("yyyy/mm/dd").format(calendar.getTime()));
+            birthdayField.setText(new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime()));
         }
 
     };
