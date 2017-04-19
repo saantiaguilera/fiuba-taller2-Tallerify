@@ -17,6 +17,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.abstracts.BaseDialogContract;
 import com.u.tallerify.utils.FrescoImageController;
+import java.io.File;
 import rx.Observable;
 
 /**
@@ -76,9 +77,23 @@ public class BaseDialogView extends LinearLayout implements BaseDialogContract.V
 
     @Override
     public void setSeverityImageUrl(@NonNull final String url) {
-        FrescoImageController.create()
-            .load(url)
-            .into(severityImage);
+        File asLocalFile = null;
+        try {
+            asLocalFile = new File(url);
+            if (!asLocalFile.exists()) {
+                asLocalFile = null;
+            }
+        } catch (Exception e) { /* silent */ }
+
+        if (asLocalFile == null) {
+            FrescoImageController.create()
+                .load(url)
+                .into(severityImage);
+        } else {
+            FrescoImageController.create()
+                .load(asLocalFile)
+                .into(severityImage);
+        }
     }
 
     @NonNull

@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
@@ -319,6 +320,11 @@ public final class InputTextView extends LinearLayout {
         input.setMaxLines(this.maxLines);
     }
 
+    @Override
+    public void setFocusableInTouchMode(final boolean focusableInTouchMode) {
+        input.setFocusableInTouchMode(focusableInTouchMode);
+    }
+
     /**
      * Sets the maximum number of characters.
      *
@@ -345,6 +351,11 @@ public final class InputTextView extends LinearLayout {
     public void setCharactersCountVisible(final boolean isVisible) {
         this.charactersCountVisible = isVisible;
         container.setCounterEnabled(charactersCountVisible);
+    }
+
+    @Override
+    public boolean requestFocus(final int direction, final Rect previouslyFocusedRect) {
+        return input.requestFocus();
     }
 
     /**

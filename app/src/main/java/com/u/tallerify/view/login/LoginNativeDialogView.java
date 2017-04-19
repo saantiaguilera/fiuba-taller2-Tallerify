@@ -132,15 +132,19 @@ public class LoginNativeDialogView extends LinearLayout
                 swapActionVisibilitySubject.onNext(isSignUp());
             }
         });
+
+        InputMethodManager imm = (InputMethodManager) getContext().getApplicationContext()
+            .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(userNameField, InputMethodManager.SHOW_IMPLICIT);
     }
 
     void hideSignUp() {
-        swapActionVisibilityField.setText("Aun no tienes cuenta ? Create una !");
+        swapActionVisibilityField.setText(getResources().getString(R.string.view_dialog_login_create_account));
         signupExtrasContainer.setVisibility(View.GONE);
     }
 
     void showSignUp() {
-        swapActionVisibilityField.setText("Ya tengo cuenta!");
+        swapActionVisibilityField.setText(getResources().getString(R.string.view_dialog_login_already_have_account));
         signupExtrasContainer.setVisibility(View.VISIBLE);
     }
 
@@ -154,40 +158,42 @@ public class LoginNativeDialogView extends LinearLayout
 
     void markErrors() {
         if (userNameField.getEditText().getText().toString().isEmpty()) {
-            userNameField.setError("Este campo es obligatorio!");
+            userNameField.setError(getResources().getString(R.string.view_dialog_login_error_required));
         } else {
             if (!userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_]+", "").isEmpty()) {
-                userNameField.setError("Este campo contiene caracteres ilegales. Solo se pueden usar letras y _");
+                userNameField.setError(getResources().getString(R.string.view_dialog_login_error_illegal_username));
             }
         }
 
         if (passwordField.getEditText().getText().toString().isEmpty()) {
-            passwordField.setError("Este campo es obligatorio!");
+            passwordField.setError(getResources().getString(R.string.view_dialog_login_error_required));
+        } else if (passwordField.getEditText().getText().toString().length() < 8) {
+            passwordField.setError(getResources().getString(R.string.view_dialog_login_error_short_password));
         }
 
         if (isSignUp()) {
             if (nameField.getEditText().getText().toString().isEmpty()) {
-                nameField.setError("Este campo es obligatorio!");
+                nameField.setError(getResources().getString(R.string.view_dialog_login_error_required));
             }
 
             if (surnameField.getEditText().getText().toString().isEmpty()) {
-                surnameField.setError("Este campo es obligatorio!");
+                surnameField.setError(getResources().getString(R.string.view_dialog_login_error_required));
             }
 
             if (emailField.getEditText().getText().toString().isEmpty()) {
-                emailField.setError("Este campo es obligatorio!");
+                emailField.setError(getResources().getString(R.string.view_dialog_login_error_required));
             } else if (!emailField.getEditText().getText().toString().contains("@")) {
-                emailField.setError("Este campo no es un email valido");
+                emailField.setError(getResources().getString(R.string.view_dialog_login_error_invalid_email));
             }
 
             if (birthdayField.getEditText().getText().toString().isEmpty()) {
-                birthdayField.setError("Este campo es obligatorio!");
+                birthdayField.setError(getResources().getString(R.string.view_dialog_login_error_required));
             } else if (calendar.after(Calendar.getInstance())) {
-                birthdayField.setError("No es una fecha de nacimiento valida");
+                birthdayField.setError(getResources().getString(R.string.view_dialog_login_error_invalid_birthdate));
             }
 
             if (countryField.getEditText().getText().toString().isEmpty()) {
-                countryField.setError("Este campo es obligatorio!");
+                countryField.setError(getResources().getString(R.string.view_dialog_login_error_required));
             }
         }
     }
@@ -197,6 +203,7 @@ public class LoginNativeDialogView extends LinearLayout
         can &= !userNameField.getEditText().getText().toString().isEmpty();
         can &= userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_]+", "").isEmpty();
         can &= !passwordField.getEditText().getText().toString().isEmpty();
+        can &= passwordField.getEditText().getText().toString().length() >= 8;
 
         if (isSignUp()) {
             can &= !nameField.getEditText().getText().toString().isEmpty();
