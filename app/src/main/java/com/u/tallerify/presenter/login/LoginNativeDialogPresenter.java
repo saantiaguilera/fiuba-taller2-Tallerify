@@ -61,6 +61,7 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
                 @Override
                 public void call(final String s) {
                     country = s;
+                    requestRender();
                 }
             });
 
@@ -111,7 +112,7 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
                                 .lastName(bundle.getString(LoginNativeContract.KEY_LASTNAME))
                                 .email(bundle.getString(LoginNativeContract.KEY_EMAIL))
                                 .birthday((Date) bundle.get(LoginNativeContract.KEY_BIRTHDAY))
-                                .country(country)
+                                .country(bundle.getString(LoginNativeContract.KEY_COUNTRY))
                                 .pictures(Collections.singletonList(imageUrl))
                                 .id(0)
                                 .build(),
@@ -161,7 +162,11 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
     }
 
     @Override
-    protected void onRender(@NonNull final LoginNativeContract.View view) {}
+    protected void onRender(@NonNull final LoginNativeContract.View view) {
+        if (country != null) {
+            view.suggestCountry(country);
+        }
+    }
 
     @Override
     public void setImage(@NonNull final String imageUri) {
