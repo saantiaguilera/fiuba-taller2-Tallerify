@@ -125,7 +125,13 @@
 
 # RxPaparazzo
 -dontwarn rx.internal.util.**
-
+-dontnote okhttp3.internal.platform.AndroidPlatform
+-dontnote rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef
+-keepnames class com.yalantis.ucrop.callback.CropBoundsChangeListener
+-keepnames class com.yalantis.ucrop.callback.OverlayViewChangeListener
+-keepnames class com.yalantis.ucrop.view.TransformImageView$TransformImageListener
+-keepnames class com.yalantis.ucrop.model.AspectRatio
+-keepnames class com.yalantis.ucrop.view.widget.HorizontalProgressWheelView$ScrollingListener
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
     long producerIndex;
     long consumerIndex;
