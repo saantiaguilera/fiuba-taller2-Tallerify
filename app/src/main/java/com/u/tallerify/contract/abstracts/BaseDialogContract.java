@@ -6,6 +6,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
+import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
 import rx.Observable;
 
 /**
@@ -27,6 +28,9 @@ public interface BaseDialogContract {
     interface Presenter extends ContractPresenter {
 
         void onImageChange(@NonNull String url);
+        void onContentChange(@NonNull android.view.View view);
+        void onSeverityChange(@NonNull BaseDialogPresenter.Severity severity);
+        void onTitleChange(@NonNull String title);
 
     }
 

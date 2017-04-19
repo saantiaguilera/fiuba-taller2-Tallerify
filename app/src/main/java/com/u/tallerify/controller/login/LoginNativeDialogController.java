@@ -68,6 +68,7 @@ public class LoginNativeDialogController extends AlertDialogController {
 
                 if (imageUri != null) {
                     onImageChange();
+                    onTitleChange();
                 }
 
                 presenter.observeSignupVisibilityChanges()
@@ -79,6 +80,7 @@ public class LoginNativeDialogController extends AlertDialogController {
                         public void call(final Boolean signupVisible) {
                             LoginNativeDialogController.this.signupVisible = signupVisible;
                             onImageChange();
+                            onTitleChange();
                         }
                     });
 
@@ -92,6 +94,12 @@ public class LoginNativeDialogController extends AlertDialogController {
     @NonNull
     @Override
     protected String title() { // TOOD remove constant
+        if (signupVisible) {
+            if (imageUri != null) {
+                return "Registrate en " + getResources().getString(R.string.app_name);
+            }
+            return "Agrega una imagen para tu perfil!";
+        }
         return "Accede mediante " + getResources().getString(R.string.app_name);
     }
 
@@ -139,6 +147,7 @@ public class LoginNativeDialogController extends AlertDialogController {
                                         presenter.setImage(imageUri);
                                     }
                                     onImageChange();
+                                    onTitleChange();
                                 }
                             }
                         });

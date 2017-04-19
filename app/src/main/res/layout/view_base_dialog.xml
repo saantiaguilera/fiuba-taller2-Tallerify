@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:fresco="http://schemas.android.com/apk/res-auto">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/view_dialog_severity_image"
 
         android:layout_width="@dimen/dialog_severity_image_layout_size"
         android:layout_height="@dimen/dialog_severity_image_layout_size"
+
+        fresco:roundAsCircle="true"
 
         android:layout_marginTop="@dimen/dialog_default_separator"
         android:layout_marginBottom="@dimen/dialog_default_separator"/>
