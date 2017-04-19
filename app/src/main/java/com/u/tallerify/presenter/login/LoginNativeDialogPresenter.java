@@ -60,8 +60,10 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
             .subscribe(new Action1<String>() {
                 @Override
                 public void call(final String s) {
-                    country = s;
-                    requestRender();
+                    if (s != null) {
+                        country = s.substring(s.lastIndexOf(","));
+                        requestRender();
+                    }
                 }
             });
 
