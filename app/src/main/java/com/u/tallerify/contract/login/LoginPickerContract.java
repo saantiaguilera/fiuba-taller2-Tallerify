@@ -9,12 +9,13 @@ import rx.Observable;
  * Created by saguilera on 3/12/17.
  */
 
-public interface LoginContract {
+public interface LoginPickerContract {
 
     interface View extends ContractView {
 
         @NonNull Observable<Void> observeTermsAndConditionsClicks();
         @NonNull Observable<Void> observeFacebookLoginClicks();
+        @NonNull Observable<Void> observeNativeLoginClicks();
         void showError();
 
     }

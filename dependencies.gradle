@@ -8,6 +8,7 @@ ext {
     rxBindingsVersion = '1.0.0'
     rxLocationVersion = '0.10'
     rxPermissionsVersion = '0.9.3'
+    rxPaparazzoVersion = '0.4.7'
 
     retrofitVersion = '2.1.0'
 
@@ -57,7 +58,8 @@ ext {
         bindings : "com.jakewharton.rxbinding:rxbinding:$rxBindingsVersion",
         lifecycle : "com.bluelinelabs:conductor-rxlifecycle:$conductorVersion",
         location : "pl.charmas.android:android-reactive-location:$rxLocationVersion",
-        permissions : "com.tbruyelle.rxpermissions:rxpermissions:$rxPermissionsVersion"
+        permissions : "com.tbruyelle.rxpermissions:rxpermissions:$rxPermissionsVersion",
+        paparazzo : "com.github.miguelbcr:RxPaparazzo:$rxPaparazzoVersion"
     ]
 
     structure = [
