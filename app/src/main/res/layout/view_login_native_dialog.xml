@@ -103,6 +103,19 @@
                     android:layout_marginBottom="8dp" />
 
                 <com.u.tallerify.view.base.widget.InputTextView
+                    android:id="@+id/view_login_native_dialog_country"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+
+                    app:inputTextView_Hint="Pais..."
+                    app:inputTextView_MaxLines="1"
+
+                    android:layout_marginBottom="8dp" />
+
+                <com.u.tallerify.view.base.widget.InputTextView
                     android:id="@+id/view_login_native_dialog_birthday"
 
                     android:layout_width="match_parent"
