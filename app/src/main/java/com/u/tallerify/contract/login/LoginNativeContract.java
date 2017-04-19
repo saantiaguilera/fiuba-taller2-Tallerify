@@ -28,6 +28,10 @@ public interface LoginNativeContract {
     }
 
     interface Presenter extends ContractPresenter {
+
+        void setImage(@NonNull String imageUri);
+        @NonNull Observable<Boolean> observeSignupVisibilityChanges();
+
     }
 
 }
