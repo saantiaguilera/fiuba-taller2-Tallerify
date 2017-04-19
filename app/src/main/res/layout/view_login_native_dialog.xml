@@ -1,169 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    android:scrollbars="none"
-
-    android:fillViewport="true"
-
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-
-        android:animateLayoutChanges="true"
-
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
 
-        <EditText
-            android:id="@+id/view_login_native_dialog_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="Usuario..."
-
-            android:textSize="14sp"
-            android:textColor="@color/black"
-
-            android:inputType="textNoSuggestions"
-
-            android:layout_marginBottom="8dp"
-            android:background="@color/transparent"
-
-            android:maxLines="1"/>
-
-        <EditText
-            android:id="@+id/view_login_native_dialog_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="Contrase;a..."
-
-            android:textSize="14sp"
-            android:textColor="@color/black"
-
-            android:inputType="textPassword"
-
-            android:layout_marginBottom="8dp"
-            android:background="@color/transparent"
-
-            android:maxLines="1"/>
+        android:scrollbars="none" >
 
         <LinearLayout
-            android:id="@+id/view_login_native_dialog_signup_extras_container"
-
             android:orientation="vertical"
-
-            android:visibility="gone"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/view_login_native_dialog_name"
+            <com.u.tallerify.view.base.widget.InputTextView
+                android:id="@+id/view_login_native_dialog_username"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:hint="Nombre..."
-
-                android:textSize="14sp"
                 android:textColor="@color/black"
 
-                android:inputType="text"
+                app:inputTextView_InputType="textNoSuggestions"
+                app:inputTextView_Hint="Usuario..."
 
-                android:layout_marginBottom="8dp"
-                android:background="@color/transparent"
+                app:inputTextView_MaxLines="1"
 
-                android:maxLines="1"/>
+                android:layout_marginBottom="8dp" />
 
-            <EditText
-                android:id="@+id/view_login_native_dialog_surname"
+            <com.u.tallerify.view.base.widget.InputTextView
+                android:id="@+id/view_login_native_dialog_password"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:hint="Apellido..."
-
-                android:textSize="14sp"
                 android:textColor="@color/black"
 
-                android:inputType="text"
+                app:inputTextView_InputType="textPassword"
+                app:inputTextView_Hint="Contrase;a..."
+                app:inputTextView_PasswordToggleEnabled="true"
 
-                android:layout_marginBottom="8dp"
-                android:background="@color/transparent"
+                app:inputTextView_MaxLines="1"
 
-                android:maxLines="1"/>
+                android:layout_marginBottom="8dp" />
 
-            <EditText
-                android:id="@+id/view_login_native_dialog_mail"
+            <LinearLayout
+                android:id="@+id/view_login_native_dialog_signup_extras_container"
+
+                android:orientation="vertical"
+
+                android:visibility="gone"
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content">
 
-                android:hint="Email..."
+                <com.u.tallerify.view.base.widget.InputTextView
+                    android:id="@+id/view_login_native_dialog_name"
 
-                android:textSize="14sp"
-                android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-                android:inputType="text"
+                    android:textColor="@color/black"
 
-                android:layout_marginBottom="8dp"
-                android:background="@color/transparent"
+                    app:inputTextView_InputType="text"
+                    app:inputTextView_Hint="Nombre..."
 
-                android:maxLines="1"/>
+                    app:inputTextView_MaxLines="1"
 
-            <DatePicker
-                android:id="@+id/view_login_native_dialog_birthday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp" />
 
-                android:hint="Birthday..."
+                <com.u.tallerify.view.base.widget.InputTextView
+                    android:id="@+id/view_login_native_dialog_surname"
 
-                android:textSize="14sp"
-                android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-                android:layout_marginBottom="8dp"
-                android:background="@color/transparent"
+                    android:textColor="@color/black"
 
-                android:maxLines="1"/>
+                    app:inputTextView_InputType="text"
+                    app:inputTextView_Hint="Apellido..."
+
+                    app:inputTextView_MaxLines="1"
+
+                    android:layout_marginBottom="8dp" />
+
+                <com.u.tallerify.view.base.widget.InputTextView
+                    android:id="@+id/view_login_native_dialog_mail"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+
+                    app:inputTextView_InputType="textEmailAddress"
+                    app:inputTextView_Hint="Email..."
+
+                    app:inputTextView_MaxLines="1"
+
+                    android:layout_marginBottom="8dp" />
+
+                <com.u.tallerify.view.base.widget.InputTextView
+                    android:id="@+id/view_login_native_dialog_birthday"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+
+                    app:inputTextView_Hint="Birthday..."
+                    app:inputTextView_MaxLines="1"
+
+                    android:layout_marginBottom="8dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
+    </ScrollView>
 
-            android:alpha="0.4"/>
+    <ImageView
+        android:id="@+id/view_login_native_dialog_action_button"
 
-        <ImageView
-            android:id="@+id/view_login_native_dialog_action_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_dialog_login_button_height"
 
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_dialog_login_button_height"
+        android:layout_marginBottom="@dimen/dialog_default_separator"
+        android:layout_marginTop="@dimen/dialog_default_separator"
 
-            android:layout_marginBottom="@dimen/dialog_default_separator"
-            android:layout_marginTop="@dimen/dialog_default_separator"
+        android:background="@color/colorPrimary"
 
-            android:background="@color/colorPrimary"
+        android:adjustViewBounds="true"
 
-            android:adjustViewBounds="true"
+        android:src="@drawable/ic_launcher" />
 
-            android:src="@drawable/ic_launcher" />
+    <TextView
+        android:id="@+id/view_login_native_dialog_signup_button"
 
-        <TextView
-            android:id="@+id/view_login_native_dialog_signup_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="12sp"
 
-            android:textColor="@color/black"
-            android:textSize="12sp"
+        android:gravity="center"/>
 
-            android:gravity="center"/>
-
-
-    </LinearLayout>
-
-</ScrollView>
+</merge>

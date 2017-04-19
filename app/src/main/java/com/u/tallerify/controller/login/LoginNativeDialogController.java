@@ -9,6 +9,9 @@ import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.abstracts.AlertDialogController;
+import com.u.tallerify.model.AccessToken;
+import com.u.tallerify.networking.ReactiveModel;
+import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
 import com.u.tallerify.presenter.login.LoginNativeDialogPresenter;
 import com.u.tallerify.view.login.LoginNativeDialogView;
@@ -22,6 +25,24 @@ import rx.schedulers.Schedulers;
 public class LoginNativeDialogController extends AlertDialogController {
 
     private @Nullable String imageUri;
+
+    @Override
+    protected void onAttach(@NonNull final View view) {
+        super.onAttach(view);
+
+        CredentialsInteractor.instance().observeToken()
+            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
+            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+                @Override
+                public void call(final ReactiveModel<AccessToken> rxModel) {
+                    if (!rxModel.hasError() && rxModel.model() != null) {
+                        dismissDialog();
+                    }
+                }
+            });
+    }
 
     @NonNull
     @Override
