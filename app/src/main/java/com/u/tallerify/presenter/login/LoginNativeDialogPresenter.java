@@ -12,8 +12,6 @@ import com.u.tallerify.networking.interactor.location.LocationInteractor;
 import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import com.u.tallerify.presenter.Presenter;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import rx.Observable;
@@ -27,6 +25,8 @@ import rx.subjects.PublishSubject;
  */
 public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.View>
         implements LoginNativeContract.Presenter {
+
+    private static final String ADDRESS_SEPARATOR = ", ";
 
     @Nullable String country;
 
@@ -61,7 +61,7 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
                 @Override
                 public void call(final String s) {
                     if (s != null) {
-                        country = s.substring(s.lastIndexOf(","));
+                        country = s.substring(s.lastIndexOf(ADDRESS_SEPARATOR) + ADDRESS_SEPARATOR.length());
                         requestRender();
                     }
                 }

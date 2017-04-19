@@ -96,11 +96,11 @@ public class LoginNativeDialogController extends AlertDialogController {
     protected String title() { // TOOD remove constant
         if (signupVisible) {
             if (imageUri != null) {
-                return "Registrate en " + getResources().getString(R.string.app_name);
+                return getResources().getString(R.string.view_dialog_login_title_register);
             }
-            return "Agrega una imagen para tu perfil!";
+            return getResources().getString(R.string.view_dialog_login_title_add_image);
         }
-        return "Accede mediante " + getResources().getString(R.string.app_name);
+        return getResources().getString(R.string.view_dialog_login_title_login);
     }
 
     @NonNull
