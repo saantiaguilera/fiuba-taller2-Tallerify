@@ -37,7 +37,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".entry_points.PlayService" />
+        <service
+            android:name=".entry_points.PlayService"
+            android:stopWithTask="true" />
 
     </application>
 
