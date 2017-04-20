@@ -48,15 +48,17 @@ public class PlayService extends Service {
  
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getAction().equals(SERVICE_START)) {
-            observeSong();
-        } else if (intent.getAction().equals(SERVICE_SONG_REPRODUCE)) {
-            PlayUtils.playState();
-        } else if (intent.getAction().equals(SERVICE_NEXT_SONG)) {
-            PlayUtils.forward();
-        }
+        if (intent != null && intent.getAction() != null) {
+            if (intent.getAction().equals(SERVICE_START)) {
+                observeSong();
+            } else if (intent.getAction().equals(SERVICE_SONG_REPRODUCE)) {
+                PlayUtils.playState();
+            } else if (intent.getAction().equals(SERVICE_NEXT_SONG)) {
+                PlayUtils.forward();
+            }
 
-        showNotification();
+            showNotification();
+        }
 
         return START_STICKY;
     }
