@@ -68,6 +68,7 @@ public class LoginNativeDialogController extends AlertDialogController {
 
                 if (imageUri != null) {
                     onImageChange();
+                    onTitleChange();
                 }
 
                 presenter.observeSignupVisibilityChanges()
@@ -79,6 +80,7 @@ public class LoginNativeDialogController extends AlertDialogController {
                         public void call(final Boolean signupVisible) {
                             LoginNativeDialogController.this.signupVisible = signupVisible;
                             onImageChange();
+                            onTitleChange();
                         }
                     });
 
@@ -92,7 +94,13 @@ public class LoginNativeDialogController extends AlertDialogController {
     @NonNull
     @Override
     protected String title() { // TOOD remove constant
-        return "Accede mediante " + getResources().getString(R.string.app_name);
+        if (signupVisible) {
+            if (imageUri != null) {
+                return getResources().getString(R.string.view_dialog_login_title_register);
+            }
+            return getResources().getString(R.string.view_dialog_login_title_add_image);
+        }
+        return getResources().getString(R.string.view_dialog_login_title_login);
     }
 
     @NonNull
@@ -139,6 +147,7 @@ public class LoginNativeDialogController extends AlertDialogController {
                                         presenter.setImage(imageUri);
                                     }
                                     onImageChange();
+                                    onTitleChange();
                                 }
                             }
                         });

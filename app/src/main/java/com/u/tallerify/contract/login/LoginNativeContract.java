@@ -18,12 +18,14 @@ public interface LoginNativeContract {
     @NonNull String KEY_LASTNAME = LoginNativeContract.class.getName() + "surname";
     @NonNull String KEY_EMAIL = LoginNativeContract.class.getName() + "email";
     @NonNull String KEY_BIRTHDAY = LoginNativeContract.class.getName() + "birthday";
+    @NonNull String KEY_COUNTRY = LoginNativeContract.class.getName() + "country";
 
     interface View extends ContractView {
 
         @NonNull Observable<Bundle> observeLoginClicks();
         @NonNull Observable<Bundle> observeSignUpClicks();
         @NonNull Observable<Boolean> observeSignUpVisibilityChanges();
+        void suggestCountry(@NonNull String country);
 
     }
 

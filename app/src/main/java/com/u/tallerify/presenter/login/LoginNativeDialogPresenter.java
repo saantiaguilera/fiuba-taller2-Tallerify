@@ -12,8 +12,6 @@ import com.u.tallerify.networking.interactor.location.LocationInteractor;
 import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import com.u.tallerify.presenter.Presenter;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import rx.Observable;
@@ -27,6 +25,8 @@ import rx.subjects.PublishSubject;
  */
 public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.View>
         implements LoginNativeContract.Presenter {
+
+    private static final String ADDRESS_SEPARATOR = ", ";
 
     @Nullable String country;
 
@@ -60,7 +60,10 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
             .subscribe(new Action1<String>() {
                 @Override
                 public void call(final String s) {
-                    country = s;
+                    if (s != null) {
+                        country = s.substring(s.lastIndexOf(ADDRESS_SEPARATOR) + ADDRESS_SEPARATOR.length());
+                        requestRender();
+                    }
                 }
             });
 
@@ -111,7 +114,7 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
                                 .lastName(bundle.getString(LoginNativeContract.KEY_LASTNAME))
                                 .email(bundle.getString(LoginNativeContract.KEY_EMAIL))
                                 .birthday((Date) bundle.get(LoginNativeContract.KEY_BIRTHDAY))
-                                .country(country)
+                                .country(bundle.getString(LoginNativeContract.KEY_COUNTRY))
                                 .pictures(Collections.singletonList(imageUrl))
                                 .id(0)
                                 .build(),
@@ -161,7 +164,11 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
     }
 
     @Override
-    protected void onRender(@NonNull final LoginNativeContract.View view) {}
+    protected void onRender(@NonNull final LoginNativeContract.View view) {
+        if (country != null) {
+            view.suggestCountry(country);
+        }
+    }
 
     @Override
     public void setImage(@NonNull final String imageUri) {

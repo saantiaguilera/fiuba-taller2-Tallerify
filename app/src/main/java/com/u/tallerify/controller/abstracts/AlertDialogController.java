@@ -59,6 +59,31 @@ public abstract class AlertDialogController extends DialogController {
         }
     }
 
+    protected void onTitleChange() {
+        if (presenter != null) {
+            presenter.onTitleChange(title());
+        }
+    }
+
+    protected void onSeverityChange() {
+        if (presenter != null) {
+            presenter.onSeverityChange(severity());
+        }
+    }
+
+    protected void onContentChange() {
+        if (presenter != null) {
+            presenter.onContentChange(content());
+        }
+    }
+
+    protected void onDataSetChange() {
+        onImageChange();
+        onTitleChange();
+        onSeverityChange();
+        onContentChange();
+    }
+
     @Override
     public boolean handleBack() {
         return !isCancellable() || super.handleBack();

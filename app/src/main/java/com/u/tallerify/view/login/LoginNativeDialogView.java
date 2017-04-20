@@ -23,7 +23,6 @@ import rx.subjects.PublishSubject;
 /**
  * Created by saguilera on 4/13/17.
  */
-
 public class LoginNativeDialogView extends LinearLayout
         implements LoginNativeContract.View {
 
@@ -38,6 +37,7 @@ public class LoginNativeDialogView extends LinearLayout
     @NonNull InputTextView nameField;
     @NonNull InputTextView surnameField;
     @NonNull InputTextView emailField;
+    @NonNull InputTextView countryField;
     @NonNull InputTextView birthdayField;
 
     @NonNull PublishSubject<Bundle> signupSubject = PublishSubject.create();
@@ -65,6 +65,7 @@ public class LoginNativeDialogView extends LinearLayout
         nameField = (InputTextView) findViewById(R.id.view_login_native_dialog_name);
         surnameField = (InputTextView) findViewById(R.id.view_login_native_dialog_surname);
         emailField = (InputTextView) findViewById(R.id.view_login_native_dialog_mail);
+        countryField = (InputTextView) findViewById(R.id.view_login_native_dialog_country);
         birthdayField = (InputTextView) findViewById(R.id.view_login_native_dialog_birthday);
 
         signupExtrasContainer = (ViewGroup) findViewById(R.id.view_login_native_dialog_signup_extras_container);
@@ -88,10 +89,11 @@ public class LoginNativeDialogView extends LinearLayout
                 bundle.putString(LoginNativeContract.KEY_PASSWORD, passwordField.getEditText().getText().toString());
 
                 if (isSignUp()) {
-                    bundle.putString(LoginNativeContract.KEY_FIRSTNAME, nameField.getText().toString());
-                    bundle.putString(LoginNativeContract.KEY_LASTNAME, surnameField.getText().toString());
-                    bundle.putString(LoginNativeContract.KEY_EMAIL, emailField.getText().toString());
+                    bundle.putString(LoginNativeContract.KEY_FIRSTNAME, nameField.getEditText().getText().toString());
+                    bundle.putString(LoginNativeContract.KEY_LASTNAME, surnameField.getEditText().getText().toString());
+                    bundle.putString(LoginNativeContract.KEY_EMAIL, emailField.getEditText().getText().toString());
                     bundle.putSerializable(LoginNativeContract.KEY_BIRTHDAY, calendar.getTime());
+                    bundle.putString(LoginNativeContract.KEY_COUNTRY, countryField.getEditText().getText().toString());
 
                     signupSubject.onNext(bundle);
                 } else {
@@ -130,15 +132,19 @@ public class LoginNativeDialogView extends LinearLayout
                 swapActionVisibilitySubject.onNext(isSignUp());
             }
         });
+
+        InputMethodManager imm = (InputMethodManager) getContext().getApplicationContext()
+            .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(userNameField, InputMethodManager.SHOW_IMPLICIT);
     }
 
     void hideSignUp() {
-        swapActionVisibilityField.setText("Aun no tienes cuenta ? Create una !");
+        swapActionVisibilityField.setText(getResources().getString(R.string.view_dialog_login_create_account));
         signupExtrasContainer.setVisibility(View.GONE);
     }
 
     void showSignUp() {
-        swapActionVisibilityField.setText("Ya tengo cuenta!");
+        swapActionVisibilityField.setText(getResources().getString(R.string.view_dialog_login_already_have_account));
         signupExtrasContainer.setVisibility(View.VISIBLE);
     }
 
@@ -152,28 +158,42 @@ public class LoginNativeDialogView extends LinearLayout
 
     void markErrors() {
         if (userNameField.getEditText().getText().toString().isEmpty()) {
-            userNameField.setError("Este campo es obligatorio!");
+            userNameField.setError(getResources().getString(R.string.view_dialog_login_error_required));
+        } else {
+            if (!userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_]+", "").isEmpty()) {
+                userNameField.setError(getResources().getString(R.string.view_dialog_login_error_illegal_username));
+            }
         }
 
         if (passwordField.getEditText().getText().toString().isEmpty()) {
-            passwordField.setError("Este campo es obligatorio!");
+            passwordField.setError(getResources().getString(R.string.view_dialog_login_error_required));
+        } else if (passwordField.getEditText().getText().toString().length() < 8) {
+            passwordField.setError(getResources().getString(R.string.view_dialog_login_error_short_password));
         }
 
         if (isSignUp()) {
             if (nameField.getEditText().getText().toString().isEmpty()) {
-                nameField.setError("Este campo es obligatorio!");
+                nameField.setError(getResources().getString(R.string.view_dialog_login_error_required));
             }
 
             if (surnameField.getEditText().getText().toString().isEmpty()) {
-                surnameField.setError("Este campo es obligatorio!");
+                surnameField.setError(getResources().getString(R.string.view_dialog_login_error_required));
             }
 
             if (emailField.getEditText().getText().toString().isEmpty()) {
-                emailField.setError("Este campo es obligatorio!");
+                emailField.setError(getResources().getString(R.string.view_dialog_login_error_required));
+            } else if (!emailField.getEditText().getText().toString().contains("@")) {
+                emailField.setError(getResources().getString(R.string.view_dialog_login_error_invalid_email));
             }
 
             if (birthdayField.getEditText().getText().toString().isEmpty()) {
-                birthdayField.setError("Este campo es obligatorio!");
+                birthdayField.setError(getResources().getString(R.string.view_dialog_login_error_required));
+            } else if (calendar.after(Calendar.getInstance())) {
+                birthdayField.setError(getResources().getString(R.string.view_dialog_login_error_invalid_birthdate));
+            }
+
+            if (countryField.getEditText().getText().toString().isEmpty()) {
+                countryField.setError(getResources().getString(R.string.view_dialog_login_error_required));
             }
         }
     }
@@ -181,13 +201,18 @@ public class LoginNativeDialogView extends LinearLayout
     boolean isActionPerformable() {
         boolean can = true;
         can &= !userNameField.getEditText().getText().toString().isEmpty();
+        can &= userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_]+", "").isEmpty();
         can &= !passwordField.getEditText().getText().toString().isEmpty();
+        can &= passwordField.getEditText().getText().toString().length() >= 8;
 
         if (isSignUp()) {
-            can &= !nameField.getText().toString().isEmpty();
-            can &= !surnameField.getText().toString().isEmpty();
-            can &= !emailField.getText().toString().isEmpty();
-            can &= !birthdayField.getText().toString().isEmpty();
+            can &= !nameField.getEditText().getText().toString().isEmpty();
+            can &= !surnameField.getEditText().getText().toString().isEmpty();
+            can &= !emailField.getEditText().getText().toString().isEmpty();
+            can &= !birthdayField.getEditText().getText().toString().isEmpty();
+            can &= emailField.getEditText().getText().toString().contains("@");
+            can &= !calendar.after(Calendar.getInstance());
+            can &= !countryField.getEditText().getText().toString().isEmpty();
             return can;
         } else {
             return can;
@@ -214,6 +239,13 @@ public class LoginNativeDialogView extends LinearLayout
     @Override
     public Observable<Boolean> observeSignUpVisibilityChanges() {
         return swapActionVisibilitySubject;
+    }
+
+    @Override
+    public void suggestCountry(@NonNull final String country) {
+        if (countryField.getEditText().getText().toString().isEmpty()) {
+            countryField.setText(country);
+        }
     }
 
     DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
