@@ -120,7 +120,7 @@ Dependencies should download automatically. Please ensure you are running with t
 
 For building a release apk please run `./gradlew assembleRelease -PFirebaseServiceAccountFilePath=path`
 
-## Cambios talves necesarios
+## :boom:
 
 1. No hay endpoints para los trendings artists / songs (artists/trending y songs/trending ?). Los hice sin auth necesario. Un usuario que no tiene cuenta puede ver los trendings.
 2. No hay endpoints para las playlists de un user (me/playlists ?)
