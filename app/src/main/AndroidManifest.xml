@@ -37,7 +37,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".entry_points.PlayService" />
+        <service
+            android:name=".entry_points.PlayService"
+            android:stopWithTask="true" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
