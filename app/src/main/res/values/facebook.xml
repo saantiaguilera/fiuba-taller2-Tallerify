@@ -4,6 +4,10 @@
     <string name="facebook_app_id">1301825773218568</string>
     <string-array name="facebook_read_permissions">
         <item>public_profile</item>
+        <item>email</item>
+        <item>user_birthday</item>
+        <item>user_photos</item>
+        <item>user_location</item>
     </string-array>
 
 </resources>
