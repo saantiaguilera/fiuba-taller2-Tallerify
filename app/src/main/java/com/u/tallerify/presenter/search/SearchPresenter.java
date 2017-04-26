@@ -173,10 +173,6 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         data.addAll(inflate("Albums", albums, null));
         data.addAll(inflate("Canciones", songs, userSongs));
 
-        if (data.isEmpty()) {
-            data.add(new HeaderCardSupplier(getContext(), "Un placeholder para que no este tan vacio"));
-        }
-
         return data;
     }
 
