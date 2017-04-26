@@ -21,6 +21,19 @@ public class ProfileUserInfoPresenter extends Presenter<ProfileUserInfoContract.
 
     public ProfileUserInfoPresenter() {
         me = MeInteractor.instance().userSnapshot();
+        MeInteractor.instance().observeUser()
+            .subscribeOn(Schedulers.computation())
+            .observeOn(Schedulers.computation())
+            .compose(this.<ReactiveModel<User>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<User>>() {
+                @Override
+                public void call(final ReactiveModel<User> rxModel) {
+                    if (rxModel.model() != null && !rxModel.hasError()) {
+                        me = rxModel.model();
+                        requestRender();
+                    }
+                }
+            });
     }
 
     @Override

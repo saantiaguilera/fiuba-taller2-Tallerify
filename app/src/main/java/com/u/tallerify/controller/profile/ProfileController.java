@@ -9,12 +9,16 @@ import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
+import com.u.tallerify.model.entity.User;
+import com.u.tallerify.networking.interactor.Interactors;
+import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.presenter.AbstractPresenterGraph;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.presenter.profile.ProfileUserActivityPresenter;
 import com.u.tallerify.presenter.profile.ProfileUserContactsPresenter;
 import com.u.tallerify.presenter.profile.ProfileUserInfoPresenter;
 import com.u.tallerify.utils.CoordinatorsInstaller;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by saguilera on 3/30/17.
@@ -40,6 +44,12 @@ public class ProfileController extends FlowController {
     @Override
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
+
+        MeInteractor.instance().currentUser(getActivity())
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .compose(this.<User>bindToLifecycle())
+            .subscribe(Interactors.ACTION_NEXT, Interactors.ACTION_ERROR);
 
         CoordinatorsInstaller.installBinder(
             (ViewGroup) view.findViewById(R.id.controller_profile_root),

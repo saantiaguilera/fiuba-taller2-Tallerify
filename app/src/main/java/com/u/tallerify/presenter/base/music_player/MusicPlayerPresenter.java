@@ -164,22 +164,28 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
                 }
             });
 
-        Observable.from(MeInteractor.instance().songsSnapshot())
+        MeInteractor.instance().observeSongs()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
-            .compose(this.<Song>bindToLifecycle())
-            .map(new Func1<Song, Long>() {
+            .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
-                public Long call(final Song song) {
-                    return song.id();
-                }
-            })
-            .toList()
-            .first()
-            .subscribe(new Action1<List<Long>>() {
-                @Override
-                public void call(final List<Long> longs) {
-                    favorites = longs;
+                public void call(final ReactiveModel<List<Song>> reactiveModel) {
+                    if (reactiveModel.model() == null || reactiveModel.hasError())
+                        return;
+
+                    favorites = Observable.from(reactiveModel.model())
+                        .observeOn(Schedulers.immediate())
+                        .map(new Func1<Song, Long>() {
+                            @Override
+                            public Long call(final Song song) {
+                                return song.id();
+                            }
+                        })
+                        .toList()
+                        .toBlocking()
+                        .first();
+
                     requestRender();
                 }
             });
