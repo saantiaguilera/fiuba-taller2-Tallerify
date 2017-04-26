@@ -52,31 +52,8 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         observeNotifier();
         observeRepositories();
 
-        MeInteractor.instance().observeSongs()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<List<Song>>>() {
-                @Override
-                public void call(final ReactiveModel<List<Song>> listReactiveModel) {
-                    if (!listReactiveModel.hasError() && listReactiveModel.model() != null) {
-                        userSongs = listReactiveModel.model();
-                    }
-                }
-            });
-
-        MeInteractor.instance().observeArtists()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
-                @Override
-                public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
-                    if (!listReactiveModel.hasError() && listReactiveModel.model() != null) {
-                        userArtists = listReactiveModel.model();
-                    }
-                }
-            });
+        userSongs = MeInteractor.instance().songsSnapshot();
+        userArtists = MeInteractor.instance().artistsSnapshot();
     }
 
     /**

@@ -33,31 +33,8 @@ public class AddToPlaylistPresenter extends Presenter<AddToPlaylistContract.View
     @Override
     protected void onAttach(@NonNull final AddToPlaylistContract.View view) {
         super.onAttach(view);
-        MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
-            //.compose(this.<ReactiveModel<User>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<User>>() {
-                @Override
-                public void call(final ReactiveModel<User> userReactiveModel) {
-                    if (userReactiveModel.model() != null && !userReactiveModel.hasError()) {
-                        me = userReactiveModel.model();
-                    }
-                }
-            });
-        MeInteractor.instance().observePlaylists()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
-            //.compose(this.<ReactiveModel<List<Playlist>>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<List<Playlist>>>() {
-                @Override
-                public void call(final ReactiveModel<List<Playlist>> listReactiveModel) {
-                    if (listReactiveModel.model() != null && !listReactiveModel.hasError()) {
-                        userPlaylists = listReactiveModel.model();
-                        requestRender();
-                    }
-                }
-            });
+        me = MeInteractor.instance().userSnapshot();
+        userPlaylists = MeInteractor.instance().playlistsSnapshot();
 
         view.observePlaylistCreations()
             .observeOn(Schedulers.computation())

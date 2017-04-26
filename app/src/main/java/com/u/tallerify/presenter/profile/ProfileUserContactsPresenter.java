@@ -27,19 +27,9 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
     @Nullable List<User> users;
 
     public ProfileUserContactsPresenter() {
-        MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.io())
-            .compose(this.<ReactiveModel<User>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<User>>() {
-                @Override
-                public void call(final ReactiveModel<User> userReactiveModel) {
-                    if (userReactiveModel.model() != null && !userReactiveModel.hasError()) {
-                        users = userReactiveModel.model().contacts();
-                        requestRender();
-                    }
-                }
-            });
+        if (MeInteractor.instance().userSnapshot() != null) {
+            users = MeInteractor.instance().userSnapshot().contacts();
+        }
     }
 
     @Override

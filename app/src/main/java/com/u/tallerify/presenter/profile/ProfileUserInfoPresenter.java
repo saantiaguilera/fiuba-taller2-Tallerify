@@ -21,22 +21,7 @@ public class ProfileUserInfoPresenter extends Presenter<ProfileUserInfoContract.
     @Nullable String location;
 
     public ProfileUserInfoPresenter() {
-        MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<User>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<User>>() {
-                @Override
-                public void call(final ReactiveModel<User> rxModel) {
-                    if (rxModel.model() != null && !rxModel.hasError()) {
-                        me = rxModel.model();
-
-                        if (isAttached()) {
-                            requestRender();
-                        }
-                    }
-                }
-            });
+        me = MeInteractor.instance().userSnapshot();
         LocationInteractor.instance().observeLocations()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())

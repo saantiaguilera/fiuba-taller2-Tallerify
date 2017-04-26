@@ -30,28 +30,21 @@ public class ProfileUserActivityPresenter extends Presenter<ProfileUserActivityC
     @Nullable List<Song> activity;
 
     public ProfileUserActivityPresenter() {
-        MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<User>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<User>>() {
-                @Override
-                public void call(final ReactiveModel<User> model) {
-                    if (model.model() != null && !model.hasError()) {
-                        UserInteractor.instance().activity(getContext(), model.model().id())
-                            .observeOn(Schedulers.io())
-                            .subscribeOn(Schedulers.io())
-                            .compose(ProfileUserActivityPresenter.this.<List<Song>>bindToLifecycle())
-                            .subscribe(new Action1<List<Song>>() {
-                                @Override
-                                public void call(final List<Song> songs) {
-                                    activity = songs;
-                                    requestRender();
-                                }
-                            }, Interactors.ACTION_ERROR);
+        User me = MeInteractor.instance().userSnapshot();
+
+        if (me != null) {
+            UserInteractor.instance().activity(getContext(), me.id())
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .compose(ProfileUserActivityPresenter.this.<List<Song>>bindToLifecycle())
+                .subscribe(new Action1<List<Song>>() {
+                    @Override
+                    public void call(final List<Song> songs) {
+                        activity = songs;
+                        requestRender();
                     }
-                }
-            });
+                }, Interactors.ACTION_ERROR);
+        }
     }
 
     @Override
