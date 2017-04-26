@@ -4,6 +4,7 @@
     <!-- Toolbar -->
     <string name="toolbar_home">@string/app_name</string>
     <string name="toolbar_profile">Perfil</string>
+    <string name="toolbar_contacts">Usuarios</string>
 
     <!-- Menu -->
     <string name="menu_home_search">Buscar</string>
