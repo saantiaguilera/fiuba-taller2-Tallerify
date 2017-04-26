@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tallerify</string>
+    <string name="app_name">Fort Media Player</string>
 
     <!-- Toolbar -->
     <string name="toolbar_home">@string/app_name</string>

@@ -173,7 +173,7 @@ public class PlayService extends Service {
                         .setCustomBigContentView(expandedView)
                         .setOngoing(true)
                         .setContentIntent(pendingIntent)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.ic_launcher)
                         .build();
 
                     Observable.just(null)

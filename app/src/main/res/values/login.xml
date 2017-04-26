@@ -11,5 +11,28 @@
     <integer name="view_dialog_login_error_animation_duration">1000</integer>
     <integer name="view_dialog_login_error_visibility_duration">3000</integer>
     <dimen name="view_dialog_login_padding">12dp</dimen>
+    <dimen name="view_dialog_login_buttons_padding">24dp</dimen>
+    <dimen name="view_login_native_dialog_margin_bottom">8dp</dimen>
+    <dimen name="view_login_native_dialog_swap_action_text_size">12sp</dimen>
 
+    <string name="view_dialog_login_register_native_field_name">Username</string>
+    <string name="view_dialog_login_register_native_field_first_name">Nombre</string>
+    <string name="view_dialog_login_register_native_field_surname">Apellido</string>
+    <string name="view_dialog_login_register_native_field_email">Correo electronico</string>
+    <string name="view_dialog_login_register_native_field_password">Contraseña</string>
+    <string name="view_dialog_login_register_native_field_birthday">Fecha de nacimiento</string>
+    <string name="view_dialog_login_register_native_field_country">Pais</string>
+
+    <string name="view_dialog_login_create_account">Aun no tienes cuenta ? Create una !</string>
+    <string name="view_dialog_login_already_have_account">Ya tengo cuenta !</string>
+
+    <string name="view_dialog_login_title_register">Registrate en Fort Media Player</string>
+    <string name="view_dialog_login_title_login">Accede mediante Fort Media Player</string>
+    <string name="view_dialog_login_title_add_image">Agrega una imagen para tu perfil</string>
+
+    <string name="view_dialog_login_error_required">Este campo es obligatorio</string>
+    <string name="view_dialog_login_error_short_password">La contraseña debe contener mas de 8 caracteres</string>
+    <string name="view_dialog_login_error_invalid_birthdate">Este campo no es una fecha de nacimiento valida</string>
+    <string name="view_dialog_login_error_invalid_email">Este campo no es un email valido</string>
+    <string name="view_dialog_login_error_illegal_username">El nombre de usuario solo puede tener caracteres o guiones bajos</string>
 </resources>

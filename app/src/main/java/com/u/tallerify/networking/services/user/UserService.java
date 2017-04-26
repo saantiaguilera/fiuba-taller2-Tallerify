@@ -3,6 +3,9 @@ package com.u.tallerify.networking.services.user;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.model.entity.User;
 import java.util.List;
+import java.util.Map;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -10,6 +13,8 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -26,7 +31,7 @@ public interface UserService {
 
     @Multipart
     @POST("users/")
-    Observable<User> create(@Body User user, @Field("password") String password);
+    Observable<User> create(@PartMap Map<String, RequestBody> params);
 
     @GET("users/{id}/activity")
     Observable<List<Song>> activity(@Path("id") long id);

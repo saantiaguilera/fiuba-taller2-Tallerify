@@ -1,7 +1,9 @@
 package com.u.tallerify.networking.interactor.location;
 
 import android.Manifest;
+import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -11,6 +13,7 @@ import javax.annotation.Nullable;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -36,58 +39,69 @@ public class LocationInteractor {
         return instance;
     }
 
+    @UiThread
     public @NonNull Observable<String> observeLocations() {
         startObservingLocations();
 
         return locationSubject;
     }
 
+    @UiThread
     private void startObservingLocations() {
         if (providerSubscription != null && !providerSubscription.isUnsubscribed()) {
             providerSubscription.unsubscribe();
         }
 
-        new RxPermissions(RouterInteractor.instance().mainRouter().getActivity())
-            .request(Manifest.permission.ACCESS_FINE_LOCATION)
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
-            .subscribe(new Action1<Boolean>() {
+        Observable.just(null) // Swap to main thread for permission fragment injection
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.immediate())
+            .first()
+            .subscribe(new Action1<Object>() {
                 @Override
-                public void call(final Boolean granted) {
-                    if (granted) {
-                        providerSubscription = new ReactiveLocationProvider(
-                                RouterInteractor.instance().mainRouter()
-                                    .getActivity().getApplicationContext())
-                            .getCurrentPlace(null)
-                            .filter(new Func1<PlaceLikelihoodBuffer, Boolean>() {
-                                @Override
-                                public Boolean call(final PlaceLikelihoodBuffer placeLikelihoods) {
-                                    boolean release = !placeLikelihoods.getStatus().isSuccess();
+                public void call(final Object o) {
+                    new RxPermissions(RouterInteractor.instance().mainRouter().getActivity())
+                        .request(Manifest.permission.ACCESS_FINE_LOCATION)
+                        .observeOn(Schedulers.io())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(final Boolean granted) {
+                                if (granted) {
+                                    providerSubscription = new ReactiveLocationProvider(
+                                        RouterInteractor.instance().mainRouter()
+                                            .getActivity().getApplicationContext())
+                                        .getCurrentPlace(null)
+                                        .filter(new Func1<PlaceLikelihoodBuffer, Boolean>() {
+                                            @Override
+                                            public Boolean call(final PlaceLikelihoodBuffer placeLikelihoods) {
+                                                boolean release = !placeLikelihoods.getStatus().isSuccess();
 
-                                    if (release) {
-                                        placeLikelihoods.release();
-                                    }
+                                                if (release) {
+                                                    placeLikelihoods.release();
+                                                }
 
-                                    return !release;
-                                }
-                            })
-                            .map(new Func1<PlaceLikelihoodBuffer, String>() {
-                                @Override
-                                public String call(final PlaceLikelihoodBuffer placeLikelihoods) {
-                                    Place place = placeLikelihoods.get(0).getPlace();
-                                    String address = place.getAddress().toString();
-                                    placeLikelihoods.release();
+                                                return !release;
+                                            }
+                                        })
+                                        .map(new Func1<PlaceLikelihoodBuffer, String>() {
+                                            @Override
+                                            public String call(final PlaceLikelihoodBuffer placeLikelihoods) {
+                                                Place place = placeLikelihoods.get(0).getPlace();
+                                                String address = place.getAddress().toString();
+                                                placeLikelihoods.release();
 
-                                    return address;
+                                                return address;
+                                            }
+                                        })
+                                        .subscribe(new Action1<String>() {
+                                            @Override
+                                            public void call(final String s) {
+                                                locationSubject.onNext(s);
+                                            }
+                                        }, Interactors.ACTION_ERROR);
                                 }
-                            })
-                            .subscribe(new Action1<String>() {
-                                @Override
-                                public void call(final String s) {
-                                    locationSubject.onNext(s);
-                                }
-                            }, Interactors.ACTION_ERROR);
-                    }
+                            }
+                        }, Interactors.ACTION_ERROR);
                 }
             }, Interactors.ACTION_ERROR);
     }
