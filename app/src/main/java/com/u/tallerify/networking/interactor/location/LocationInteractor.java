@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.utils.RouterInteractor;
 import javax.annotation.Nullable;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
@@ -88,7 +89,7 @@ public class LocationInteractor {
                             });
                     }
                 }
-            });
+            }, Interactors.ACTION_ERROR);
     }
 
 }
