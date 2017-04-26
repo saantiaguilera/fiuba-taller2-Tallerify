@@ -86,7 +86,7 @@ public class LocationInteractor {
                                 public void call(final String s) {
                                     locationSubject.onNext(s);
                                 }
-                            });
+                            }, Interactors.ACTION_ERROR);
                     }
                 }
             }, Interactors.ACTION_ERROR);
