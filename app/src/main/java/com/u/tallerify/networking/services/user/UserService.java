@@ -16,6 +16,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -43,5 +44,8 @@ public interface UserService {
     @FormUrlEncoded
     @DELETE("users/{id}/follow")
     Observable<Void> unfollow(@Path("id") long myId, @Field("userId") long hisId);
+
+    @GET("users/search")
+    Observable<List<User>> queryUsers(@Query("query") String query);
 
 }

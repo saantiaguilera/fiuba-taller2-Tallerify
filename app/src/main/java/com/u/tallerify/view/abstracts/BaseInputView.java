@@ -1,4 +1,4 @@
-package com.u.tallerify.view.search;
+package com.u.tallerify.view.abstracts;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.u.tallerify.R;
+import com.u.tallerify.contract.abstracts.BaseInputContract;
 import com.u.tallerify.contract.search.SearchBarContract;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -22,15 +23,15 @@ import rx.subjects.PublishSubject;
  *
  * Created by saguilera on 3/24/17.
  */
-public class SearchBarView extends LinearLayout
-        implements SearchBarContract.View {
+public class BaseInputView extends LinearLayout
+        implements BaseInputContract.View {
 
     @NonNull EditText editTextView;
     @NonNull ImageView clearView;
 
     @Nullable PublishSubject<String> subject;
 
-    public SearchBarView(final Context context) {
+    public BaseInputView(final Context context) {
         super(context);
 
         inflate(context, R.layout.view_search_bar, this);

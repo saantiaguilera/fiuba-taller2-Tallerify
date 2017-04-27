@@ -12,7 +12,7 @@ import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.presenter.search.SearchBarPresenter;
 import com.u.tallerify.presenter.search.SearchPresenter;
-import com.u.tallerify.view.search.SearchBarView;
+import com.u.tallerify.view.abstracts.BaseInputView;
 
 /**
  * Created by saguilera on 3/24/17.
@@ -32,7 +32,7 @@ public class SearchController extends FlowController {
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
 
-        View searchView = new SearchBarView(getActivity());
+        View searchView = new BaseInputView(getActivity());
         searchView.setTag(SEARCH_VIEW_TAG);
         getActionBar().addView(searchView);
 
