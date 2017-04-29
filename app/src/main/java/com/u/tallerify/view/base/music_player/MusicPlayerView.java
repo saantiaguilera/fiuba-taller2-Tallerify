@@ -72,6 +72,16 @@ public class MusicPlayerView extends FrameLayout
         TransitionManager.go(scene, transition);
     }
 
+    void expand() {
+        mode = MODE.EXPANDED;
+        transition(MusicPlayerView.this, expandView);
+    }
+
+    void compact() {
+        mode = MODE.COMPACT;
+        transition(MusicPlayerView.this, compactView);
+    }
+
     void setupTransitionLogic() {
         RxView.touches(compactView)
             .observeOn(AndroidSchedulers.mainThread())
@@ -94,16 +104,14 @@ public class MusicPlayerView extends FrameLayout
                             viewPressed = false;
                             startY = 0;
                             if (mode == MODE.COMPACT && System.currentTimeMillis() - lastTouchDown < 250) {
-                                mode = MODE.EXPANDED;
-                                transition(MusicPlayerView.this, expandView);
+                                expand();
                             }
                             break;
                         case MotionEvent.ACTION_MOVE:
                             if (viewPressed) {
                                 if (ev.getRawY() - startY < -SCROLL_SWITCH_DELTA &&
                                     mode == MODE.COMPACT) {
-                                    mode = MODE.EXPANDED;
-                                    transition(MusicPlayerView.this, expandView);
+                                    expand();
                                     viewPressed = false;
                                 }
                             }
@@ -140,8 +148,7 @@ public class MusicPlayerView extends FrameLayout
                             }
                             if (viewPressed && ev.getRawY() - startY > SCROLL_SWITCH_DELTA &&
                                     mode == MODE.EXPANDED) {
-                                transition(MusicPlayerView.this, compactView);
-                                mode = MODE.COMPACT;
+                                compact();
                                 viewPressed = false;
                             }
                             break;
@@ -221,6 +228,19 @@ public class MusicPlayerView extends FrameLayout
         expandView.setFavorite(favved);
     }
 
+    @Override
+    public void setMode(@NonNull final MODE mode) {
+        if (this.mode != mode) {
+            switch (mode) {
+                case COMPACT:
+                    compact();
+                    break;
+                case EXPANDED:
+                    expand();
+            }
+        }
+    }
+
     @NonNull
     @Override
     public Observable<Void> observeNextSongClicks() {
@@ -283,7 +303,13 @@ public class MusicPlayerView extends FrameLayout
         return expandView.observePlaylistSkipClicks();
     }
 
-    private enum MODE {
+    @NonNull
+    @Override
+    public MODE currentMode() {
+        return mode;
+    }
+
+    public enum MODE {
         COMPACT,
         EXPANDED
     }

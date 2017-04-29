@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.model.entity.User;
+import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.networking.services.user.UserService;
 import java.io.File;
@@ -16,7 +17,10 @@ import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import rx.Observable;
+import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.subjects.BehaviorSubject;
 
 /**
  * Created by saguilera on 3/26/17.
@@ -24,13 +28,23 @@ import rx.functions.Func1;
 @SuppressWarnings("unchecked")
 public final class UserInteractor {
 
+    public static final int ACTION_LOADING = 0;
+    public static final int ACTION_EMPTY_SEARCH = 1;
+
     private static final @NonNull UserInteractor instance = new UserInteractor();
 
+    @NonNull BehaviorSubject<ReactiveModel<List<User>>> searchSubject;
+
     private UserInteractor() {
+        searchSubject = BehaviorSubject.create();
     }
 
     public static @NonNull UserInteractor instance() {
         return instance;
+    }
+
+    public @NonNull Observable<ReactiveModel<List<User>>> observeSearches() {
+        return searchSubject;
     }
 
     public @NonNull Observable<User> user(@NonNull Context context, long userId) {
@@ -74,20 +88,65 @@ public final class UserInteractor {
             .activity(userId);
     }
 
-    public @NonNull Observable<User> follow(@NonNull Context context, @NonNull User me, @NonNull User him) {
+    public @NonNull Observable<User> follow(@NonNull Context context, @NonNull User him) {
         return RestClient.with(context).create(UserService.class)
-            .follow(me.id(), him.id());
+            .follow(him.id());
     }
 
-    public @NonNull Observable<User> unfollow(@NonNull Context context, @NonNull User me, final @NonNull User him) {
+    public @NonNull Observable<User> unfollow(@NonNull Context context, final @NonNull User him) {
         return RestClient.with(context).create(UserService.class)
-            .unfollow(me.id(), him.id())
+            .unfollow(him.id())
             .map(new Func1<Void, User>() {
                 @Override
                 public User call(final Void aVoid) {
                     return him;
                 }
             });
+    }
+
+    public @NonNull Observable<List<User>> search(@NonNull Context context, @NonNull String query) {
+        if (query.isEmpty()) {
+            return Observable.just(null)
+                .map(new Func1<Object, List<User>>() {
+                    @Override
+                    public List<User> call(final Object o) {
+                        return null;
+                    }
+                })
+                .doOnNext(new Action1<List<User>>() {
+                    @Override
+                    public void call(final List<User> o) {
+                        searchSubject.onNext(new ReactiveModel.Builder<List<User>>()
+                            .action(ACTION_EMPTY_SEARCH)
+                            .build());
+                    }
+                });
+        } else {
+            return RestClient.with(context).create(UserService.class)
+                .queryUsers(query)
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        searchSubject.onNext(new ReactiveModel.Builder<List<User>>()
+                            .action(ACTION_LOADING)
+                            .build());
+                    }
+                }).doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(final Throwable throwable) {
+                        searchSubject.onNext(new ReactiveModel.Builder<List<User>>()
+                            .error(throwable)
+                            .build());
+                    }
+                }).doOnNext(new Action1<List<User>>() {
+                    @Override
+                    public void call(final List<User> users) {
+                        searchSubject.onNext(new ReactiveModel.Builder<List<User>>()
+                            .model(users)
+                            .build());
+                    }
+                });
+        }
     }
 
 }

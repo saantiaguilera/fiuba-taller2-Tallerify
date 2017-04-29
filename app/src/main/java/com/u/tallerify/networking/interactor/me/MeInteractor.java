@@ -2,6 +2,7 @@ package com.u.tallerify.networking.interactor.me;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.u.tallerify.model.entity.Artist;
 import com.u.tallerify.model.entity.Playlist;
 import com.u.tallerify.model.entity.Song;
@@ -31,6 +32,11 @@ public final class MeInteractor {
     @NonNull BehaviorSubject<ReactiveModel<List<Playlist>>> playlistSubject;
     @NonNull BehaviorSubject<ReactiveModel<List<Artist>>> artistSubject;
 
+    @Nullable User userSnapshot;
+    @Nullable List<Song> songsSnapshot;
+    @Nullable List<Artist> artistsSnapshot;
+    @Nullable List<Playlist> playlistsSnapshot;
+
     private MeInteractor() {
         userSubject = BehaviorSubject.create();
         songSubject = BehaviorSubject.create();
@@ -38,9 +44,28 @@ public final class MeInteractor {
         artistSubject = BehaviorSubject.create();
     }
 
-    public static @NonNull
-    MeInteractor instance() {
+    public static @NonNull MeInteractor instance() {
         return instance;
+    }
+
+    @Nullable
+    public User userSnapshot() {
+        return userSnapshot;
+    }
+
+    @Nullable
+    public List<Song> songsSnapshot() {
+        return songsSnapshot;
+    }
+
+    @Nullable
+    public List<Artist> artistsSnapshot() {
+        return artistsSnapshot;
+    }
+
+    @Nullable
+    public List<Playlist> playlistsSnapshot() {
+        return playlistsSnapshot;
     }
 
     @NonNull
@@ -83,6 +108,7 @@ public final class MeInteractor {
             }).doOnNext(new Action1<User>() {
                 @Override
                 public void call(final User user) {
+                    userSnapshot = user;
                     userSubject.onNext(new ReactiveModel.Builder<User>()
                         .model(user)
                         .build());
@@ -109,6 +135,7 @@ public final class MeInteractor {
             }).doOnNext(new Action1<List<Song>>() {
                 @Override
                 public void call(final List<Song> songs) {
+                    songsSnapshot = songs;
                     songSubject.onNext(new ReactiveModel.Builder<List<Song>>()
                         .model(songs)
                         .build());
@@ -135,6 +162,7 @@ public final class MeInteractor {
             }).doOnNext(new Action1<List<Artist>>() {
                 @Override
                 public void call(final List<Artist> artists) {
+                    artistsSnapshot = artists;
                     artistSubject.onNext(new ReactiveModel.Builder<List<Artist>>()
                         .model(artists)
                         .build());
@@ -161,6 +189,7 @@ public final class MeInteractor {
             }).doOnNext(new Action1<List<Playlist>>() {
                 @Override
                 public void call(final List<Playlist> playlists) {
+                    playlistsSnapshot = playlists;
                     playlistSubject.onNext(new ReactiveModel.Builder<List<Playlist>>()
                         .model(playlists)
                         .build());

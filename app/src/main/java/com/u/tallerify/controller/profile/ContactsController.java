@@ -1,4 +1,4 @@
-package com.u.tallerify.controller.search;
+package com.u.tallerify.controller.profile;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,22 +10,21 @@ import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
-import com.u.tallerify.presenter.search.SearchBarPresenter;
-import com.u.tallerify.presenter.search.SearchPresenter;
+import com.u.tallerify.presenter.profile.ContactsPresenter;
+import com.u.tallerify.presenter.profile.ContactsSearchBarPresenter;
 import com.u.tallerify.view.abstracts.BaseInputView;
 
 /**
- * Created by saguilera on 3/24/17.
+ * Created by saguilera on 4/26/17.
  */
+public class ContactsController extends FlowController {
 
-public class SearchController extends FlowController {
-
-    private static final String SEARCH_VIEW_TAG = "search_view_tag";
+    private static final @NonNull String SEARCH_VIEW_TAG = ContactsController.class.getName() + "#search_bar_tag";
 
     @NonNull
     @Override
     protected View onCreateView(@NonNull final LayoutInflater inflater, @NonNull final ViewGroup container) {
-        return inflater.inflate(R.layout.controller_search, container, false);
+        return inflater.inflate(R.layout.controller_contacts, container, false);
     }
 
     @Override
@@ -40,14 +39,14 @@ public class SearchController extends FlowController {
             @Nullable
             @Override
             public Coordinator provideCoordinator(final View view) {
-                return new SearchBarPresenter();
+                return new ContactsSearchBarPresenter();
             }
         });
         Coordinators.bind(view, new CoordinatorProvider() {
             @Nullable
             @Override
             public Coordinator provideCoordinator(final View view) {
-                return new SearchPresenter();
+                return new ContactsPresenter();
             }
         });
     }
@@ -55,7 +54,6 @@ public class SearchController extends FlowController {
     @Override
     protected void onDetach(@NonNull final View view) {
         getActionBar().removeView(getActionBar().findViewWithTag(SEARCH_VIEW_TAG));
-
         super.onDetach(view);
     }
 

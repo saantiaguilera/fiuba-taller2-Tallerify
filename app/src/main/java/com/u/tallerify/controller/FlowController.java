@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import com.u.tallerify.R;
 import com.u.tallerify.utils.CurrentPlay;
+import com.u.tallerify.view.base.music_player.MusicPlayerView;
 
 /**
  * Created by saguilera on 3/12/17.
@@ -64,6 +65,19 @@ public abstract class FlowController extends BaseController {
                 coordinatorView.setLayoutParams(params);
             }
         }
+    }
+
+    @Override
+    public boolean handleBack() {
+        if (hasPlayer()) {
+            MusicPlayerView view = (MusicPlayerView) getActivity().findViewById(R.id.activity_main_player_view);
+            if (view.currentMode() == MusicPlayerView.MODE.EXPANDED) {
+                view.setMode(MusicPlayerView.MODE.COMPACT);
+                return true;
+            }
+        }
+
+        return super.handleBack();
     }
 
     protected boolean hasScrollingActionBar() {

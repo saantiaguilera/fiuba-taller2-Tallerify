@@ -44,7 +44,7 @@
 
         android:layout_marginRight="16dp"
 
-        fresco:placeholderImage="@drawable/placeholder_song"
+        fresco:placeholderImage="@drawable/placeholder_user"
         fresco:roundAsCircle="true"/>
 
 </merge>

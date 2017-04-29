@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.base.cards.PlayableCardContract;
-import com.u.tallerify.supplier.home.card.PlayableCardSupplier;
+import com.u.tallerify.supplier.card.PlayableCardSupplier;
 import com.u.tallerify.utils.FrescoImageController;
 import com.u.tallerify.utils.MetricsUtils;
 import java.util.concurrent.TimeUnit;

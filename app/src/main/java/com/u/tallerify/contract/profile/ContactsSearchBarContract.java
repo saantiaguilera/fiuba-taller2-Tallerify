@@ -1,11 +1,11 @@
-package com.u.tallerify.contract.search;
+package com.u.tallerify.contract.profile;
 
 import com.u.tallerify.contract.ContractPresenter;
 
 /**
- * Created by saguilera on 3/24/17.
+ * Created by saguilera on 4/27/17.
  */
-public interface SearchBarContract {
+public interface ContactsSearchBarContract {
 
     interface Presenter extends ContractPresenter {
     }
