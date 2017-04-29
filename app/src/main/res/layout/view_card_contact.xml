@@ -10,6 +10,8 @@
 
         android:layout_gravity="center"
 
+        android:layout_marginTop="@dimen/view_card_contact_image_margin"
+
         fresco:actualImageScaleType="fitXY"
         fresco:placeholderImage="@drawable/placeholder_user"
         fresco:placeholderImageScaleType="fitXY"
@@ -20,10 +22,10 @@
     <ImageView
         android:id="@+id/view_card_contact_action"
 
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/view_card_contact_button_size"
+        android:layout_height="@dimen/view_card_contact_button_size"
 
-        android:layout_gravity="center"
+        android:layout_gravity="top|center_horizontal"
 
         android:tint="@color/colorPrimary" />
 

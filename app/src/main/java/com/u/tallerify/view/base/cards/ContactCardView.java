@@ -101,8 +101,8 @@ public class ContactCardView extends CardView
     public void setAction(@Action final int action) {
         this.action = action;
         actionView.setImageResource(action == ACTION_ADD ?
-            R.drawable.ic_add_black_36dp :
-            R.drawable.ic_clear_black_36dp);
+            R.drawable.ic_add_circle_outline_black_36dp :
+            R.drawable.ic_remove_circle_outline_black_36dp);
     }
 
     @NonNull
