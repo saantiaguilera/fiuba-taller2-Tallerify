@@ -34,26 +34,7 @@ public class ChatController extends FlowController {
     @Nullable Graph graph;
 
     public ChatController() {
-        MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<User>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<User>>() {
-                @Override
-                public void call(final ReactiveModel<User> rxModel) {
-                    if (rxModel.model() != null && !rxModel.hasError()) {
-                        me = rxModel.model();
-                    }
-
-                    if (graph == null) {
-                        createGraph();
-
-                        if (graph != null && isAttached()) {
-                            onAttach(getView());
-                        }
-                    }
-                }
-            });
+        me = MeInteractor.instance().userSnapshot();
     }
 
     public @NonNull ChatController with(@NonNull User him) {

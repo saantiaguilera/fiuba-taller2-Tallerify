@@ -21,6 +21,10 @@ public class ReactiveModel<Model> {
         this.action = action;
     }
 
+    public boolean isModelSafe() {
+        return action == NO_ACTION && !hasError() && model != null;
+    }
+
     public boolean hasError() {
         return error != null;
     }

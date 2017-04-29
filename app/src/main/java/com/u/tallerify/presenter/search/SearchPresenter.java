@@ -13,10 +13,11 @@ import com.u.tallerify.networking.interactor.artist.ArtistInteractor;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.presenter.Presenter;
-import com.u.tallerify.supplier.home.card.HeaderCardSupplier;
-import com.u.tallerify.supplier.home.card.HorizontalCardSupplier;
-import com.u.tallerify.supplier.home.card.PlayableCardSupplier;
+import com.u.tallerify.supplier.card.HeaderCardSupplier;
+import com.u.tallerify.supplier.card.HorizontalCardSupplier;
+import com.u.tallerify.supplier.card.PlayableCardSupplier;
 import com.u.tallerify.utils.adapter.GenericAdapter;
+import es.dmoral.toasty.Toasty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -52,15 +53,18 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         observeNotifier();
         observeRepositories();
 
+        userSongs = MeInteractor.instance().songsSnapshot();
+        userArtists = MeInteractor.instance().artistsSnapshot();
+
         MeInteractor.instance().observeSongs()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<List<Song>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Song>>>() {
                 @Override
-                public void call(final ReactiveModel<List<Song>> listReactiveModel) {
-                    if (!listReactiveModel.hasError() && listReactiveModel.model() != null) {
-                        userSongs = listReactiveModel.model();
+                public void call(final ReactiveModel<List<Song>> rxModel) {
+                    if (rxModel.model() != null && !rxModel.hasError()) {
+                        userSongs = rxModel.model();
                     }
                 }
             });
@@ -71,9 +75,9 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
             .compose(this.<ReactiveModel<List<Artist>>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<List<Artist>>>() {
                 @Override
-                public void call(final ReactiveModel<List<Artist>> listReactiveModel) {
-                    if (!listReactiveModel.hasError() && listReactiveModel.model() != null) {
-                        userArtists = listReactiveModel.model();
+                public void call(final ReactiveModel<List<Artist>> rxModel) {
+                    if (rxModel.model() != null && !rxModel.hasError()) {
+                        userArtists = rxModel.model();
                     }
                 }
             });
@@ -173,6 +177,10 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         data.addAll(inflate("Albums", albums, null));
         data.addAll(inflate("Canciones", songs, userSongs));
 
+        if (data.isEmpty() && artists != null && songs != null) {
+            Toasty.warning(getContext(), "No se encontraron resultados para tu busqueda").show();
+        }
+        
         return data;
     }
 

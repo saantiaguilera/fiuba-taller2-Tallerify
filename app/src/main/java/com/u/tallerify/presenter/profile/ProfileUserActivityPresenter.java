@@ -10,7 +10,7 @@ import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.presenter.Presenter;
-import com.u.tallerify.supplier.home.card.PlayableCardSupplier;
+import com.u.tallerify.supplier.card.PlayableCardSupplier;
 import com.u.tallerify.utils.adapter.GenericAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,30 +28,42 @@ public class ProfileUserActivityPresenter extends Presenter<ProfileUserActivityC
         implements ProfileUserActivityContract.Presenter {
 
     @Nullable List<Song> activity;
+    @Nullable User me;
 
     public ProfileUserActivityPresenter() {
+        me = MeInteractor.instance().userSnapshot();
+
         MeInteractor.instance().observeUser()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
             .compose(this.<ReactiveModel<User>>bindToLifecycle())
             .subscribe(new Action1<ReactiveModel<User>>() {
                 @Override
-                public void call(final ReactiveModel<User> model) {
-                    if (model.model() != null && !model.hasError()) {
-                        UserInteractor.instance().activity(getContext(), model.model().id())
-                            .observeOn(Schedulers.io())
-                            .subscribeOn(Schedulers.io())
-                            .compose(ProfileUserActivityPresenter.this.<List<Song>>bindToLifecycle())
-                            .subscribe(new Action1<List<Song>>() {
-                                @Override
-                                public void call(final List<Song> songs) {
-                                    activity = songs;
-                                    requestRender();
-                                }
-                            }, Interactors.ACTION_ERROR);
+                public void call(final ReactiveModel<User> rxModel) {
+                    if (!rxModel.hasError() && rxModel.model() != null) {
+                        me = rxModel.model();
+                        requestActivity();
                     }
                 }
             });
+
+        requestActivity();
+    }
+
+    void requestActivity() {
+        if (me != null) {
+            UserInteractor.instance().activity(getContext(), me.id())
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .compose(ProfileUserActivityPresenter.this.<List<Song>>bindToLifecycle())
+                .subscribe(new Action1<List<Song>>() {
+                    @Override
+                    public void call(final List<Song> songs) {
+                        activity = songs;
+                        requestRender();
+                    }
+                }, Interactors.ACTION_ERROR);
+        }
     }
 
     @Override

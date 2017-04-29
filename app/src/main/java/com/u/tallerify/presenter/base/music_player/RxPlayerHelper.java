@@ -218,6 +218,7 @@ final class RxPlayerHelper {
                             public void call(final Throwable throwable) {
                                 // If something goes wrong, call it again
                                 subject.onNext(song);
+                                Interactors.showError(throwable);
                             }
                         });
                 }

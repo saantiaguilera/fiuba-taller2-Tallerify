@@ -5,9 +5,13 @@
     <string name="view_profile_last_activity_header_title">Actividad reciente</string>
     <string name="view_profile_contacts_header_title">Contactos</string>
 
-    <!-- Margins -->
+    <!-- Dimens -->
     <dimen name="view_profile_default_margin">8dp</dimen>
     <dimen name="view_chat_input_default_margin">8dp</dimen>
+    <dimen name="view_card_contact_radius">4dp</dimen>
+    <dimen name="view_card_contact_elevation">0dp</dimen>
+    <dimen name="view_card_contact_button_size">30dp</dimen>
+    <dimen name="view_card_contact_image_margin">10dp</dimen>
 
     <!-- Chat -->
     <dimen name="chat_input_height">48dp</dimen>

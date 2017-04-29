@@ -8,6 +8,7 @@
     <!-- Menu -->
     <string name="menu_home_search">Buscar</string>
     <string name="menu_home_profile">Perfil</string>
+    <string name="menu_profile_add_contacts">Contactos</string>
 
     <!-- Music player view -->
     <string name="view_music_player_up_next">UP NEXT</string>

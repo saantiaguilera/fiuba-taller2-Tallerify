@@ -8,6 +8,7 @@ import com.u.tallerify.contract.profile.ProfileUserContactsContract;
 import com.u.tallerify.controller.profile.ChatController;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
+import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.presenter.Presenter;
 import java.util.ArrayList;
@@ -27,19 +28,22 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
     @Nullable List<User> users;
 
     public ProfileUserContactsPresenter() {
-        MeInteractor.instance().observeUser()
-            .observeOn(Schedulers.computation())
-            .subscribeOn(Schedulers.io())
-            .compose(this.<ReactiveModel<User>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<User>>() {
-                @Override
-                public void call(final ReactiveModel<User> userReactiveModel) {
-                    if (userReactiveModel.model() != null && !userReactiveModel.hasError()) {
-                        users = userReactiveModel.model().contacts();
-                        requestRender();
+        if (MeInteractor.instance().userSnapshot() != null) {
+            users = MeInteractor.instance().userSnapshot().contacts();
+            MeInteractor.instance().observeUser()
+                .observeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.computation())
+                .compose(this.<ReactiveModel<User>>bindToLifecycle())
+                .subscribe(new Action1<ReactiveModel<User>>() {
+                    @Override
+                    public void call(final ReactiveModel<User> rxModel) {
+                        if (!rxModel.hasError() && rxModel.model() != null) {
+                            users = rxModel.model().contacts();
+                            requestRender();
+                        }
                     }
-                }
-            });
+                });
+        }
     }
 
     @Override

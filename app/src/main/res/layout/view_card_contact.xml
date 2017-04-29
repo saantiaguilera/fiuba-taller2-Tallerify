@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/view_card_contact_user_image"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_gravity="center"
+
+        android:layout_marginTop="@dimen/view_card_contact_image_margin"
+
+        fresco:actualImageScaleType="fitXY"
+        fresco:placeholderImage="@drawable/placeholder_user"
+        fresco:placeholderImageScaleType="fitXY"
+        fresco:failureImage="@drawable/error_song"
+        fresco:failureImageScaleType="fitXY"
+        fresco:roundAsCircle="true" />
+
+    <ImageView
+        android:id="@+id/view_card_contact_action"
+
+        android:layout_width="@dimen/view_card_contact_button_size"
+        android:layout_height="@dimen/view_card_contact_button_size"
+
+        android:layout_gravity="top|center_horizontal"
+
+        android:tint="@color/colorPrimary" />
+
+</merge>

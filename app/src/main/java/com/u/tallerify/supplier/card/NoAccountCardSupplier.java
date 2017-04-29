@@ -1,4 +1,4 @@
-package com.u.tallerify.supplier.home.card;
+package com.u.tallerify.supplier.card;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

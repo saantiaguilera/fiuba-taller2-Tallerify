@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import com.u.tallerify.contract.ContractPresenter;
 import com.u.tallerify.contract.ContractView;
 import com.u.tallerify.utils.CurrentPlay;
+import com.u.tallerify.view.base.music_player.MusicPlayerView;
 import java.util.List;
 import rx.Observable;
 
@@ -31,6 +32,7 @@ public interface MusicPlayerContract {
         void setRepeatMode(CurrentPlay.RepeatMode repeatMode);
         void setRating(int rating);
         void setFavorite(boolean favved);
+        void setMode(@NonNull MusicPlayerView.MODE mode);
         @NonNull Observable<Void> observeNextSongClicks();
         @NonNull Observable<Void> observePlayStateClicks();
         @NonNull Observable<Void> observePreviousSongClicks();
@@ -41,6 +43,7 @@ public interface MusicPlayerContract {
         @NonNull Observable<Integer> observeRatingSeeks();
         @NonNull Observable<Boolean> observeFavoriteClicks();
         @NonNull Observable<Integer> observePlaylistSkipClicks();
+        @NonNull MusicPlayerView.MODE currentMode();
 
     }
 

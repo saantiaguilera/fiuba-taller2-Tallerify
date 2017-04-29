@@ -1,6 +1,14 @@
 package com.u.tallerify.networking.interactor;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import com.google.firebase.crash.FirebaseCrash;
+import com.u.tallerify.R;
+import com.u.tallerify.utils.RouterInteractor;
+import es.dmoral.toasty.BuildConfig;
+import es.dmoral.toasty.Toasty;
 import rx.functions.Action1;
 
 /**
@@ -25,8 +33,31 @@ public final class Interactors {
    public static final Action1<Throwable> ACTION_ERROR = new Action1<Throwable>() {
        @Override
        public void call(final Throwable throwable) {
+           showError(throwable);
            FirebaseCrash.report(throwable);
        }
    };
+
+   public static void showError(@NonNull Throwable throwable) {
+       Toasty.error(
+           RouterInteractor.instance().mainRouter().getActivity(),
+           "Oops, parece que hubo un error interno!",
+           2500
+       ).show();
+
+       if (BuildConfig.DEBUG) {
+           showStackTrace(throwable);
+       }
+   }
+
+   static void showStackTrace(@NonNull Throwable throwable) {
+       NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(RouterInteractor.instance().mainRouter().getActivity())
+           .setSmallIcon(R.drawable.ic_launcher)
+           .setContentTitle("Error!")
+           .setContentText(throwable.getMessage());
+       NotificationManager mNotificationManager = (NotificationManager)
+           RouterInteractor.instance().mainRouter().getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+       mNotificationManager.notify(0, mBuilder.build());
+   }
 
 }
