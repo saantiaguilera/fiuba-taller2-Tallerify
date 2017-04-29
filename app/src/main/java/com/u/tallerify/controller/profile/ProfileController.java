@@ -15,7 +15,6 @@ import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
-import com.u.tallerify.controller.search.SearchController;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
@@ -96,6 +95,11 @@ public class ProfileController extends FlowController {
             .pushChangeHandler(new FadeChangeHandler())
             .popChangeHandler(new FadeChangeHandler(false)));
 
+        return true;
+    }
+
+    @Override
+    protected boolean hasOptionsMenu() {
         return true;
     }
 

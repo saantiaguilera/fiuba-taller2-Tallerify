@@ -1,12 +1,9 @@
 package com.u.tallerify.presenter.base.cards;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.u.tallerify.contract.base.cards.ContactCardContract;
 import com.u.tallerify.model.entity.User;
-import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.Interactors;
-import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.utils.adapter.GenericAdapter;
 import com.u.tallerify.view.base.cards.ContactCardView;
@@ -23,7 +20,6 @@ import static com.u.tallerify.view.base.cards.ContactCardView.ACTION_DELETE;
 public class ContactCardPresenter extends GenericAdapter.ItemPresenter<ContactCardContract.View>
         implements ContactCardContract.Presenter {
 
-    @Nullable User me;
     @NonNull User him;
     @ContactCardView.Action int status;
 
@@ -32,7 +28,6 @@ public class ContactCardPresenter extends GenericAdapter.ItemPresenter<ContactCa
     public ContactCardPresenter(@NonNull User him, @ContactCardView.Action int status) {
         this.him = him;
         this.status = status;
-        this.me = MeInteractor.instance().userSnapshot();
     }
 
     @Override
@@ -49,8 +44,8 @@ public class ContactCardPresenter extends GenericAdapter.ItemPresenter<ContactCa
                     requesting = true;
 
                     Observable<?> observable = status == ACTION_ADD ?
-                        UserInteractor.instance().follow(getContext(), me, him) :
-                        UserInteractor.instance().unfollow(getContext(), me, him);
+                        UserInteractor.instance().follow(getContext(), him) :
+                        UserInteractor.instance().unfollow(getContext(), him);
 
                     observable
                         .subscribeOn(Schedulers.io())
@@ -75,6 +70,7 @@ public class ContactCardPresenter extends GenericAdapter.ItemPresenter<ContactCa
             });
     }
 
+    @Override
     protected void onRender(@NonNull final ContactCardContract.View view) {
         view.setAction(status);
         view.setImage(him.pictures().get(0));

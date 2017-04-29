@@ -88,14 +88,14 @@ public final class UserInteractor {
             .activity(userId);
     }
 
-    public @NonNull Observable<User> follow(@NonNull Context context, @NonNull User me, @NonNull User him) {
+    public @NonNull Observable<User> follow(@NonNull Context context, @NonNull User him) {
         return RestClient.with(context).create(UserService.class)
-            .follow(me.id(), him.id());
+            .follow(him.id());
     }
 
-    public @NonNull Observable<User> unfollow(@NonNull Context context, @NonNull User me, final @NonNull User him) {
+    public @NonNull Observable<User> unfollow(@NonNull Context context, final @NonNull User him) {
         return RestClient.with(context).create(UserService.class)
-            .unfollow(me.id(), him.id())
+            .unfollow(him.id())
             .map(new Func1<Void, User>() {
                 @Override
                 public User call(final Void aVoid) {

@@ -2,7 +2,7 @@ package com.u.tallerify.presenter.profile;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.u.tallerify.contract.profile.ContactsContract;
+import com.u.tallerify.contract.abstracts.GenericGridContract;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
@@ -10,7 +10,10 @@ import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.presenter.Presenter;
 import com.u.tallerify.supplier.card.ContactCardSupplier;
 import com.u.tallerify.utils.adapter.GenericAdapter;
+import es.dmoral.toasty.Toasty;
+import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -21,15 +24,15 @@ import static com.u.tallerify.view.base.cards.ContactCardView.ACTION_DELETE;
 /**
  * Created by saguilera on 4/27/17.
  */
-public class ContactsPresenter extends Presenter<ContactsContract.View>
-        implements ContactsContract.Presenter {
+public class ContactsPresenter extends Presenter<GenericGridContract.View>
+        implements GenericGridContract.Presenter {
 
     @Nullable User me;
 
     @Nullable List<GenericAdapter.ItemSupplier> data;
 
     @Override
-    protected void onAttach(@NonNull final ContactsContract.View view) {
+    protected void onAttach(@NonNull final GenericGridContract.View view) {
         super.onAttach(view);
 
         me = MeInteractor.instance().userSnapshot();
@@ -57,35 +60,46 @@ public class ContactsPresenter extends Presenter<ContactsContract.View>
             .filter(new Func1<ReactiveModel<List<User>>, Boolean>() {
                 @Override
                 public Boolean call(final ReactiveModel<List<User>> listReactiveModel) {
-                    return listReactiveModel.isModelSafe();
+                    return listReactiveModel.isModelSafe() || listReactiveModel.action() == UserInteractor.ACTION_EMPTY_SEARCH;
                 }
             })
-            .flatMapIterable(new Func1<ReactiveModel<List<User>>, Iterable<User>>() {
+            .map(new Func1<ReactiveModel<List<User>>, List<User>>() {
                 @Override
-                public Iterable<User> call(final ReactiveModel<List<User>> listReactiveModel) {
+                public List<User> call(final ReactiveModel<List<User>> listReactiveModel) {
                     return listReactiveModel.model();
                 }
             })
-            .map(new Func1<User, GenericAdapter.ItemSupplier>() {
+            .subscribe(new Action1<List<User>>() {
                 @Override
-                public GenericAdapter.ItemSupplier call(final User user) {
-                    int status = isContact(user) ? ACTION_DELETE : ACTION_ADD;
+                public void call(final List<User> users) {
+                    if (users != null) {
+                        data = Observable.from(users)
+                            .map(new Func1<User, GenericAdapter.ItemSupplier>() {
+                                @Override
+                                public GenericAdapter.ItemSupplier call(final User user) {
+                                    int status = isContact(user) ? ACTION_DELETE : ACTION_ADD;
 
-                    return new ContactCardSupplier(getContext(), user, status);
-                }
-            })
-            .toList()
-            .subscribe(new Action1<List<GenericAdapter.ItemSupplier>>() {
-                @Override
-                public void call(final List<GenericAdapter.ItemSupplier> itemSuppliers) {
-                    data = itemSuppliers;
+                                    return new ContactCardSupplier(getContext(), user, status);
+                                }
+                            })
+                            .toList()
+                            .toBlocking()
+                            .first();
+
+                        if (data.isEmpty()) {
+                            Toasty.warning(getContext(), "No se encontraron resultados para tu busqueda").show();
+                        }
+                    } else {
+                        data = new ArrayList<>();
+                    }
+
                     requestRender();
                 }
             });
     }
 
     @Override
-    protected void onRender(@NonNull final ContactsContract.View view) {
+    protected void onRender(@NonNull final GenericGridContract.View view) {
         if (data != null) {
             view.setData(data);
             data = null;

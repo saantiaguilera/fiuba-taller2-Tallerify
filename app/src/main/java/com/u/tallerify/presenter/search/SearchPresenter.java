@@ -17,6 +17,7 @@ import com.u.tallerify.supplier.card.HeaderCardSupplier;
 import com.u.tallerify.supplier.card.HorizontalCardSupplier;
 import com.u.tallerify.supplier.card.PlayableCardSupplier;
 import com.u.tallerify.utils.adapter.GenericAdapter;
+import es.dmoral.toasty.Toasty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -175,6 +176,10 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         data.addAll(inflate("Artistas", artists, userArtists));
         data.addAll(inflate("Albums", albums, null));
         data.addAll(inflate("Canciones", songs, userSongs));
+
+        if (data.isEmpty() && artists != null && songs != null) {
+            Toasty.warning(getContext(), "No se encontraron resultados para tu busqueda").show();
+        }
 
         return data;
     }

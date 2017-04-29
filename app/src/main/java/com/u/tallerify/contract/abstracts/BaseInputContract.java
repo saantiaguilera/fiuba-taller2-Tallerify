@@ -14,6 +14,7 @@ public interface BaseInputContract {
     interface View extends ContractView {
 
         @NonNull Observable<String> observeInputs();
+        void requestSearchFocus();
 
     }
 

@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.base.cards.ContactCardContract;
@@ -35,7 +36,7 @@ public class ContactCardView extends CardView
     private static int bestDimen = 0;
 
     private @NonNull SimpleDraweeView imageView;
-    private @NonNull SimpleDraweeView actionView;
+    private @NonNull ImageView actionView;
 
     @Action int action;
 
@@ -60,10 +61,10 @@ public class ContactCardView extends CardView
             computeBestDimen());
         setLayoutParams(params);
 
-        setRadius(getResources().getDimensionPixelSize(R.dimen.view_card_song_radius));
-        setCardElevation(getResources().getDimensionPixelSize(R.dimen.view_card_song_elevation));
+        setRadius(computeBestDimen() / 2);
+        setCardElevation(getResources().getDimensionPixelSize(R.dimen.view_card_contact_elevation));
 
-        actionView = (SimpleDraweeView) findViewById(R.id.view_card_contact_action);
+        actionView = (ImageView) findViewById(R.id.view_card_contact_action);
         imageView = (SimpleDraweeView) findViewById(R.id.view_card_contact_user_image);
 
         actionView.setOnClickListener(new View.OnClickListener() {
@@ -99,11 +100,9 @@ public class ContactCardView extends CardView
     @Override
     public void setAction(@Action final int action) {
         this.action = action;
-        FrescoImageController.create()
-            .load(action == ACTION_ADD ?
-                R.drawable.ic_add_black_36dp :
-                R.drawable.ic_clear_black_36dp)
-            .into(actionView);
+        actionView.setImageResource(action == ACTION_ADD ?
+            R.drawable.ic_add_black_36dp :
+            R.drawable.ic_clear_black_36dp);
     }
 
     @NonNull

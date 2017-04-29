@@ -51,6 +51,7 @@ dependencies {
     compile misc.gif
     compile misc.fresco
     compile misc.facebook
+    compile misc.toasty
 
     compile rx.java
     compile rx.android

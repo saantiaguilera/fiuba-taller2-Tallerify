@@ -74,10 +74,11 @@ public class BaseInputView extends LinearLayout
                 editTextView.setText("");
             }
         });
+    }
 
-        InputMethodManager imm = (InputMethodManager) getContext().getApplicationContext()
-            .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editTextView, InputMethodManager.SHOW_IMPLICIT);
+    @Override
+    public void requestSearchFocus() {
+        editTextView.requestFocus();
     }
 
     @NonNull
