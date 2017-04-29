@@ -180,7 +180,7 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         if (data.isEmpty() && artists != null && songs != null) {
             Toasty.warning(getContext(), "No se encontraron resultados para tu busqueda").show();
         }
-
+        
         return data;
     }
 
