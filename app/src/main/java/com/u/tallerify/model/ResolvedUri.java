@@ -7,14 +7,14 @@ import android.support.annotation.NonNull;
  */
 public final class ResolvedUri {
 
-    private long songId;
+    private long trackId;
     private @NonNull String url;
 
     private ResolvedUri() {
     }
 
     public long songId() {
-        return songId;
+        return trackId;
     }
 
     @NonNull
