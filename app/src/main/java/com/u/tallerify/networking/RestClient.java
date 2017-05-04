@@ -35,10 +35,12 @@ import rx.schedulers.Schedulers;
  */
 public class RestClient {
 
+    private static final String BASE_API_VERSION = "api/";
+
     /**
      * Base url the endpoints will be hitting.
      */
-    private static final String BASE_URL = "https://app-api.herokuapp.com/";
+    private static final String BASE_URL = "https://tallerify-shared-server.herokuapp.com/" + BASE_API_VERSION;
 
     /**
      * Date format for serializing/deserializing objects

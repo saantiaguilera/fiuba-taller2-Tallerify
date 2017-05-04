@@ -18,8 +18,8 @@ public interface ArtistService {
     @GET("artists/{id}")
     Observable<Artist> artist(@Path("id") long artistId);
 
-    @GET("artists/trending")
-    Observable<List<Artist>> trendingArtists();
+    @GET("artists/recommended")
+    Observable<List<Artist>> recommendedArtists();
 
     @GET("artists/search")
     Observable<List<Artist>> queryArtists(@Query("query") String query);
