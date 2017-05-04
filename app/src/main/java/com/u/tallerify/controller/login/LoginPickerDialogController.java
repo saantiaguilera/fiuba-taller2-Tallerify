@@ -69,6 +69,7 @@ public class LoginPickerDialogController extends AlertDialogController {
         CredentialsInteractor.instance().createWithProvider(getApplicationContext(),
                 new CredentialsService.CreateCredentialForm(
                     result.getAccessToken().getToken(),
+                    result.getAccessToken().getUserId(),
                     AccessToken.Provider.FACEBOOK))
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())

@@ -16,7 +16,7 @@ import rx.Observable;
 @SuppressWarnings("unused")
 public interface CredentialsService {
 
-    String PATH_URL = "token";
+    String PATH_URL = "tokens";
 
     String GRANT_TYPE_CREATE = "assertion";
     String GRANT_TYPE_REFRESH = "refresh_token";
@@ -57,13 +57,15 @@ public interface CredentialsService {
      */
     class CreateCredentialForm implements Serializable {
 
-        private @NonNull String grantType = GRANT_TYPE_CREATE;
-        private @NonNull String assertion;
+        private @NonNull String userId;
+        private @NonNull String accessToken;
         private @NonNull Provider provider;
 
         public CreateCredentialForm(@NonNull String accessToken,
+            @NonNull String userId,
             @NonNull Provider provider) {
-            this.assertion = accessToken;
+            this.accessToken = accessToken;
+            this.userId = userId;
             this.provider = provider;
         }
 
