@@ -18,43 +18,47 @@ import okhttp3.ResponseBody;
  */
 public class MockInterceptor implements Interceptor {
 
+    private static final boolean ENABLED = true;
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Response response;
         String responseString = null;
 
-        final String url = chain.request().url().uri().toString();
+        if (ENABLED) {
+            final String url = chain.request().url().uri().toString();
 
-        if (url.contains("token")) {
-            responseString = Login.RESPONSE_LOGIN;
-        } else if (url.contains("popularity")) {
-            responseString = Song.RESPONSE_RATING;
-        } else if (url.contains("resolve/")) {
-            responseString = Song.RESPONSE_RESOLVED_URI;
-        } else if (url.contains("tracks/trending") || url.contains("me/tracks/favorites")
-            || url.contains("tracks/search") || url.contains("/activity") ||
-            (url.contains("/tracks") && (!url.contains("playlists/") && !url.contains("/tracks/")))) {
-            responseString = Song.RESPONSE_TRENDING_SONGS;
-        } else if (url.contains("track")) {
-            responseString = Song.RESPONSE_SONG;
-        } else if (url.contains("artists/trending") || url.contains("me/artists/favorites")
-            || url.contains("artists/search")
-            || url.contains("user/artist/favorite")) {
-            responseString = Artist.RESPONSE_ARTISTS_TRENDING;
-        } else if (url.contains("artist")) {
-            responseString = Artist.RESPONSE_ARTIST;
-        } else if (url.contains("me/playlists")) {
-            responseString = Playlist.RESPONSE_USER_PLAYLISTS;
-        } else if (url.contains("playlist")) {
-            responseString = Playlist.RESPONSE_USER_PLAYLIST;
-        } else if (url.contains("users/search")) {
-            responseString = User.RESPONSE_USERS;
-        } else if (url.contains("users/")) {
-            responseString = User.RESPONSE_USER;
-        }else if (url.contains("albums/search")) {
-            responseString = Album.RESPONSE_ALBUMS;
-        } else if (url.contains("albums")) {
-            responseString = Album.RESPONSE_ALBUM;
+            if (url.contains("token")) {
+                responseString = Login.RESPONSE_LOGIN;
+            } else if (url.contains("popularity")) {
+                responseString = Song.RESPONSE_RATING;
+            } else if (url.contains("resolve/")) {
+                responseString = Song.RESPONSE_RESOLVED_URI;
+            } else if (url.contains("tracks/trending") || url.contains("me/tracks/favorites")
+                || url.contains("tracks/search") || url.contains("/activity") ||
+                (url.contains("/tracks") && (!url.contains("playlists/") && !url.contains("/tracks/")))) {
+                responseString = Song.RESPONSE_TRENDING_SONGS;
+            } else if (url.contains("track")) {
+                responseString = Song.RESPONSE_SONG;
+            } else if (url.contains("artists/trending") || url.contains("me/artists/favorites")
+                || url.contains("artists/search")
+                || url.contains("user/artist/favorite")) {
+                responseString = Artist.RESPONSE_ARTISTS_TRENDING;
+            } else if (url.contains("artist")) {
+                responseString = Artist.RESPONSE_ARTIST;
+            } else if (url.contains("me/playlists")) {
+                responseString = Playlist.RESPONSE_USER_PLAYLISTS;
+            } else if (url.contains("playlist")) {
+                responseString = Playlist.RESPONSE_USER_PLAYLIST;
+            } else if (url.contains("users/search")) {
+                responseString = User.RESPONSE_USERS;
+            } else if (url.contains("users/")) {
+                responseString = User.RESPONSE_USER;
+            } else if (url.contains("albums/search")) {
+                responseString = Album.RESPONSE_ALBUMS;
+            } else if (url.contains("albums")) {
+                responseString = Album.RESPONSE_ALBUM;
+            }
         }
 
         if (responseString != null) {
