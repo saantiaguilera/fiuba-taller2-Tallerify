@@ -16,7 +16,7 @@ import rx.Observable;
 @SuppressWarnings("unused")
 public interface CredentialsService {
 
-    String PATH_URL = "token";
+    String PATH_URL = "tokens";
 
     String GRANT_TYPE_CREATE = "assertion";
     String GRANT_TYPE_REFRESH = "refresh_token";
