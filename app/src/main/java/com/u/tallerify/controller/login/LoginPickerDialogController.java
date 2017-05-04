@@ -79,7 +79,7 @@ public class LoginPickerDialogController extends AlertDialogController {
                 public void call(final AccessToken accessToken) {
                     if (accessToken != null) {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
-                        BussinessUtils.requestTrendings(getApplicationContext());
+                        BussinessUtils.requestRecommendations(getApplicationContext());
                     }
                 }
             }, Interactors.ACTION_ERROR);

@@ -35,12 +35,12 @@ public class BussinessUtils {
             .subscribe(ACTION_NEXT, ACTION_ERROR);
     }
 
-    public static void requestTrendings(@NonNull Context context) {
-        ArtistInteractor.instance().trendings(context)
+    public static void requestRecommendations(@NonNull Context context) {
+        ArtistInteractor.instance().recommendeds(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .subscribe(ACTION_NEXT, ACTION_ERROR);
-        SongInteractor.instance().trendings(context)
+        SongInteractor.instance().recommendeds(context)
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
             .subscribe(ACTION_NEXT, ACTION_ERROR);

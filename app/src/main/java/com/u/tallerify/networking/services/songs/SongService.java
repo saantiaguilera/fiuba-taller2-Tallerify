@@ -21,8 +21,8 @@ public interface SongService {
     @GET("tracks/{id}")
     Observable<Song> song(@Path("id") long id);
 
-    @GET("tracks/trending")
-    Observable<List<Song>> trendingSongs();
+    @GET("tracks/recommended")
+    Observable<List<Song>> recommendedSongs();
 
     @GET("tracks/search")
     Observable<List<Song>> querySongs(@Query("query") String query);
