@@ -72,7 +72,7 @@ public final class UserInteractor {
             if (!TextUtils.isEmpty(user.pictures().get(pos))) {
                 RequestBody requestBody = RequestBody.create(
                     MediaType.parse(MULTIPART_FORM_DATA), new File(user.pictures().get(pos)));
-                String key = "image";
+                String key = String.format("%1$s\"; filename=\"%1$s", "images_" + String.valueOf(pos + 1));
                 params.put(key, requestBody);
             }
         }
