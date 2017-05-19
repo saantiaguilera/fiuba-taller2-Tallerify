@@ -101,11 +101,17 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
                     return params == null && imageUrl != null;
                 }
             })
-            .flatMap(new Func1<Bundle, Observable<User>>() {
+            .doOnError(new Action1<Throwable>() {
                 @Override
-                public Observable<User> call(final Bundle bundle) {
+                public void call(final Throwable throwable) {
+                    params = null;
+                }
+            })
+            .subscribe(new Action1<Bundle>() {
+                @Override
+                public void call(final Bundle bundle) {
                     params = bundle; // TODO for security measures, password should be encrypted or saved in a secure storage
-                    return UserInteractor.instance()
+                    UserInteractor.instance()
                         .create(
                             getContext(),
                             new User.Builder()
@@ -119,19 +125,19 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
                                 .id(0)
                                 .build(),
                             bundle.getString(LoginNativeContract.KEY_PASSWORD)
-                        );
-                }
-            })
-            .doOnError(new Action1<Throwable>() {
-                @Override
-                public void call(final Throwable throwable) {
-                    params = null;
-                }
-            })
-            .subscribe(new Action1<User>() {
-                @Override
-                public void call(final User user) {
-                    login();
+                        )
+                        .doOnError(new Action1<Throwable>() {
+                            @Override
+                            public void call(final Throwable throwable) {
+                                params = null;
+                            }
+                        })
+                        .subscribe(new Action1<User>() {
+                            @Override
+                            public void call(final User user) {
+                                login();
+                            }
+                        }, Interactors.ACTION_ERROR);
                 }
             }, Interactors.ACTION_ERROR);
     }

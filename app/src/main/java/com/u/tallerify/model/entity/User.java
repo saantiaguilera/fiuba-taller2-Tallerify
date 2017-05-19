@@ -18,7 +18,7 @@ public class User extends Entity implements Serializable {
     private @Nullable String lastName;
     private @Nullable String country;
     private @Nullable String email;
-    private @Nullable Date birthday;
+    private @Nullable Date birthdate;
     private @Nullable List<String> images;
     private @Nullable List<User> contacts;
 
@@ -30,7 +30,7 @@ public class User extends Entity implements Serializable {
         super(builder);
         userName = builder.name;
         email = builder.email;
-        birthday = builder.birthday;
+        birthdate = builder.birthdate;
         images = builder.images;
         contacts = builder.contacts;
         firstName = builder.firstName;
@@ -39,7 +39,7 @@ public class User extends Entity implements Serializable {
     }
 
     public @Nullable Date birthday() {
-        return birthday;
+        return birthdate;
     }
 
     public @Nullable List<String> pictures() {
@@ -99,7 +99,7 @@ public class User extends Entity implements Serializable {
         if (email != null ? !email.equals(user.email) : user.email != null) {
             return false;
         }
-        if (birthday != null ? !birthday.equals(user.birthday) : user.birthday != null) {
+        if (birthdate != null ? !birthdate.equals(user.birthdate) : user.birthdate != null) {
             return false;
         }
         if (images != null ? !images.equals(user.images) : user.images != null) {
@@ -116,7 +116,7 @@ public class User extends Entity implements Serializable {
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
+        result = 31 * result + (birthdate != null ? birthdate.hashCode() : 0);
         result = 31 * result + (images != null ? images.hashCode() : 0);
         result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
         return result;
@@ -126,7 +126,7 @@ public class User extends Entity implements Serializable {
 
         @Nullable String name;
         @Nullable String email;
-        @Nullable Date birthday;
+        @Nullable Date birthdate;
         @Nullable List<User> contacts;
         @Nullable List<String> images;
         @Nullable String firstName;
@@ -165,7 +165,7 @@ public class User extends Entity implements Serializable {
         }
 
         public final @NonNull Builder birthday(@NonNull final Date birthday) {
-            this.birthday = birthday;
+            this.birthdate = birthday;
             return this;
         }
 
@@ -201,7 +201,7 @@ public class User extends Entity implements Serializable {
             boolean buildable = super.buildable();
             buildable &= name != null;
             buildable &= email != null;
-            buildable &= birthday != null;
+            buildable &= birthdate != null;
             buildable &= firstName != null;
             buildable &= lastName != null;
             buildable &= country != null;

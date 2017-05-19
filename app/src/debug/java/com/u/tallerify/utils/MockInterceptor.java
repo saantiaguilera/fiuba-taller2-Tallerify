@@ -1,5 +1,6 @@
 package com.u.tallerify.utils;
 
+import android.util.Log;
 import com.u.tallerify.mocks.Album;
 import com.u.tallerify.mocks.Artist;
 import com.u.tallerify.mocks.Login;
@@ -50,8 +51,6 @@ public class MockInterceptor implements Interceptor {
                 responseString = Playlist.RESPONSE_USER_PLAYLIST;
             } else if (url.contains("users/search")) {
                 responseString = User.RESPONSE_USERS;
-            } else if (url.contains("users/")) {
-                responseString = User.RESPONSE_USER;
             } else if (url.contains("albums/search")) {
                 responseString = Album.RESPONSE_ALBUMS;
             } else if (url.contains("albums")) {
@@ -69,7 +68,9 @@ public class MockInterceptor implements Interceptor {
                 .addHeader("content-type", "application/json")
                 .build();
         } else {
+            Log.w("Request", "Starting request...");
             response = chain.proceed(chain.request());
+            Log.w("Request", "Finished request. Response status code: " + response.code());
         }
 
         return response;

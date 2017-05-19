@@ -58,13 +58,13 @@ public interface CredentialsService {
     class CreateCredentialForm implements Serializable {
 
         private @NonNull String userId;
-        private @NonNull String accessToken;
+        private @NonNull String authToken;
         private @NonNull Provider provider;
 
         public CreateCredentialForm(@NonNull String accessToken,
             @NonNull String userId,
             @NonNull Provider provider) {
-            this.accessToken = accessToken;
+            this.authToken = accessToken;
             this.userId = userId;
             this.provider = provider;
         }

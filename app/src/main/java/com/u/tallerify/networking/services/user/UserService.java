@@ -31,7 +31,7 @@ public interface UserService {
     Observable<User> user(@Path("id") long id);
 
     @Multipart
-    @POST("users/")
+    @POST("users")
     Observable<User> create(@PartMap Map<String, RequestBody> params);
 
     @GET("users/{id}/activity")

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import rx.Observable;
 import rx.functions.Action0;
@@ -65,13 +66,13 @@ public final class UserInteractor {
 
         DateFormat format = SimpleDateFormat.getDateInstance(); // TODO if theres a custom date format, supply here
         String date = format.format(user.birthday());
-        params.put("birthday", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), date));
+        params.put("birthdate", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), date));
 
         for (int pos = 0; pos < user.pictures().size(); pos++) {
             if (!TextUtils.isEmpty(user.pictures().get(pos))) {
                 RequestBody requestBody = RequestBody.create(
                     MediaType.parse(MULTIPART_FORM_DATA), new File(user.pictures().get(pos)));
-                String key = String.format("%1$s\"; filename=\"%1$s", "photo_" + String.valueOf(pos + 1));
+                String key = "image";
                 params.put(key, requestBody);
             }
         }
