@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.u.tallerify.contract.login.LoginNativeContract;
-import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
@@ -13,7 +12,6 @@ import com.u.tallerify.networking.interactor.user.UserInteractor;
 import com.u.tallerify.networking.services.credentials.CredentialsService;
 import com.u.tallerify.presenter.Presenter;
 import java.util.Collections;
-import java.util.Date;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -119,7 +117,7 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
                                 .firstName(bundle.getString(LoginNativeContract.KEY_FIRSTNAME))
                                 .lastName(bundle.getString(LoginNativeContract.KEY_LASTNAME))
                                 .email(bundle.getString(LoginNativeContract.KEY_EMAIL))
-                                .birthday((Date) bundle.get(LoginNativeContract.KEY_BIRTHDAY))
+                                .birthday(bundle.getString(LoginNativeContract.KEY_BIRTHDAY))
                                 .country(bundle.getString(LoginNativeContract.KEY_COUNTRY))
                                 .pictures(Collections.singletonList(imageUrl))
                                 .id(0)
@@ -153,16 +151,16 @@ public class LoginNativeDialogPresenter extends Presenter<LoginNativeContract.Vi
             )
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .compose(LoginNativeDialogPresenter.this.<AccessToken>bindToLifecycle())
+            .compose(LoginNativeDialogPresenter.this.<String>bindToLifecycle())
             .doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
                     params = null;
                 }
             })
-            .doOnNext(new Action1<AccessToken>() {
+            .doOnNext(new Action1<String>() {
                 @Override
-                public void call(final AccessToken accessToken) {
+                public void call(final String accessToken) {
                     params = null;
                 }
             })

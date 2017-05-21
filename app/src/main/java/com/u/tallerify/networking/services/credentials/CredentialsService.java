@@ -1,8 +1,6 @@
 package com.u.tallerify.networking.services.credentials;
 
 import android.support.annotation.NonNull;
-import com.u.tallerify.model.AccessToken;
-import com.u.tallerify.model.AccessToken.Provider;
 import java.io.Serializable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -23,24 +21,24 @@ public interface CredentialsService {
     String GRANT_TYPE_LOGIN = "assertion";
 
     /**
-     * Post to create an AccessToken.
+     * Post to create an accessToken.
      *
      * #NO AUTH
      *
      * @return Application Access Token.
      */
     @POST(PATH_URL)
-    Observable<AccessToken> withProvider(@Body CreateCredentialForm body);
+    Observable<String> withProvider(@Body CreateCredentialForm body);
 
     /**
-     * Post to create an AccessToken
+     * Post to create an accessToken
      *
      * #NO AUTH
      *
      * @return Application Access Token
      */
     @POST(PATH_URL)
-    Observable<AccessToken> withNative(@Body CreateNativeForm body);
+    Observable<String> withNative(@Body CreateNativeForm body);
 
     /**
      * Post to refresh an access token
@@ -50,7 +48,7 @@ public interface CredentialsService {
      * @return Application refreshed Access Token
      */
     @POST(PATH_URL)
-    Observable<AccessToken> refresh(@Body RefreshCredentialForm body);
+    Observable<String> refresh(@Body RefreshCredentialForm body);
 
     /**
      * Class for the withProvider with request body
@@ -59,14 +57,11 @@ public interface CredentialsService {
 
         private @NonNull String userId;
         private @NonNull String authToken;
-        private @NonNull Provider provider;
 
         public CreateCredentialForm(@NonNull String accessToken,
-            @NonNull String userId,
-            @NonNull Provider provider) {
+            @NonNull String userId) {
             this.authToken = accessToken;
             this.userId = userId;
-            this.provider = provider;
         }
 
     }

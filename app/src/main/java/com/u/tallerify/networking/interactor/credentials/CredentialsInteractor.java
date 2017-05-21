@@ -2,7 +2,6 @@ package com.u.tallerify.networking.interactor.credentials;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.AccessTokenManager;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.RestClient;
@@ -28,7 +27,7 @@ public final class CredentialsInteractor {
 
     private static @NonNull CredentialsInteractor instance = new CredentialsInteractor();
 
-    @NonNull BehaviorSubject<ReactiveModel<AccessToken>> subject;
+    @NonNull BehaviorSubject<ReactiveModel<String>> subject;
 
     private CredentialsInteractor() {
         subject = BehaviorSubject.create();
@@ -38,13 +37,13 @@ public final class CredentialsInteractor {
         return instance;
     }
 
-    public void dispatchToken(@NonNull AccessToken token) {
+    public void dispatchToken(@NonNull String token) {
         subject.onNext(new ReactiveModel.Builder<>()
             .model(token)
             .build());
     }
 
-    public @NonNull Observable<ReactiveModel<AccessToken>> observeToken() {
+    public @NonNull Observable<ReactiveModel<String>> observeToken() {
         return subject;
     }
 
@@ -54,7 +53,7 @@ public final class CredentialsInteractor {
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
-    public @NonNull Observable<AccessToken> createWithProvider(final @NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
+    public @NonNull Observable<String> createWithProvider(final @NonNull Context context, @NonNull CredentialsService.CreateCredentialForm body) {
         return RestClient.with(context)
             .noAuth()
             .create(CredentialsService.class)
@@ -62,22 +61,22 @@ public final class CredentialsInteractor {
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<String>()
                         .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<String>()
                         .error(throwable)
                         .build());
                 }
-            }).doOnNext(new Action1<AccessToken>() {
+            }).doOnNext(new Action1<String>() {
                 @Override
-                public void call(final AccessToken accessToken) {
+                public void call(final String accessToken) {
                     AccessTokenManager.instance().write(context, accessToken);
-                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<String>()
                         .model(accessToken)
                         .build());
             }});
@@ -90,7 +89,7 @@ public final class CredentialsInteractor {
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
-    public @NonNull Observable<AccessToken> createWithNative(final @NonNull Context context, @NonNull CredentialsService.CreateNativeForm body) {
+    public @NonNull Observable<String> createWithNative(final @NonNull Context context, @NonNull CredentialsService.CreateNativeForm body) {
         return RestClient.with(context)
             .noAuth()
             .create(CredentialsService.class)
@@ -98,22 +97,22 @@ public final class CredentialsInteractor {
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<String>()
                         .action(ACTION_LOADING)
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<String>()
                         .error(throwable)
                         .build());
                 }
-            }).doOnNext(new Action1<AccessToken>() {
+            }).doOnNext(new Action1<String>() {
                 @Override
-                public void call(final AccessToken accessToken) {
+                public void call(final String accessToken) {
                     AccessTokenManager.instance().write(context, accessToken);
-                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<String>()
                         .model(accessToken)
                         .build());
                 }});
@@ -125,7 +124,7 @@ public final class CredentialsInteractor {
      *
      * If you need to right away handle something, add actions in the subscribing as you like.
      */
-    public @NonNull Observable<AccessToken> refresh(final @NonNull Context context, @NonNull CredentialsService.RefreshCredentialForm body) {
+    public @NonNull Observable<String> refresh(final @NonNull Context context, @NonNull CredentialsService.RefreshCredentialForm body) {
         return RestClient.with(context).create(CredentialsService.class)
             .refresh(body)
             .observeOn(AndroidSchedulers.mainThread())
@@ -133,22 +132,22 @@ public final class CredentialsInteractor {
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
-                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<String>()
                         .action(1) // TODO withProvider loading action
                         .build());
                 }
             }).doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(final Throwable throwable) {
-                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<String>()
                         .error(throwable)
                         .build());
                 }
-            }).doOnNext(new Action1<AccessToken>() {
+            }).doOnNext(new Action1<String>() {
                 @Override
-                public void call(final AccessToken accessToken) {
+                public void call(final String accessToken) {
                     AccessTokenManager.instance().write(context, accessToken);
-                    subject.onNext(new ReactiveModel.Builder<AccessToken>()
+                    subject.onNext(new ReactiveModel.Builder<String>()
                         .model(accessToken)
                         .build());
                 }});

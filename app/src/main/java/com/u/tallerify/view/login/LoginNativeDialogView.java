@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.login.LoginNativeContract;
+import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.utils.MetricsUtils;
 import com.u.tallerify.view.base.widget.InputTextView;
 import java.text.SimpleDateFormat;
@@ -92,7 +93,7 @@ public class LoginNativeDialogView extends LinearLayout
                     bundle.putString(LoginNativeContract.KEY_FIRSTNAME, nameField.getEditText().getText().toString());
                     bundle.putString(LoginNativeContract.KEY_LASTNAME, surnameField.getEditText().getText().toString());
                     bundle.putString(LoginNativeContract.KEY_EMAIL, emailField.getEditText().getText().toString());
-                    bundle.putSerializable(LoginNativeContract.KEY_BIRTHDAY, calendar.getTime());
+                    bundle.putString(LoginNativeContract.KEY_BIRTHDAY, birthdayField.getEditText().getText().toString());
                     bundle.putString(LoginNativeContract.KEY_COUNTRY, countryField.getEditText().getText().toString());
 
                     signupSubject.onNext(bundle);
@@ -256,7 +257,7 @@ public class LoginNativeDialogView extends LinearLayout
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, monthOfYear);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            birthdayField.setText(new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime()));
+            birthdayField.setText(new SimpleDateFormat(RestClient.DATE_FORMAT).format(calendar.getTime()));
         }
 
     };

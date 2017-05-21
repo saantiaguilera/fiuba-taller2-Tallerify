@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import com.google.gson.GsonBuilder;
 import com.u.tallerify.BuildConfig;
-import com.u.tallerify.model.AccessToken;
-import com.u.tallerify.networking.services.credentials.CredentialsService;
 import com.u.tallerify.utils.MockInterceptor;
 import com.u.tallerify.utils.StethoUtils;
 import java.io.File;
@@ -23,7 +21,6 @@ import okhttp3.Route;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.schedulers.Schedulers;
 
 /**
  * Utility class to with http services with the correct params.
@@ -45,7 +42,7 @@ public class RestClient {
     /**
      * Date format for serializing/deserializing objects
      */
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssz";
+    public static final String DATE_FORMAT = "MM/dd/yyyy";
 
     /**
      * Cache constants
@@ -102,29 +99,14 @@ public class RestClient {
             public Request authenticate(final Route route, final Response response) throws IOException {
                 if (!needsAuth) return null;
 
-                AccessToken accessToken = AccessTokenManager.instance().read(context);
+                String accessToken = AccessTokenManager.instance().read(context);
                 if (accessToken == null)
                     throw new IllegalStateException("Trying to auth with no available access token");
-
-                if (accessToken.hasExpired()) {
-                    accessToken = RestClient.with(context)
-                        .noAuth()
-                        .create(CredentialsService.class)
-                        .refresh(new CredentialsService.RefreshCredentialForm(accessToken.refreshToken()))
-                        .observeOn(Schedulers.immediate())
-                        .subscribeOn(Schedulers.immediate())
-                        .toBlocking()
-                        .first();
-                }
-
-                if (accessToken != null) {
-                    AccessTokenManager.instance().write(context, accessToken);
+                else {
                     return response.request().newBuilder()
-                        .addHeader("Authorization", accessToken.tokenType() + " " + accessToken.accessToken())
+                        .addHeader("Authorization", "Bearer " + accessToken)
                         .build();
                 }
-
-                return null;
             }
         };
     }
@@ -199,6 +181,7 @@ public class RestClient {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                     .setDateFormat(DATE_FORMAT)
+                    .registerTypeAdapterFactory(new RestDeserializer())
                     .create()))
                 .client(buildHttpClient())
                 .build()

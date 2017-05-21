@@ -4,7 +4,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.u.tallerify.contract.abstracts.GenericGridContract;
-import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.model.entity.Artist;
 import com.u.tallerify.model.entity.Playable;
 import com.u.tallerify.model.entity.Playlist;
@@ -159,11 +158,11 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
         CredentialsInteractor.instance().observeToken()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
+            .compose(this.<ReactiveModel<String>>bindToLifecycle())
             .debounce(200, TimeUnit.MILLISECONDS)
-            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+            .subscribe(new Action1<ReactiveModel<String>>() {
                 @Override
-                public void call(final ReactiveModel<AccessToken> accessTokenReactiveModel) {
+                public void call(final ReactiveModel<String> accessTokenReactiveModel) {
                     loggedIn = accessTokenReactiveModel.model() != null &&
                         accessTokenReactiveModel.action() == ReactiveModel.NO_ACTION;
 

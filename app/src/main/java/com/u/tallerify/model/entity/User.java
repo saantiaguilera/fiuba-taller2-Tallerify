@@ -3,7 +3,6 @@ package com.u.tallerify.model.entity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ public class User extends Entity implements Serializable {
     private @Nullable String lastName;
     private @Nullable String country;
     private @Nullable String email;
-    private @Nullable Date birthdate;
+    private @Nullable String birthdate;
     private @Nullable List<String> images;
     private @Nullable List<User> contacts;
 
@@ -38,7 +37,7 @@ public class User extends Entity implements Serializable {
         country = builder.country;
     }
 
-    public @Nullable Date birthday() {
+    public @Nullable String birthday() {
         return birthdate;
     }
 
@@ -126,7 +125,7 @@ public class User extends Entity implements Serializable {
 
         @Nullable String name;
         @Nullable String email;
-        @Nullable Date birthdate;
+        @Nullable String birthdate;
         @Nullable List<User> contacts;
         @Nullable List<String> images;
         @Nullable String firstName;
@@ -164,7 +163,7 @@ public class User extends Entity implements Serializable {
             return this;
         }
 
-        public final @NonNull Builder birthday(@NonNull final Date birthday) {
+        public final @NonNull Builder birthday(@NonNull final String birthday) {
             this.birthdate = birthday;
             return this;
         }

@@ -64,15 +64,13 @@ public final class UserInteractor {
         params.put("country", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), user.country()));
         params.put("email", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), user.email()));
 
-        DateFormat format = SimpleDateFormat.getDateInstance(); // TODO if theres a custom date format, supply here
-        String date = format.format(user.birthday());
-        params.put("birthdate", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), date));
+        params.put("birthdate", RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), user.birthday()));
 
         for (int pos = 0; pos < user.pictures().size(); pos++) {
             if (!TextUtils.isEmpty(user.pictures().get(pos))) {
                 RequestBody requestBody = RequestBody.create(
                     MediaType.parse(MULTIPART_FORM_DATA), new File(user.pictures().get(pos)));
-                String key = String.format("%1$s\"; filename=\"%1$s", "images_" + String.valueOf(pos + 1));
+                String key = String.format("%1$s\"; filename=\"%1$s", "avatar");
                 params.put(key, requestBody);
             }
         }
