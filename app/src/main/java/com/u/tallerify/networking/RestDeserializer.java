@@ -13,12 +13,10 @@ import java.io.IOException;
 /**
  * Created by saguilera on 5/21/17.
  */
-public class RestDeserializer
-    implements TypeAdapterFactory {
+public class RestDeserializer implements TypeAdapterFactory {
 
     @Override
     public <T> TypeAdapter<T> create(Gson gson, final TypeToken<T> type) {
-
         final TypeAdapter<T> delegate = gson.getDelegateAdapter(this, type);
         final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
 
@@ -34,7 +32,14 @@ public class RestDeserializer
 
                 if (jsonElement.isJsonObject()) {
                     JsonObject jsonObject = jsonElement.getAsJsonObject();
-                    if (jsonObject.entrySet().size() == 2) {
+
+                    if (jsonObject.entrySet().size() == 1){
+                        if (jsonObject.entrySet().iterator().next().getKey().equals("token")) {
+                            jsonElement = jsonObject.entrySet().iterator().next().getValue();
+                        }
+                    }
+
+                    if (jsonObject.entrySet().size() == 2 && jsonObject.has("metadata")) {
                         jsonObject.remove("metadata");
                         jsonElement = jsonObject.entrySet().iterator().next().getValue();
                     }
