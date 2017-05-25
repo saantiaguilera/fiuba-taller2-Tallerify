@@ -21,8 +21,8 @@ public interface ArtistService {
     @GET("artists/recommended")
     Observable<List<Artist>> recommendedArtists();
 
-    @GET("artists/search")
-    Observable<List<Artist>> queryArtists(@Query("query") String query);
+    @GET("artists")
+    Observable<List<Artist>> queryArtists(@Query("name") String query);
 
     @POST("me/artists/{artistId}/follow")
     Observable<Artist> followArtist(@Path("artistId") long artistId);

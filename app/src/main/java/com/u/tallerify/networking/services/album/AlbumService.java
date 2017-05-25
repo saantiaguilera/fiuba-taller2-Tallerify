@@ -16,8 +16,8 @@ public interface AlbumService {
     @GET("albums/{id}")
     Observable<Album> album(@Path("id") long albumId);
 
-    @GET("albums/search")
-    Observable<List<Album>> queryAlbums(@Query("query") String query);
+    @GET("albums")
+    Observable<List<Album>> queryAlbums(@Query("name") String query);
 
     @GET("albums/{albumId}/tracks")
     Observable<List<Song>> songs(@Path("albumId") long albumId);

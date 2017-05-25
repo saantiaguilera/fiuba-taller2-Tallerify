@@ -24,8 +24,8 @@ public interface SongService {
     @GET("tracks/recommended")
     Observable<List<Song>> recommendedSongs();
 
-    @GET("tracks/search")
-    Observable<List<Song>> querySongs(@Query("query") String query);
+    @GET("tracks")
+    Observable<List<Song>> querySongs(@Query("name") String query);
 
     @POST("tracks/{trackId}/like")
     Observable<Song> likeSong(@Path("trackId") long songId);
