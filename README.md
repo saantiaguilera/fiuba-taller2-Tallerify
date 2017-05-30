@@ -6,116 +6,12 @@ Tallerify is a "Spotify" Android client, for academic uses (its a work for the s
 
 [![Build Status](https://travis-ci.org/saantiaguilera/fiuba-taller-II-tallerify-android.svg?branch=develop)](https://travis-ci.org/saantiaguilera/fiuba-taller-II-tallerify-android)
 
-## Honour the JVM
+## Playstore look-a-like
 
-How to dance correctly:
-
-1. Swing left  : 〜(￣▽￣〜)
-
-2. Swing right : (〜￣▽￣)〜
-
-3. Repeat until song finishes.
-
-## Example
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
-
-〜(￣▽￣〜)
-
-(〜￣▽￣)〜
+<img src="http://i.imgur.com/gYYaFDJ.png" height="320"> <img src="http://i.imgur.com/cJN7kZj.png" height="320"> <img src="http://i.imgur.com/QoRc3QX.png" height="320"> <img src="http://i.imgur.com/JbPkJ8u.png" height="320">
 
 ## Run
 
-Dependencies should download automatically. Please ensure you are running with the latest android and google repository versions and you have gradle 3.4 / android 2.3
+Dependencies should download automatically. Please ensure you are running with the latest android and google repository versions and you have gradle 3.5 / android 2.3
 
 For building a release apk please run `./gradlew assembleRelease -PFirebaseServiceAccountFilePath=path`
