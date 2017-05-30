@@ -34,8 +34,8 @@ public class MockInterceptor implements Interceptor {
             } else if (url.contains("resolve/")) {
                 responseString = Song.RESPONSE_RESOLVED_URI;
             } else if (url.contains("tracks/recommended") || url.contains("me/tracks/favorites")
-                || url.contains("tracks/search") || url.contains("/activity") ||
-                (url.contains("/tracks") && (!url.contains("playlists/") && !url.contains("/tracks/")))) {
+                || url.contains("tracks/search") || url.contains("/activity") &&
+                (!url.contains("playlists/") && !url.contains("/tracks/"))) {
                 responseString = Song.RESPONSE_TRENDING_SONGS;
             } else if (url.contains("track")) {
                 responseString = Song.RESPONSE_SONG;

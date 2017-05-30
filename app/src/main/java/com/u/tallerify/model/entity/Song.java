@@ -10,17 +10,12 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Song extends Entity implements Playable {
 
-    private @Nullable String href;
     private @Nullable String name;
     private @Nullable Album album;
     private @Nullable List<Artist> artists;
 
     protected Song() {
         super();
-    }
-
-    public @Nullable String url() {
-        return href;
     }
 
     public @Nullable String name() {
@@ -49,9 +44,6 @@ public class Song extends Entity implements Playable {
 
         final Song song = (Song) o;
 
-        if (href != null ? !href.equals(song.href) : song.href != null) {
-            return false;
-        }
         if (name != null ? !name.equals(song.name) : song.name != null) {
             return false;
         }
@@ -64,7 +56,6 @@ public class Song extends Entity implements Playable {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (href != null ? href.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (album != null ? album.hashCode() : 0);
         result = 31 * result + (artists != null ? artists.hashCode() : 0);
