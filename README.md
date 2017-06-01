@@ -10,6 +10,10 @@ Tallerify is a "Spotify" Android client, for academic uses (its a work for the s
 
 <img src="http://i.imgur.com/gYYaFDJ.png" height="320"> <img src="http://i.imgur.com/cJN7kZj.png" height="320"> <img src="http://i.imgur.com/QoRc3QX.png" height="320"> <img src="http://i.imgur.com/JbPkJ8u.png" height="320">
 
+## Documentation
+
+For a full documentation of all the clases, you can see the [javadoc documentation](https://github.com/tallerify/fiuba-taller-II-tallerify-android/blob/develop/javadoc/index.html)
+
 ## Structure
 
 FMP is a monolythic single-activity native android app. It uses a lot of state-of-art dependencies (eg RxJava) and has some architecture and design patterns applied to. FMP supports any phone with at least api level 16 and with internet and gps access.
