@@ -69,6 +69,8 @@ public class LoginPickerDialogController extends AlertDialogController {
         CredentialsInteractor.instance().createWithProvider(getApplicationContext(),
                 new CredentialsService.CreateCredentialForm(
                     result.getAccessToken().getToken(),
+                    result.getAccessToken().getUserId(),
+
                     AccessToken.Provider.FACEBOOK))
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
@@ -78,7 +80,7 @@ public class LoginPickerDialogController extends AlertDialogController {
                 public void call(final AccessToken accessToken) {
                     if (accessToken != null) {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
-                        BussinessUtils.requestTrendings(getApplicationContext());
+                        BussinessUtils.requestRecommendations(getApplicationContext());
                     }
                 }
             }, Interactors.ACTION_ERROR);

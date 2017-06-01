@@ -19,6 +19,7 @@ import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.profile.ProfileController;
 import com.u.tallerify.controller.search.SearchController;
 import com.u.tallerify.model.AccessToken;
+import com.u.tallerify.networking.AccessTokenManager;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.presenter.home.HomePresenter;
@@ -46,7 +47,9 @@ public class HomeController extends FlowController {
     protected void onAttach(@NonNull final View view) {
         super.onAttach(view);
 
-        BussinessUtils.requestTrendings(getApplicationContext());
+        if (AccessTokenManager.instance().snapshot() != null) {
+            BussinessUtils.requestRecommendations(getApplicationContext());
+        }
 
         CredentialsInteractor.instance().observeToken()
             .observeOn(Schedulers.computation())

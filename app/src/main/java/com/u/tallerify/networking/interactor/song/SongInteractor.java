@@ -83,9 +83,9 @@ public final class SongInteractor {
                 }});
     }
 
-    public @NonNull Observable<List<Song>> trendings(@NonNull Context context) {
+    public @NonNull Observable<List<Song>> recommendeds(@NonNull Context context) {
         return RestClient.with(context).create(SongService.class)
-            .trendingSongs()
+            .recommendedSongs()
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
