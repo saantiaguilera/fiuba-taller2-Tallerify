@@ -12,7 +12,7 @@ Tallerify is a "Spotify" Android client, for academic uses (its a work for the s
 
 ## Documentation
 
-For a full documentation of all the clases, you can see the [javadoc documentation](https://github.com/tallerify/fiuba-taller-II-tallerify-android/blob/develop/javadoc/index.html)
+For a full documentation of all the clases, you can see the [javadoc documentation](http://htmlpreview.github.io/?https://github.com/tallerify/fiuba-taller-II-tallerify-android/blob/develop/javadoc/index.html)
 
 ## Structure
 
