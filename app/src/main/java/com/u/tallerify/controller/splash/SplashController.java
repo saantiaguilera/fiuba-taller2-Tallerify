@@ -56,8 +56,6 @@ public class SplashController extends FlowController {
             CredentialsInteractor.instance().dispatchToken(AccessTokenManager.instance().snapshot());
         }
 
-        BussinessUtils.requestTrendings(getActivity());
-
         Observable.timer(SPLASH_DEFAULT_TIME, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
