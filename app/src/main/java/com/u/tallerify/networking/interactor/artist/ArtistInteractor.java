@@ -82,9 +82,9 @@ public final class ArtistInteractor {
                 }});
     }
 
-    public @NonNull Observable<List<Artist>> trendings(@NonNull Context context) {
+    public @NonNull Observable<List<Artist>> recommendeds(@NonNull Context context) {
         return RestClient.with(context).create(ArtistService.class)
-            .trendingArtists()
+            .recommendedArtists()
             .doOnSubscribe(new Action0() {
                 @Override
                 public void call() {

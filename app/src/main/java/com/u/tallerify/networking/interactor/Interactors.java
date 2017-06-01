@@ -2,6 +2,8 @@ package com.u.tallerify.networking.interactor;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import com.google.firebase.crash.FirebaseCrash;
@@ -33,8 +35,13 @@ public final class Interactors {
    public static final Action1<Throwable> ACTION_ERROR = new Action1<Throwable>() {
        @Override
        public void call(final Throwable throwable) {
-           showError(throwable);
-           FirebaseCrash.report(throwable);
+           new Handler(Looper.getMainLooper()).postAtFrontOfQueue(new Runnable() {
+               @Override
+               public void run() {
+                   showError(throwable);
+                   FirebaseCrash.report(throwable);
+               }
+           });
        }
    };
 
