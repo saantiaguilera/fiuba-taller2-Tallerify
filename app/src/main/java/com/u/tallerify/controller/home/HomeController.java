@@ -33,7 +33,7 @@ public class HomeController extends FlowController {
 
     private @Nullable CoordinatorProvider provider;
 
-    boolean hasProfileIcon;
+    boolean isUserLogged;
 
     @NonNull
     @Override
@@ -60,9 +60,9 @@ public class HomeController extends FlowController {
                     if (!accessTokenReactiveModel.hasError() && accessTokenReactiveModel.model() != null) {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
 
-                        hasProfileIcon = true;
+                        isUserLogged = true;
                     } else {
-                        hasProfileIcon = false;
+                        isUserLogged = false;
                     }
 
                     getActivity().invalidateOptionsMenu();
@@ -86,7 +86,8 @@ public class HomeController extends FlowController {
     @Override
     public void onCreateOptionsMenu(@NonNull final Menu menu, @NonNull final MenuInflater inflater) {
         inflater.inflate(R.menu.menu_home, menu);
-        menu.findItem(R.id.menu_home_profile).setVisible(hasProfileIcon);
+        menu.findItem(R.id.menu_home_profile).setVisible(isUserLogged);
+        menu.findItem(R.id.menu_home_search).setVisible(isUserLogged);
     }
 
     @Override
