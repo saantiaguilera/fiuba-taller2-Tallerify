@@ -210,8 +210,9 @@ public final class SongInteractor {
     }
 
     public @NonNull Observable<ResolvedUri> resolve(@NonNull Context context, @NonNull final Song song) {
-        return RestClient.with(context).create(SongService.class)
-            .resolve(song.id());
+        return RestClient.with(context)
+            .create(SongService.class, RestClient.APP_SERVER_URL)
+            .resolve(song.externalId());
     }
 
 }

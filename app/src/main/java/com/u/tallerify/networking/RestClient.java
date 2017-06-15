@@ -37,7 +37,8 @@ public class RestClient {
     /**
      * Base url the endpoints will be hitting.
      */
-    private static final String BASE_URL = "https://tallerify-shared-server.herokuapp.com/" + BASE_API_VERSION;
+    public static final String SHARED_SERVER_URL = "https://tallerify-shared-server.herokuapp.com/" + BASE_API_VERSION;
+    public static final String APP_SERVER_URL = "52.27.130.90:8080/";
 
     /**
      * Date format for serializing/deserializing objects
@@ -174,10 +175,10 @@ public class RestClient {
          * @param service class to withProvider the instance for
          * @return Service instance for doing http request against.
          */
-        public @NonNull <T> T create(@NonNull final Class<T> service) {
+        public @NonNull <T> T create(@NonNull final Class<T> service, @NonNull String url) {
             // TODO Check performance improvement on having only one Retrofit instance always
             return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(url)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                     .setDateFormat(DATE_FORMAT)
@@ -186,6 +187,19 @@ public class RestClient {
                 .client(buildHttpClient())
                 .build()
                 .create(service);
+        }
+
+        /**
+         * Create a default retrofit instance with all the features and improvements every request
+         * should have.
+         *
+         * By default it will try to authenticate the request (unless specified).
+         *
+         * @param service class to withProvider the instance for
+         * @return Service instance for doing http request against.
+         */
+        public @NonNull <T> T create(@NonNull final Class<T> service) {
+            return create(service, SHARED_SERVER_URL);
         }
 
     }

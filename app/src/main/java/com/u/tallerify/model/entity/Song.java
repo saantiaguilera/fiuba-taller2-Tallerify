@@ -10,12 +10,17 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Song extends Entity implements Playable {
 
+    private long externalId;
     private @Nullable String name;
     private @Nullable Album album;
     private @Nullable List<Artist> artists;
 
     protected Song() {
         super();
+    }
+
+    public @Nullable long externalId() {
+        return externalId;
     }
 
     public @Nullable String name() {
@@ -44,6 +49,9 @@ public class Song extends Entity implements Playable {
 
         final Song song = (Song) o;
 
+        if (externalId != song.externalId) {
+            return false;
+        }
         if (name != null ? !name.equals(song.name) : song.name != null) {
             return false;
         }

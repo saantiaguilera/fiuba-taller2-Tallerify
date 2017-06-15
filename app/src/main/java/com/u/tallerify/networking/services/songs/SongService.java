@@ -40,7 +40,7 @@ public interface SongService {
     @GET("tracks/{trackId}/popularity")
     Observable<Rating> rateSong(@Path("trackId") long songId);
 
-    @GET("resolve/{trackId}")
+    @GET("tracks/{trackId}")
     Observable<ResolvedUri> resolve(@Path("trackId") long songId);
 
 }
