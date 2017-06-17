@@ -43,7 +43,7 @@ public interface UserService {
     @DELETE("users/{id}/follow")
     Observable<Void> unfollow(@Path("id") long hisId);
 
-    @GET("users/search")
-    Observable<List<User>> queryUsers(@Query("query") String query);
+    @GET("users")
+    Observable<List<User>> queryUsers(@Query("name") String query);
 
 }

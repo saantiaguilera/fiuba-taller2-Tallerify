@@ -12,13 +12,13 @@ import rx.Observable;
  */
 public interface MeService {
 
-    @GET("me/artists/favorites")
+    @GET("artists/me/favorites")
     Observable<List<Artist>> artists();
 
-    @GET("me/tracks/favorites")
+    @GET("tracks/me/favorites")
     Observable<List<Song>> songs();
 
-    @GET("me/playlists")
+    @GET("playlists/me")
     Observable<List<Playlist>> playlists();
 
 }
