@@ -200,7 +200,7 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
             @Nullable List<? extends Playable> favorites) {
         List<GenericAdapter.ItemSupplier> aux = new ArrayList<>();
 
-        if (list != null) {
+        if (list != null && !list.isEmpty()) {
             aux.add(new HeaderCardSupplier(getContext(), header));
 
             List<GenericAdapter.ItemSupplier> inners = new ArrayList<>();
