@@ -17,6 +17,7 @@ import com.u.tallerify.networking.interactor.song.SongInteractor;
 import com.u.tallerify.utils.CurrentPlay;
 import com.u.tallerify.utils.PlayUtils;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -218,7 +219,14 @@ final class RxPlayerHelper {
                             public void call(final Throwable throwable) {
                                 // If something goes wrong, call it again
                                 subject.onNext(song);
-                                Interactors.showError(throwable);
+                                Observable.just(null)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Action1<Object>() {
+                                        @Override
+                                        public void call(final Object o) {
+                                            Interactors.showError(throwable);
+                                        }
+                                    });
                             }
                         });
                 }

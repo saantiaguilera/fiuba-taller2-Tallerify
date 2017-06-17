@@ -161,14 +161,14 @@ public class LoginNativeDialogView extends LinearLayout
         if (userNameField.getEditText().getText().toString().isEmpty()) {
             userNameField.setError(getResources().getString(R.string.view_dialog_login_error_required));
         } else {
-            if (!userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_]+", "").isEmpty()) {
+            if (!userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_0-9\\-\\.]+", "").isEmpty()) {
                 userNameField.setError(getResources().getString(R.string.view_dialog_login_error_illegal_username));
             }
         }
 
         if (passwordField.getEditText().getText().toString().isEmpty()) {
             passwordField.setError(getResources().getString(R.string.view_dialog_login_error_required));
-        } else if (passwordField.getEditText().getText().toString().length() < 8) {
+        } else if (passwordField.getEditText().getText().toString().length() < 4) {
             passwordField.setError(getResources().getString(R.string.view_dialog_login_error_short_password));
         }
 
