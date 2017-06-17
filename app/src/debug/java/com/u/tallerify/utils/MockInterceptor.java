@@ -68,9 +68,9 @@ public class MockInterceptor implements Interceptor {
                 .addHeader("content-type", "application/json")
                 .build();
         } else {
-            Log.w("Request", "Starting request...");
+            Log.w("Request", "Starting request: " + chain.request().toString());
             response = chain.proceed(chain.request());
-            Log.w("Request", "Finished request. Response status code: " + response.code());
+            Log.w("Request", "Finished request: " + response.toString());
         }
 
         return response;
