@@ -24,10 +24,10 @@ public interface ArtistService {
     @GET("artists")
     Observable<List<Artist>> queryArtists(@Query("name") String query);
 
-    @POST("me/artists/{artistId}/follow")
+    @POST("artists/{artistId}/follow")
     Observable<Artist> followArtist(@Path("artistId") long artistId);
 
-    @DELETE("me/artists/{artistId}/follow")
+    @DELETE("artists/{artistId}/follow")
     Observable<Void> unfollowArtist(@Path("artistId") long artistId);
 
     @GET("artists/{artistId}/tracks")
