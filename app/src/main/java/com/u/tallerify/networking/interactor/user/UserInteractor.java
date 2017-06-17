@@ -81,12 +81,6 @@ public final class UserInteractor {
             .create(params);
     }
 
-    public @NonNull Observable<List<Song>> activity(@NonNull Context context, long userId) {
-        return RestClient.with(context)
-            .create(UserService.class)
-            .activity(userId);
-    }
-
     public @NonNull Observable<User> follow(@NonNull Context context, @NonNull User him) {
         return RestClient.with(context).create(UserService.class)
             .follow(him.id());

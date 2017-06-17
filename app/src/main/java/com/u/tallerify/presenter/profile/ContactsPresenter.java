@@ -14,6 +14,7 @@ import es.dmoral.toasty.Toasty;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -87,7 +88,14 @@ public class ContactsPresenter extends Presenter<GenericGridContract.View>
                             .first();
 
                         if (data.isEmpty()) {
-                            Toasty.warning(getContext(), "No se encontraron resultados para tu busqueda").show();
+                            Observable.just(null)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<Object>() {
+                                    @Override
+                                    public void call(final Object o) {
+                                        Toasty.warning(getContext(), "No se encontraron resultados para tu busqueda").show();
+                                    }
+                                });
                         }
                     } else {
                         data = new ArrayList<>();

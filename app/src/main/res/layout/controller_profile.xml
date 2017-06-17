@@ -28,12 +28,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.u.tallerify.view.profile.ProfileUserActivityView
-            android:id="@+id/controller_profile_activity"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <com.u.tallerify.view.profile.ProfileUserContactsView
             android:id="@+id/controller_profile_contacts"
 

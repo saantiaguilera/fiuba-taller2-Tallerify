@@ -232,7 +232,7 @@ public class HomePresenter extends Presenter<GenericGridContract.View>
             @Modifiers int modifiers) {
         List<GenericAdapter.ItemSupplier> aux = new ArrayList<>();
 
-        if (list != null) {
+        if (list != null && !list.isEmpty()) {
             aux.add(new HeaderCardSupplier(getContext(), header));
 
             List<GenericAdapter.ItemSupplier> inners = new ArrayList<>();

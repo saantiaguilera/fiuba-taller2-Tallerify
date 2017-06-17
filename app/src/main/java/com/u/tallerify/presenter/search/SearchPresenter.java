@@ -21,6 +21,8 @@ import es.dmoral.toasty.Toasty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -178,7 +180,14 @@ public class SearchPresenter extends Presenter<GenericGridContract.View>
         data.addAll(inflate("Canciones", songs, userSongs));
 
         if (data.isEmpty() && artists != null && songs != null) {
-            Toasty.warning(getContext(), "No se encontraron resultados para tu busqueda").show();
+            Observable.just(null)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(final Object o) {
+                        Toasty.warning(getContext(), "No se encontraron resultados para tu busqueda").show();
+                    }
+                });
         }
         
         return data;

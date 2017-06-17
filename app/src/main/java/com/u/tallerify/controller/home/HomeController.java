@@ -59,6 +59,7 @@ public class HomeController extends FlowController {
                 public void call(final ReactiveModel<String> accessTokenReactiveModel) {
                     if (!accessTokenReactiveModel.hasError() && accessTokenReactiveModel.model() != null) {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
+                        BussinessUtils.requestRecommendations(getApplicationContext());
 
                         isUserLogged = true;
                     } else {

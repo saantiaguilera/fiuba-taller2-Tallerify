@@ -34,13 +34,10 @@ public interface UserService {
     @POST("users")
     Observable<User> create(@PartMap Map<String, RequestBody> params);
 
-    @GET("users/{id}/activity")
-    Observable<List<Song>> activity(@Path("id") long id);
-
-    @POST("users/{id}/follow")
+    @POST("users/me/contacts/{id}")
     Observable<User> follow(@Path("id") long hisId);
 
-    @DELETE("users/{id}/follow")
+    @DELETE("users/me/contacts/{id}")
     Observable<Void> unfollow(@Path("id") long hisId);
 
     @GET("users")

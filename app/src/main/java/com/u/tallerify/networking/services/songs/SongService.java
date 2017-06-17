@@ -27,10 +27,10 @@ public interface SongService {
     @GET("tracks")
     Observable<List<Song>> querySongs(@Query("name") String query);
 
-    @POST("tracks/{trackId}/like")
+    @POST("tracks/me/{trackId}/like")
     Observable<Song> likeSong(@Path("trackId") long songId);
 
-    @DELETE("tracks/{trackId}/like")
+    @DELETE("tracks/me/{trackId}/like")
     Observable<Void> dislikeSong(@Path("trackId") long songId);
 
     @FormUrlEncoded
