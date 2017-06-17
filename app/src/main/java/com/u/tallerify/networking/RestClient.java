@@ -38,7 +38,7 @@ public class RestClient {
      * Base url the endpoints will be hitting.
      */
     public static final String SHARED_SERVER_URL = "https://tallerify-shared-server.herokuapp.com/" + BASE_API_VERSION;
-    public static final String APP_SERVER_URL = "52.27.130.90:8080/";
+    public static final String APP_SERVER_URL = "http://52.27.130.90:8080/";
 
     /**
      * Date format for serializing/deserializing objects
