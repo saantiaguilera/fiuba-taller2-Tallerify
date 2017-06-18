@@ -167,9 +167,15 @@ public final class SongInteractor {
         }
     }
 
-    public @NonNull Observable<Song> like(@NonNull Context context, @NonNull Song song) {
+    public @NonNull Observable<Song> like(@NonNull Context context, @NonNull final Song song) {
         return RestClient.with(context).create(SongService.class)
-            .likeSong(song.id());
+            .likeSong(song.id())
+            .map(new Func1<Void, Song>() {
+                @Override
+                public Song call(final Void aVoid) {
+                    return song;
+                }
+            });
     }
 
     public @NonNull Observable<Song> dislike(@NonNull Context context, @NonNull final Song song) {

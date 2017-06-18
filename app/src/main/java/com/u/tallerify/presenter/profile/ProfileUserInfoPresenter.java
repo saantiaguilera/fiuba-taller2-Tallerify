@@ -40,7 +40,11 @@ public class ProfileUserInfoPresenter extends Presenter<ProfileUserInfoContract.
     protected void onRender(@NonNull ProfileUserInfoContract.View view) {
         if (me != null) {
             view.setUserName(me.name());
-            view.setUserImage(me.pictures().get(0));
+
+            if (me.pictures() != null && !me.pictures().isEmpty()) {
+                view.setUserImage(me.pictures().get(0));
+            }
+
             view.setUserLastLocation(me.country());
         }
     }

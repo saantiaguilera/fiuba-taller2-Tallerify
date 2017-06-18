@@ -25,7 +25,7 @@ public interface ArtistService {
     Observable<List<Artist>> queryArtists(@Query("name") String query);
 
     @POST("artists/me/{artistId}/follow")
-    Observable<Artist> followArtist(@Path("artistId") long artistId);
+    Observable<Void> followArtist(@Path("artistId") long artistId);
 
     @DELETE("artists/me/{artistId}/follow")
     Observable<Void> unfollowArtist(@Path("artistId") long artistId);

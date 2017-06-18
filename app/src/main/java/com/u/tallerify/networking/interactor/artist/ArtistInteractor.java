@@ -110,7 +110,13 @@ public final class ArtistInteractor {
 
     public @NonNull Observable<Artist> follow(@NonNull Context context, final @NonNull Artist artist) {
         return RestClient.with(context).create(ArtistService.class)
-            .followArtist(artist.id());
+            .followArtist(artist.id())
+            .map(new Func1<Void, Artist>() {
+                @Override
+                public Artist call(final Void aVoid) {
+                    return artist;
+                }
+            });
     }
 
     public @NonNull Observable<Artist> unfollow(@NonNull Context context, final @NonNull Artist artist) {

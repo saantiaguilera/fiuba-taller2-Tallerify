@@ -81,9 +81,15 @@ public final class UserInteractor {
             .create(params);
     }
 
-    public @NonNull Observable<User> follow(@NonNull Context context, @NonNull User him) {
+    public @NonNull Observable<User> follow(@NonNull Context context, @NonNull final User him) {
         return RestClient.with(context).create(UserService.class)
-            .follow(him.id());
+            .follow(him.id())
+            .map(new Func1<Void, User>() {
+                @Override
+                public User call(final Void aVoid) {
+                    return him;
+                }
+            });
     }
 
     public @NonNull Observable<User> unfollow(@NonNull Context context, final @NonNull User him) {

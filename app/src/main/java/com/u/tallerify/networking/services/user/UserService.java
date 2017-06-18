@@ -35,7 +35,7 @@ public interface UserService {
     Observable<User> create(@PartMap Map<String, RequestBody> params);
 
     @POST("users/me/contacts/{id}")
-    Observable<User> follow(@Path("id") long hisId);
+    Observable<Void> follow(@Path("id") long hisId);
 
     @DELETE("users/me/contacts/{id}")
     Observable<Void> unfollow(@Path("id") long hisId);

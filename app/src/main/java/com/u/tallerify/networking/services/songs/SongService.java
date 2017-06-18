@@ -28,7 +28,7 @@ public interface SongService {
     Observable<List<Song>> querySongs(@Query("name") String query);
 
     @POST("tracks/me/{trackId}/like")
-    Observable<Song> likeSong(@Path("trackId") long songId);
+    Observable<Void> likeSong(@Path("trackId") long songId);
 
     @DELETE("tracks/me/{trackId}/like")
     Observable<Void> dislikeSong(@Path("trackId") long songId);
