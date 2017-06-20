@@ -11,7 +11,6 @@ import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.controller.abstracts.AlertDialogController;
-import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
@@ -36,10 +35,10 @@ public class LoginPickerDialogController extends AlertDialogController {
         CredentialsInteractor.instance().observeToken()
             .subscribeOn(Schedulers.computation())
             .observeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+            .compose(this.<ReactiveModel<String>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<String>>() {
                 @Override
-                public void call(final ReactiveModel<AccessToken> rxModel) {
+                public void call(final ReactiveModel<String> rxModel) {
                     if (!rxModel.hasError() && rxModel.model() != null) {
                         dismissDialog();
                     }
@@ -69,15 +68,13 @@ public class LoginPickerDialogController extends AlertDialogController {
         CredentialsInteractor.instance().createWithProvider(getApplicationContext(),
                 new CredentialsService.CreateCredentialForm(
                     result.getAccessToken().getToken(),
-                    result.getAccessToken().getUserId(),
-
-                    AccessToken.Provider.FACEBOOK))
+                    result.getAccessToken().getUserId()))
             .observeOn(Schedulers.io())
             .subscribeOn(Schedulers.io())
-            .compose(this.<AccessToken>bindToLifecycle())
-            .subscribe(new Action1<AccessToken>() {
+            .compose(this.<String>bindToLifecycle())
+            .subscribe(new Action1<String>() {
                 @Override
-                public void call(final AccessToken accessToken) {
+                public void call(final String accessToken) {
                     if (accessToken != null) {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
                         BussinessUtils.requestRecommendations(getApplicationContext());

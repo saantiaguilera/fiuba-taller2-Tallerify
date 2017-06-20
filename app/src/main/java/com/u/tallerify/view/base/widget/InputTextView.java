@@ -228,8 +228,12 @@ public final class InputTextView extends LinearLayout {
      */
     public void setError(final String error) {
         if (isEnabled()) {
-            container.setErrorEnabled(!TextUtils.isEmpty(error));
-            container.setError(error);
+            try {
+                container.setErrorEnabled(!TextUtils.isEmpty(error));
+                container.setError(error);
+            } catch (UnsupportedOperationException ex) {
+                // Silent
+            }
         }
     }
 

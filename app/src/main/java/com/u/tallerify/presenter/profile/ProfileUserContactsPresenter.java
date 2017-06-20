@@ -85,7 +85,9 @@ public class ProfileUserContactsPresenter extends Presenter<ProfileUserContactsC
                 .map(new Func1<User, String>() {
                     @Override
                     public String call(final User user) {
-                        return user.pictures().get(0);
+                        return user.pictures() != null && !user.pictures().isEmpty() ?
+                            user.pictures().get(0) :
+                            null;
                     }
                 })
                 .toList()

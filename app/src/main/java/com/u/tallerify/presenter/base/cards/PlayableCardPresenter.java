@@ -133,20 +133,22 @@ public class PlayableCardPresenter extends GenericAdapter.ItemPresenter<Playable
             .subscribe(new Action1<List<Song>>() {
                 @Override
                 public void call(final List<Song> songs) {
-                    Song currentSong = songs.get(0);
-                    songs.remove(0);
+                    if (!songs.isEmpty()) {
+                        Song currentSong = songs.get(0);
+                        songs.remove(0);
 
-                    CurrentPlay.Builder builder;
-                    if (CurrentPlay.instance() == null) {
-                        builder = CurrentPlay.defaults(getContext());
-                    } else {
-                        builder = CurrentPlay.instance().newBuilder();
+                        CurrentPlay.Builder builder;
+                        if (CurrentPlay.instance() == null) {
+                            builder = CurrentPlay.defaults(getContext());
+                        } else {
+                            builder = CurrentPlay.instance().newBuilder();
+                        }
+                        builder.playlist(songs)
+                            .song(currentSong)
+                            .time(0)
+                            .playState(CurrentPlay.PlayState.PLAYING)
+                            .build();
                     }
-                    builder.playlist(songs)
-                        .song(currentSong)
-                        .time(0)
-                        .playState(CurrentPlay.PlayState.PLAYING)
-                        .build();
                 }
             });
     }

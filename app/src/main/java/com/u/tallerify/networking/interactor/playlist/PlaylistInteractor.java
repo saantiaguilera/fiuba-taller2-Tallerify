@@ -73,7 +73,7 @@ public class PlaylistInteractor {
 
     public @NonNull Observable<Playlist> create(@NonNull Context context, @NonNull Playlist playlist) {
         return RestClient.with(context).create(PlaylistService.class)
-            .create(playlist.name(), playlist.description(), playlist.creator().id());
+            .create(playlist);
     }
 
     public @NonNull Observable<Playlist> delete(@NonNull Context context, @NonNull final Playlist playlist) {

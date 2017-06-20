@@ -4,14 +4,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.u.tallerify.contract.playlist.AddToPlaylistContract;
 import com.u.tallerify.model.entity.Playlist;
+import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.model.entity.User;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.networking.interactor.playlist.PlaylistInteractor;
 import com.u.tallerify.presenter.Presenter;
+import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -52,6 +55,7 @@ public class AddToPlaylistPresenter extends Presenter<AddToPlaylistContract.View
                             new Playlist.Builder()
                                 .name(name)
                                 .description("")
+                                .tracks(new ArrayList<Song>())
                                 .owner(me)
                                 .id(0)
                                 .build())
@@ -69,7 +73,14 @@ public class AddToPlaylistPresenter extends Presenter<AddToPlaylistContract.View
                             public void call(final Throwable throwable) {
                                 inputEnabled = true;
                                 requestRender();
-                                Interactors.showError(throwable);
+                                Observable.just(null)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Action1<Object>() {
+                                        @Override
+                                        public void call(final Object o) {
+                                            Interactors.showError(throwable);
+                                        }
+                                    });
                             }
                         });
                 }

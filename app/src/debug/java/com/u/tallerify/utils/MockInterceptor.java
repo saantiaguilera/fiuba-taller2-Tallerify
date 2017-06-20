@@ -1,5 +1,6 @@
 package com.u.tallerify.utils;
 
+import android.util.Log;
 import com.u.tallerify.mocks.Album;
 import com.u.tallerify.mocks.Artist;
 import com.u.tallerify.mocks.Login;
@@ -18,7 +19,7 @@ import okhttp3.ResponseBody;
  */
 public class MockInterceptor implements Interceptor {
 
-    private static final boolean ENABLED = true;
+    private static final boolean ENABLED = false;
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -33,8 +34,8 @@ public class MockInterceptor implements Interceptor {
             } else if (url.contains("resolve/")) {
                 responseString = Song.RESPONSE_RESOLVED_URI;
             } else if (url.contains("tracks/recommended") || url.contains("me/tracks/favorites")
-                || url.contains("tracks/search") || url.contains("/activity") ||
-                (url.contains("/tracks") && (!url.contains("playlists/") && !url.contains("/tracks/")))) {
+                || url.contains("tracks/search") || url.contains("/activity") &&
+                (!url.contains("playlists/") && !url.contains("/tracks/"))) {
                 responseString = Song.RESPONSE_TRENDING_SONGS;
             } else if (url.contains("track")) {
                 responseString = Song.RESPONSE_SONG;
@@ -50,8 +51,6 @@ public class MockInterceptor implements Interceptor {
                 responseString = Playlist.RESPONSE_USER_PLAYLIST;
             } else if (url.contains("users/search")) {
                 responseString = User.RESPONSE_USERS;
-            } else if (url.contains("users/")) {
-                responseString = User.RESPONSE_USER;
             } else if (url.contains("albums/search")) {
                 responseString = Album.RESPONSE_ALBUMS;
             } else if (url.contains("albums")) {
@@ -69,7 +68,9 @@ public class MockInterceptor implements Interceptor {
                 .addHeader("content-type", "application/json")
                 .build();
         } else {
+            Log.w("Request", "Starting request: " + chain.request().toString());
             response = chain.proceed(chain.request());
+            Log.w("Request", "Finished request: " + response.toString());
         }
 
         return response;

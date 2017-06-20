@@ -167,9 +167,15 @@ public final class SongInteractor {
         }
     }
 
-    public @NonNull Observable<Song> like(@NonNull Context context, @NonNull Song song) {
+    public @NonNull Observable<Song> like(@NonNull Context context, @NonNull final Song song) {
         return RestClient.with(context).create(SongService.class)
-            .likeSong(song.id());
+            .likeSong(song.id())
+            .map(new Func1<Void, Song>() {
+                @Override
+                public Song call(final Void aVoid) {
+                    return song;
+                }
+            });
     }
 
     public @NonNull Observable<Song> dislike(@NonNull Context context, @NonNull final Song song) {
@@ -185,7 +191,12 @@ public final class SongInteractor {
 
     public @NonNull Observable<Rating> rate(@NonNull Context context, @NonNull final Song song, int rate) {
         return RestClient.with(context).create(SongService.class)
-            .rateSong(song.id(), rate)
+            .rateSong(
+                song.id(),
+                new Rating.Builder()
+                    .rating(rate)
+                    .build()
+            )
             .map(new Func1<Rating, Rating>() {
                 @Override
                 public Rating call(final Rating rating) {
@@ -210,8 +221,9 @@ public final class SongInteractor {
     }
 
     public @NonNull Observable<ResolvedUri> resolve(@NonNull Context context, @NonNull final Song song) {
-        return RestClient.with(context).create(SongService.class)
-            .resolve(song.id());
+        return RestClient.with(context)
+            .create(SongService.class, RestClient.APP_SERVER_URL)
+            .resolve(song.externalId());
     }
 
 }

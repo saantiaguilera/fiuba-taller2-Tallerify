@@ -46,11 +46,14 @@ public final class Interactors {
    };
 
    public static void showError(@NonNull Throwable throwable) {
-       Toasty.error(
-           RouterInteractor.instance().mainRouter().getActivity(),
-           "Oops, parece que hubo un error interno!",
-           2500
-       ).show();
+       Context context = RouterInteractor.instance().mainRouter().getActivity();
+       if (context != null) {
+           Toasty.error(
+               context,
+               "Oops, parece que hubo un error interno!",
+               2500
+           ).show();
+       }
 
        if (BuildConfig.DEBUG) {
            showStackTrace(throwable);

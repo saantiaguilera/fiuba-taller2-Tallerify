@@ -7,7 +7,6 @@ import com.facebook.login.LoginResult;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.login.LoginPickerContract;
 import com.u.tallerify.controller.login.LoginNativeDialogController;
-import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.networking.interactor.facebook.FacebookInteractor;
@@ -88,10 +87,10 @@ public class LoginPickerDialogPresenter extends Presenter<LoginPickerContract.Vi
         CredentialsInteractor.instance().observeToken()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+            .compose(this.<ReactiveModel<String>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<String>>() {
                 @Override
-                public void call(final ReactiveModel<AccessToken> reactiveModel) {
+                public void call(final ReactiveModel<String> reactiveModel) {
                     if (reactiveModel.hasError()) {
                         view.showError();
                     }

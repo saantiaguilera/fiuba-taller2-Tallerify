@@ -57,7 +57,7 @@ public class Rating {
 
         @Override
         public boolean buildable() {
-            return song != null && rating != (int) NO_VALUE;
+            return rating != (int) NO_VALUE;
         }
 
         @NonNull

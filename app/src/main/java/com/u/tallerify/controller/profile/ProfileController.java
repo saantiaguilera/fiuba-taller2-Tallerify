@@ -20,7 +20,6 @@ import com.u.tallerify.networking.interactor.Interactors;
 import com.u.tallerify.networking.interactor.me.MeInteractor;
 import com.u.tallerify.presenter.AbstractPresenterGraph;
 import com.u.tallerify.presenter.Presenter;
-import com.u.tallerify.presenter.profile.ProfileUserActivityPresenter;
 import com.u.tallerify.presenter.profile.ProfileUserContactsPresenter;
 import com.u.tallerify.presenter.profile.ProfileUserInfoPresenter;
 import com.u.tallerify.utils.CoordinatorsInstaller;
@@ -31,7 +30,6 @@ import rx.schedulers.Schedulers;
  */
 public class ProfileController extends FlowController {
 
-    private static final int KEY_ACTIVITIES = 0;
     private static final int KEY_CONTACTS = 1;
     private static final int KEY_INFO = 2;
 
@@ -41,7 +39,6 @@ public class ProfileController extends FlowController {
         View view = inflater.inflate(R.layout.controller_profile, container, false);
 
         view.findViewById(R.id.controller_profile_info).setTag(KEY_INFO);
-        view.findViewById(R.id.controller_profile_activity).setTag(KEY_ACTIVITIES);
         view.findViewById(R.id.controller_profile_contacts).setTag(KEY_CONTACTS);
 
         return view;
@@ -113,7 +110,6 @@ public class ProfileController extends FlowController {
 
         Graph() {
             add(KEY_INFO, new ProfileUserInfoPresenter());
-            add(KEY_ACTIVITIES, new ProfileUserActivityPresenter());
             add(KEY_CONTACTS, new ProfileUserContactsPresenter());
         }
 
@@ -125,7 +121,7 @@ public class ProfileController extends FlowController {
 
         @Override
         public int size() {
-            return 3;
+            return 2;
         }
 
     }

@@ -31,19 +31,16 @@ public interface UserService {
     Observable<User> user(@Path("id") long id);
 
     @Multipart
-    @POST("users/")
+    @POST("users")
     Observable<User> create(@PartMap Map<String, RequestBody> params);
 
-    @GET("users/{id}/activity")
-    Observable<List<Song>> activity(@Path("id") long id);
+    @POST("users/me/contacts/{id}")
+    Observable<Void> follow(@Path("id") long hisId);
 
-    @POST("users/{id}/follow")
-    Observable<User> follow(@Path("id") long hisId);
-
-    @DELETE("users/{id}/follow")
+    @DELETE("users/me/contacts/{id}")
     Observable<Void> unfollow(@Path("id") long hisId);
 
-    @GET("users/search")
-    Observable<List<User>> queryUsers(@Query("query") String query);
+    @GET("users")
+    Observable<List<User>> queryUsers(@Query("name") String query);
 
 }

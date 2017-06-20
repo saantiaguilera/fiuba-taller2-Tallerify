@@ -6,16 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.miguelbcr.ui.rx_paparazzo.RxPaparazzo;
-import com.miguelbcr.ui.rx_paparazzo.entities.Options;
 import com.miguelbcr.ui.rx_paparazzo.entities.Response;
-import com.miguelbcr.ui.rx_paparazzo.entities.size.SmallSize;
 import com.squareup.coordinators.Coordinator;
 import com.squareup.coordinators.CoordinatorProvider;
 import com.squareup.coordinators.Coordinators;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.login.LoginNativeContract;
 import com.u.tallerify.controller.abstracts.AlertDialogController;
-import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
 import com.u.tallerify.presenter.abstracts.BaseDialogPresenter;
@@ -45,10 +42,10 @@ public class LoginNativeDialogController extends AlertDialogController {
         CredentialsInteractor.instance().observeToken()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+            .compose(this.<ReactiveModel<String>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<String>>() {
                 @Override
-                public void call(final ReactiveModel<AccessToken> rxModel) {
+                public void call(final ReactiveModel<String> rxModel) {
                     if (!rxModel.hasError() && rxModel.model() != null) {
                         dismissDialog();
                     }

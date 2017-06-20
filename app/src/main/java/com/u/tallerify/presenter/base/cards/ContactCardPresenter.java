@@ -73,7 +73,9 @@ public class ContactCardPresenter extends GenericAdapter.ItemPresenter<ContactCa
     @Override
     protected void onRender(@NonNull final ContactCardContract.View view) {
         view.setAction(status);
-        view.setImage(him.pictures().get(0));
+        if (him.pictures() != null && !him.pictures().isEmpty()) {
+            view.setImage(him.pictures().get(0));
+        }
     }
 
 }

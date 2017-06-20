@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.login.LoginNativeContract;
+import com.u.tallerify.networking.RestClient;
 import com.u.tallerify.utils.MetricsUtils;
 import com.u.tallerify.view.base.widget.InputTextView;
 import java.text.SimpleDateFormat;
@@ -25,6 +26,9 @@ import rx.subjects.PublishSubject;
  */
 public class LoginNativeDialogView extends LinearLayout
         implements LoginNativeContract.View {
+
+    private static final int PASSWORD_MAX_LENGTH = 4;
+    private static final String NAME_REGEX_MATCHER = "[a-zA-Z_0-9\\-\\.]+";
 
     @NonNull InputTextView userNameField;
     @NonNull InputTextView passwordField;
@@ -92,7 +96,7 @@ public class LoginNativeDialogView extends LinearLayout
                     bundle.putString(LoginNativeContract.KEY_FIRSTNAME, nameField.getEditText().getText().toString());
                     bundle.putString(LoginNativeContract.KEY_LASTNAME, surnameField.getEditText().getText().toString());
                     bundle.putString(LoginNativeContract.KEY_EMAIL, emailField.getEditText().getText().toString());
-                    bundle.putSerializable(LoginNativeContract.KEY_BIRTHDAY, calendar.getTime());
+                    bundle.putString(LoginNativeContract.KEY_BIRTHDAY, birthdayField.getEditText().getText().toString());
                     bundle.putString(LoginNativeContract.KEY_COUNTRY, countryField.getEditText().getText().toString());
 
                     signupSubject.onNext(bundle);
@@ -160,14 +164,14 @@ public class LoginNativeDialogView extends LinearLayout
         if (userNameField.getEditText().getText().toString().isEmpty()) {
             userNameField.setError(getResources().getString(R.string.view_dialog_login_error_required));
         } else {
-            if (!userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_]+", "").isEmpty()) {
+            if (!userNameField.getEditText().getText().toString().replaceAll(NAME_REGEX_MATCHER, "").isEmpty()) {
                 userNameField.setError(getResources().getString(R.string.view_dialog_login_error_illegal_username));
             }
         }
 
         if (passwordField.getEditText().getText().toString().isEmpty()) {
             passwordField.setError(getResources().getString(R.string.view_dialog_login_error_required));
-        } else if (passwordField.getEditText().getText().toString().length() < 8) {
+        } else if (passwordField.getEditText().getText().toString().length() < PASSWORD_MAX_LENGTH) {
             passwordField.setError(getResources().getString(R.string.view_dialog_login_error_short_password));
         }
 
@@ -201,9 +205,9 @@ public class LoginNativeDialogView extends LinearLayout
     boolean isActionPerformable() {
         boolean can = true;
         can &= !userNameField.getEditText().getText().toString().isEmpty();
-        can &= userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_]+", "").isEmpty();
+        can &= userNameField.getEditText().getText().toString().replaceAll(NAME_REGEX_MATCHER, "").isEmpty();
         can &= !passwordField.getEditText().getText().toString().isEmpty();
-        can &= passwordField.getEditText().getText().toString().length() >= 8;
+        can &= passwordField.getEditText().getText().toString().length() >= PASSWORD_MAX_LENGTH;
 
         if (isSignUp()) {
             can &= !nameField.getEditText().getText().toString().isEmpty();
@@ -256,7 +260,7 @@ public class LoginNativeDialogView extends LinearLayout
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, monthOfYear);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            birthdayField.setText(new SimpleDateFormat("yyyy/MM/dd").format(calendar.getTime()));
+            birthdayField.setText(new SimpleDateFormat(RestClient.DATE_FORMAT).format(calendar.getTime()));
         }
 
     };

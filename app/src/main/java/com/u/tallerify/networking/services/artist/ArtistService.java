@@ -21,13 +21,13 @@ public interface ArtistService {
     @GET("artists/recommended")
     Observable<List<Artist>> recommendedArtists();
 
-    @GET("artists/search")
-    Observable<List<Artist>> queryArtists(@Query("query") String query);
+    @GET("artists")
+    Observable<List<Artist>> queryArtists(@Query("name") String query);
 
-    @POST("me/artists/{artistId}/follow")
-    Observable<Artist> followArtist(@Path("artistId") long artistId);
+    @POST("artists/me/{artistId}/follow")
+    Observable<Void> followArtist(@Path("artistId") long artistId);
 
-    @DELETE("me/artists/{artistId}/follow")
+    @DELETE("artists/me/{artistId}/follow")
     Observable<Void> unfollowArtist(@Path("artistId") long artistId);
 
     @GET("artists/{artistId}/tracks")

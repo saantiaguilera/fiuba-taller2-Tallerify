@@ -32,6 +32,8 @@
 
         android:layout_margin="8dp"
 
+        fresco:placeholderImage="@drawable/placeholder_user"
+
         fresco:roundAsCircle="true" />
 
 </LinearLayout>

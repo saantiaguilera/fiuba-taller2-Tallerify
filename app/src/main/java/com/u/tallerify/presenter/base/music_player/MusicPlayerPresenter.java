@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.view.View;
 import com.u.tallerify.contract.base.music_player.MusicPlayerContract;
-import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.model.Rating;
 import com.u.tallerify.model.entity.Song;
 import com.u.tallerify.networking.ReactiveModel;
@@ -155,10 +154,10 @@ public class MusicPlayerPresenter extends Presenter<MusicPlayerContract.View>
         CredentialsInteractor.instance().observeToken()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+            .compose(this.<ReactiveModel<String>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<String>>() {
                 @Override
-                public void call(final ReactiveModel<AccessToken> reactiveModel) {
+                public void call(final ReactiveModel<String> reactiveModel) {
                     logged = reactiveModel.model() != null && !reactiveModel.hasError();
                     requestRender();
                 }

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.google.gson.Gson;
-import com.u.tallerify.model.AccessToken;
 
 /**
  * Access token manager for credentials.
@@ -32,7 +31,7 @@ public class AccessTokenManager {
      * Current token to avoid having to read from shared preferences
      * each time
      */
-    private @Nullable AccessToken token;
+    private @Nullable String token;
 
     /**
      * Getter of an instance
@@ -43,7 +42,7 @@ public class AccessTokenManager {
         return instance;
     }
 
-    public @Nullable AccessToken snapshot() {
+    public @Nullable String snapshot() {
         return token;
     }
 
@@ -53,7 +52,7 @@ public class AccessTokenManager {
      * @param context of the scope that wants to read
      * @return access token, if persisted. Else null
      */
-    public @Nullable AccessToken read(@NonNull Context context) {
+    public @Nullable String read(@NonNull Context context) {
         if (token != null)
             return snapshot();
 
@@ -63,7 +62,7 @@ public class AccessTokenManager {
         if (json == null)
             return null;
 
-        return token = new Gson().fromJson(json, AccessToken.class);
+        return token = new Gson().fromJson(json, String.class);
     }
 
     /**
@@ -73,7 +72,7 @@ public class AccessTokenManager {
      * @param context of the scope that wants to write
      * @param token to persist
      */
-    public void write(@NonNull Context context, @NonNull AccessToken token) {
+    public void write(@NonNull Context context, @NonNull String token) {
         this.token = token;
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_DIR, Context.MODE_PRIVATE);
         sharedPreferences.edit().putString(SHARED_PREFERENCIES_KEY, new Gson().toJson(token)).apply();

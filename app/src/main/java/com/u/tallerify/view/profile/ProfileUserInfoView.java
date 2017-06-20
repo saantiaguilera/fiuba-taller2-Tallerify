@@ -1,11 +1,14 @@
 package com.u.tallerify.view.profile;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.u.tallerify.R;
 import com.u.tallerify.contract.profile.ProfileUserInfoContract;
 import com.u.tallerify.utils.FrescoImageController;

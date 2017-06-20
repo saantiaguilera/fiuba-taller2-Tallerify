@@ -31,7 +31,7 @@
     <string name="view_dialog_login_title_add_image">Agrega una imagen para tu perfil</string>
 
     <string name="view_dialog_login_error_required">Este campo es obligatorio</string>
-    <string name="view_dialog_login_error_short_password">La contraseña debe contener mas de 8 caracteres</string>
+    <string name="view_dialog_login_error_short_password">La contraseña debe contener mas de 4 caracteres</string>
     <string name="view_dialog_login_error_invalid_birthdate">Este campo no es una fecha de nacimiento valida</string>
     <string name="view_dialog_login_error_invalid_email">Este campo no es un email valido</string>
     <string name="view_dialog_login_error_illegal_username">El nombre de usuario solo puede tener caracteres o guiones bajos</string>

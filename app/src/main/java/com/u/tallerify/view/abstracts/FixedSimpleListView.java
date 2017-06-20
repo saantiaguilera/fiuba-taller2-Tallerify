@@ -45,10 +45,14 @@ public class FixedSimpleListView extends LinearLayout
         return clickSubject;
     }
 
-    private void attachLast(@NonNull String name, @NonNull String url) {
+    private void attachLast(@NonNull String name, @Nullable String url) {
         final FixedListChildView view = new FixedListChildView(getContext());
         view.setTitle(name);
-        view.setImageUrl(url);
+
+        if (url != null) {
+            view.setImageUrl(url);
+        }
+
         view.setTag(getChildCount());
         view.setOnClickListener(new OnClickListener() {
             @Override
@@ -78,7 +82,10 @@ public class FixedSimpleListView extends LinearLayout
             } else {
                 FixedListChildView currentView = (FixedListChildView) getChildAt(i);
 
-                currentView.setImageUrl(urls.get(i));
+                if (urls.get(i) != null) {
+                    currentView.setImageUrl(urls.get(i));
+                }
+
                 currentView.setTitle(names.get(i));
             }
         }

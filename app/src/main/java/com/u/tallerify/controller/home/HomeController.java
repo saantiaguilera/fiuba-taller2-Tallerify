@@ -18,7 +18,6 @@ import com.u.tallerify.R;
 import com.u.tallerify.controller.FlowController;
 import com.u.tallerify.controller.profile.ProfileController;
 import com.u.tallerify.controller.search.SearchController;
-import com.u.tallerify.model.AccessToken;
 import com.u.tallerify.networking.AccessTokenManager;
 import com.u.tallerify.networking.ReactiveModel;
 import com.u.tallerify.networking.interactor.credentials.CredentialsInteractor;
@@ -34,7 +33,7 @@ public class HomeController extends FlowController {
 
     private @Nullable CoordinatorProvider provider;
 
-    boolean hasProfileIcon;
+    boolean isUserLogged;
 
     @NonNull
     @Override
@@ -54,16 +53,17 @@ public class HomeController extends FlowController {
         CredentialsInteractor.instance().observeToken()
             .observeOn(Schedulers.computation())
             .subscribeOn(Schedulers.computation())
-            .compose(this.<ReactiveModel<AccessToken>>bindToLifecycle())
-            .subscribe(new Action1<ReactiveModel<AccessToken>>() {
+            .compose(this.<ReactiveModel<String>>bindToLifecycle())
+            .subscribe(new Action1<ReactiveModel<String>>() {
                 @Override
-                public void call(final ReactiveModel<AccessToken> accessTokenReactiveModel) {
+                public void call(final ReactiveModel<String> accessTokenReactiveModel) {
                     if (!accessTokenReactiveModel.hasError() && accessTokenReactiveModel.model() != null) {
                         BussinessUtils.requestBasicInfo(getApplicationContext());
+                        BussinessUtils.requestRecommendations(getApplicationContext());
 
-                        hasProfileIcon = true;
+                        isUserLogged = true;
                     } else {
-                        hasProfileIcon = false;
+                        isUserLogged = false;
                     }
 
                     getActivity().invalidateOptionsMenu();
@@ -87,7 +87,8 @@ public class HomeController extends FlowController {
     @Override
     public void onCreateOptionsMenu(@NonNull final Menu menu, @NonNull final MenuInflater inflater) {
         inflater.inflate(R.menu.menu_home, menu);
-        menu.findItem(R.id.menu_home_profile).setVisible(hasProfileIcon);
+        menu.findItem(R.id.menu_home_profile).setVisible(isUserLogged);
+        menu.findItem(R.id.menu_home_search).setVisible(isUserLogged);
     }
 
     @Override
