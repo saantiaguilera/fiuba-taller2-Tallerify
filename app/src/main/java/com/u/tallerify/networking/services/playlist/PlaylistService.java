@@ -1,16 +1,13 @@
 package com.u.tallerify.networking.services.playlist;
 
-import android.support.annotation.NonNull;
 import com.u.tallerify.model.entity.Playlist;
 import com.u.tallerify.model.entity.Song;
-import com.u.tallerify.model.entity.User;
 import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -23,7 +20,7 @@ public interface PlaylistService {
     @GET("playlists/{id}")
     Observable<Playlist> playlist(@Path("id") long id);
 
-    @POST("playlists/{playlistId}/tracks/{trackId}")
+    @PUT("playlists/{playlistId}/tracks/{trackId}")
     Observable<Playlist> addSong(@Path("playlistId") long playlistId, @Path("trackId") long songId);
 
     @DELETE("playlists/{playlistId}/tracks/{trackId}")

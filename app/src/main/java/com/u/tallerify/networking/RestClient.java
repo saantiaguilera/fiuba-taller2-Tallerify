@@ -183,6 +183,7 @@ public class RestClient {
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                     .setDateFormat(DATE_FORMAT)
                     .registerTypeAdapterFactory(new RestDeserializer())
+                    .serializeNulls()
                     .create()))
                 .client(buildHttpClient())
                 .build()

@@ -12,7 +12,7 @@ public class Playlist extends Entity implements Serializable, Playable {
 
     private @Nullable String name;
     private @Nullable String description;
-    private @Nullable List<Song> tracks;
+    private @Nullable List<Song> songs;
     private @Nullable User owner;
     private @Nullable List<String> images;
 
@@ -23,7 +23,7 @@ public class Playlist extends Entity implements Serializable, Playable {
     protected Playlist(@NonNull Playlist.Builder builder) {
         super(builder);
         name = builder.name;
-        tracks = builder.tracks;
+        songs = builder.songs;
         owner = builder.owner;
         description = builder.description;
         images = builder.pictures;
@@ -38,7 +38,7 @@ public class Playlist extends Entity implements Serializable, Playable {
     }
 
     public @Nullable List<Song> songs() {
-        return tracks;
+        return songs;
     }
 
     public @Nullable User creator() {
@@ -65,7 +65,7 @@ public class Playlist extends Entity implements Serializable, Playable {
         if (description != null ? !description.equals(playlist.description) : playlist.description != null) {
             return false;
         }
-        if (tracks != null ? !tracks.equals(playlist.tracks) : playlist.tracks != null) {
+        if (songs != null ? !songs.equals(playlist.songs) : playlist.songs != null) {
             return false;
         }
         if (owner != null ? !owner.equals(playlist.owner) : playlist.owner != null) {
@@ -79,7 +79,7 @@ public class Playlist extends Entity implements Serializable, Playable {
         int result = super.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (tracks != null ? tracks.hashCode() : 0);
+        result = 31 * result + (songs != null ? songs.hashCode() : 0);
         result = 31 * result + (owner != null ? owner.hashCode() : 0);
         result = 31 * result + (images != null ? images.hashCode() : 0);
         return result;
@@ -88,7 +88,7 @@ public class Playlist extends Entity implements Serializable, Playable {
     @Nullable
     @Override
     public List<Song> asPlaylist() {
-        return tracks;
+        return songs;
     }
 
     @Nullable
@@ -106,7 +106,7 @@ public class Playlist extends Entity implements Serializable, Playable {
     public static class Builder extends Entity.Builder<Playlist> {
 
         @Nullable String name;
-        @Nullable List<Song> tracks;
+        @Nullable List<Song> songs;
         @Nullable User owner;
         @Nullable String description;
         @Nullable List<String> pictures;
@@ -140,7 +140,7 @@ public class Playlist extends Entity implements Serializable, Playable {
         }
 
         public final @NonNull Playlist.Builder tracks(@NonNull final List<Song> songs) {
-            this.tracks = songs;
+            this.songs = songs;
             return this;
         }
 
