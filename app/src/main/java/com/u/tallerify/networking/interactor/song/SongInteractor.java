@@ -191,7 +191,12 @@ public final class SongInteractor {
 
     public @NonNull Observable<Rating> rate(@NonNull Context context, @NonNull final Song song, int rate) {
         return RestClient.with(context).create(SongService.class)
-            .rateSong(song.id(), rate)
+            .rateSong(
+                song.id(),
+                new Rating.Builder()
+                    .rating(rate)
+                    .build()
+            )
             .map(new Func1<Rating, Rating>() {
                 @Override
                 public Rating call(final Rating rating) {

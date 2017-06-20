@@ -173,10 +173,12 @@ final class RxPlayerHelper {
             .doOnNext(new Action1<Pair<Song, Integer>>() {
                 @Override
                 public void call(final Pair<Song, Integer> pair) {
-                    SongInteractor.instance().rate(context.getApplicationContext(), pair.first, pair.second)
-                        .observeOn(Schedulers.io())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(Interactors.ACTION_NEXT, Interactors.ACTION_ERROR);
+                    if (pair.second > 0) {
+                        SongInteractor.instance().rate(context.getApplicationContext(), pair.first, pair.second)
+                            .observeOn(Schedulers.io())
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(Interactors.ACTION_NEXT, Interactors.ACTION_ERROR);
+                    }
                 }
             });
     }

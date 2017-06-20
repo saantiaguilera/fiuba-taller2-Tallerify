@@ -3,7 +3,9 @@ package com.u.tallerify.networking.services.playlist;
 import android.support.annotation.NonNull;
 import com.u.tallerify.model.entity.Playlist;
 import com.u.tallerify.model.entity.Song;
+import com.u.tallerify.model.entity.User;
 import java.util.List;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -27,11 +29,8 @@ public interface PlaylistService {
     @DELETE("playlists/{playlistId}/tracks/{trackId}")
     Observable<Void> removeSong(@Path("playlistId") long playlistId, @Path("trackId") long songId);
 
-    @FormUrlEncoded
     @POST("playlists")
-    Observable<Playlist> create(@Field("name") @NonNull String name,
-        @Field("description") @NonNull String description,
-        @Field("ownerId") long ownerId);
+    Observable<Playlist> create(@Body Playlist playlist);
 
     @DELETE("playlists/{playlistId}")
     Observable<Void> delete(@Path("playlistId") long id);

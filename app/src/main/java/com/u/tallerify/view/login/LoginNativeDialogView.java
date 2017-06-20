@@ -27,6 +27,9 @@ import rx.subjects.PublishSubject;
 public class LoginNativeDialogView extends LinearLayout
         implements LoginNativeContract.View {
 
+    private static final int PASSWORD_MAX_LENGTH = 4;
+    private static final String NAME_REGEX_MATCHER = "[a-zA-Z_0-9\\-\\.]+";
+
     @NonNull InputTextView userNameField;
     @NonNull InputTextView passwordField;
 
@@ -161,14 +164,14 @@ public class LoginNativeDialogView extends LinearLayout
         if (userNameField.getEditText().getText().toString().isEmpty()) {
             userNameField.setError(getResources().getString(R.string.view_dialog_login_error_required));
         } else {
-            if (!userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_0-9\\-\\.]+", "").isEmpty()) {
+            if (!userNameField.getEditText().getText().toString().replaceAll(NAME_REGEX_MATCHER, "").isEmpty()) {
                 userNameField.setError(getResources().getString(R.string.view_dialog_login_error_illegal_username));
             }
         }
 
         if (passwordField.getEditText().getText().toString().isEmpty()) {
             passwordField.setError(getResources().getString(R.string.view_dialog_login_error_required));
-        } else if (passwordField.getEditText().getText().toString().length() < 4) {
+        } else if (passwordField.getEditText().getText().toString().length() < PASSWORD_MAX_LENGTH) {
             passwordField.setError(getResources().getString(R.string.view_dialog_login_error_short_password));
         }
 
@@ -202,9 +205,9 @@ public class LoginNativeDialogView extends LinearLayout
     boolean isActionPerformable() {
         boolean can = true;
         can &= !userNameField.getEditText().getText().toString().isEmpty();
-        can &= userNameField.getEditText().getText().toString().replaceAll("[a-zA-Z_]+", "").isEmpty();
+        can &= userNameField.getEditText().getText().toString().replaceAll(NAME_REGEX_MATCHER, "").isEmpty();
         can &= !passwordField.getEditText().getText().toString().isEmpty();
-        can &= passwordField.getEditText().getText().toString().length() >= 8;
+        can &= passwordField.getEditText().getText().toString().length() >= PASSWORD_MAX_LENGTH;
 
         if (isSignUp()) {
             can &= !nameField.getEditText().getText().toString().isEmpty();

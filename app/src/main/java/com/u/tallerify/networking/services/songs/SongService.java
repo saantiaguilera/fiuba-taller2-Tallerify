@@ -4,6 +4,7 @@ import com.u.tallerify.model.Rating;
 import com.u.tallerify.model.ResolvedUri;
 import com.u.tallerify.model.entity.Song;
 import java.util.List;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -33,9 +34,8 @@ public interface SongService {
     @DELETE("tracks/me/{trackId}/like")
     Observable<Void> dislikeSong(@Path("trackId") long songId);
 
-    @FormUrlEncoded
     @POST("tracks/{trackId}/popularity")
-    Observable<Rating> rateSong(@Path("trackId") long songId, @Field("rate") int rate);
+    Observable<Rating> rateSong(@Path("trackId") long songId, @Body Rating rate);
 
     @GET("tracks/{trackId}/popularity")
     Observable<Rating> rateSong(@Path("trackId") long songId);
